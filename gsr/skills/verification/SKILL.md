@@ -176,6 +176,22 @@ npm test               # if tests cover this truth
 # grep for key patterns that prove the truth
 ```
 
+### Check 6: Spec Drift (Tier 2 — Grep, pinned specs only)
+
+_(Skip entirely for unpinned specs.)_
+
+For each pin ID in the feature file (e.g., `slug.T1`, `slug.A1`, `slug.K1`), grep `src/` and `tests/` for references — comments, test descriptions, inline notes:
+
+```bash
+grep -r "slug\.T1\|slug\.A1\|slug\.K1" src/ tests/ --include="*.ts" --include="*.tsx" --include="*.test.*"
+```
+
+Compare hits against the feature file's current must-haves table. Flag any ID that appears in code or tests but **no longer exists** in the feature file — spec was edited after code was written.
+
+Verdict per ID: `OK` or `DRIFT: found in [file:line], missing from spec`.
+
+If any DRIFT found → Blocker. Resolve by either restoring the removed requirement or removing the stale reference from code.
+
 ---
 
 ## Evidence Format
