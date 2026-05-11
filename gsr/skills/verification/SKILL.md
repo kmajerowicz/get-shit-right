@@ -120,7 +120,7 @@ From the feature file(s) and/or PRD build phase:
 
 These were defined at spec time. You are now checking that they are actually true.
 
-**ACID detection:** Before proceeding, grep the feature file's Must-Haves section for `\.T\d+|\.A\d+|\.K\d+`. If matches are found, this is an ACID-enabled spec — capture each must-have with its ID (`<slug>.T1`, `<slug>.A1`, `<slug>.K1`). Every line in your report must carry the ID; it is the join key between spec, code, and evidence. If no matches are found, this is a pre-ACID spec — proceed with the legacy checklist output and skip the Acceptance Coverage subsection in Step 3.
+**Pin detection:** Before proceeding, grep the feature file's Must-Haves section for `\.T\d+|\.A\d+|\.K\d+`. If matches are found, this is a pinned spec — capture each must-have with its ID (`<slug>.T1`, `<slug>.A1`, `<slug>.K1`). Every line in your report must carry the ID; it is the join key between spec, code, and evidence. If no matches are found, this is an unpinned spec — proceed with the legacy checklist output and skip the Acceptance Coverage subsection in Step 3.
 
 ---
 
@@ -254,7 +254,7 @@ Format the report per `docs/phases/4-verification.md`:
 
 ### Acceptance Coverage
 
-_(Skip this subsection entirely for pre-ACID specs — see ACID detection in Step 1.)_
+_(Skip this subsection entirely for unpinned specs — see pin detection in Step 1.)_
 
 Compute one line per category, then a totals line:
 
@@ -265,7 +265,7 @@ Key Links:  [X]/[Y] wired
 Total:      [X]/[Y] must-haves satisfied — [U] unverified
 ```
 
-**PASS requires `unverified = 0`.** Every ACID must have evidence in at least one tier. An ACID with status `pending` in the feature file counts as unverified — it is a blocker.
+**PASS requires `unverified = 0`.** Every pin must have evidence in at least one tier. A pin with status `pending` in the feature file counts as unverified — it is a blocker.
 
 ### Anti-Patterns
 | File | Pattern | Severity |
@@ -322,7 +322,7 @@ Based on outcome:
 - Append verification report to STATE.md
 - Update feature/phase status to PASS with date
 - Move Minor anti-patterns to BACKLOG.md
-- For ACID-enabled specs: update each must-have row's Status in the feature file:
+- For pinned specs: update each must-have row's Status in the feature file:
   - Human checks confirmed by user during Step 4 → flip Status to `accepted`
   - Must-haves verified by command or test → flip Status to `done`
   - Preserve all IDs exactly — do not renumber or reorder rows
