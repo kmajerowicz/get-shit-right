@@ -78,11 +78,15 @@ _Implementation: `[path to schema/migrations]`_
 
 ---
 
-## 8. Non-Functional Requirements
+## 8. Constraints
 
-- **Performance:** [Target — e.g., "Page load <2s on 3G"]
-- **Accessibility:** [Level — e.g., "WCAG 2.1 AA"]
-- **Mobile:** [Requirement — e.g., "Mobile-first, iOS Safari + Android Chrome"]
+_Project-wide requirements that every feature must respect. Each gets a stable pin ID (`<project>.C<n>`) — feature files reference these by ID._
+
+| ID | Constraint | Target |
+|----|-----------|--------|
+| `<project>.C1` | Performance | [e.g., Page load <2s on 3G] |
+| `<project>.C2` | Accessibility | [e.g., WCAG 2.1 AA] |
+| `<project>.C3` | Mobile | [e.g., Mobile-first, iOS Safari + Android Chrome] |
 
 ---
 

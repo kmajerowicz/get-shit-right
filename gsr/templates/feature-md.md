@@ -3,6 +3,7 @@
 **Phase:** [1 / 2 / ...]
 **Type:** creative / systematic
 **Status:** not started
+**Constraints:** [e.g., `<project>.C1`, `<project>.C2` — or "none"]
 
 ---
 
