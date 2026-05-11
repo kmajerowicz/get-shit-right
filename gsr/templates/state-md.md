@@ -28,6 +28,18 @@ _Feature statuses: not started → in progress → done_
 
 ---
 
+## Pin Coverage
+
+_Updated automatically by `/gsr:verify` on each PASS. One row per pin across all verified features._
+
+| Pin | Feature | Status | Last Verified |
+|-----|---------|--------|--------------|
+| `slug.T1` | [feature] | pending / done / accepted | — |
+
+_Pin statuses: `pending` → `done` (command/test evidence) → `accepted` (human sign-off)._
+
+---
+
 ## Recent Decisions
 
 [date] — [What was decided] — see [feature file or PRD]

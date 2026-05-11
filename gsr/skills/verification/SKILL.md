@@ -342,6 +342,7 @@ Based on outcome:
   - Human checks confirmed by user during Step 4 → flip Status to `accepted`
   - Must-haves verified by command or test → flip Status to `done`
   - Preserve all IDs exactly — do not renumber or reorder rows
+- For pinned specs: upsert the Pin Coverage table in STATE.md — one row per pin with its current Status and today's date in Last Verified. Add new pins; update existing rows in place.
 
 **If BLOCKED:**
 - Update feature/phase status to BLOCKED
