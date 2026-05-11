@@ -66,18 +66,28 @@
 
 ## Must-Haves
 
-_Defined now, verified at phase completion._
+_Defined now, verified at phase completion. Each item gets a stable ID — referenced in commits, tests, code comments, debug sessions, and verification reports._
+
+**ID convention:** `<feature-slug>.T<n>` for Truths, `.A<n>` for Artifacts, `.K<n>` for Key Links. Sub-requirements append `.<m>` (e.g., `dashboard.T1.1`). Once assigned, never renumber — append only. Removing a requirement: strike-through until next major spec revision.
 
 ### Truths (observable behaviors)
-- [ ] [User can do X]
-- [ ] [System does Y when Z]
+| ID | Truth | Status |
+|----|-------|--------|
+| `<slug>.T1` | [User can do X] | pending |
+| `<slug>.T2` | [System does Y when Z] | pending |
 
 ### Artifacts (files that must exist with real implementation)
-- [ ] `[path]` — [what it does, what it exports]
+| ID | Artifact | Status |
+|----|----------|--------|
+| `<slug>.A1` | `[path]` — [what it does, what it exports] | pending |
 
 ### Key Links (critical connections)
-- [ ] [ComponentA] imports [ComponentB] via [mechanism]
-- [ ] [RouteX] calls [ApiY]
+| ID | Link | Status |
+|----|------|--------|
+| `<slug>.K1` | [ComponentA] imports [ComponentB] via [mechanism] | pending |
+| `<slug>.K2` | [RouteX] calls [ApiY] | pending |
+
+_Status values: `pending` → `done` (verified by command or test) → `accepted` (human sign-off during `/gsr:verify` Step 4)._
 
 ---
 
