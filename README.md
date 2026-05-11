@@ -4,6 +4,8 @@ A Claude Code plugin for building production apps — PRD-first, human-in-the-lo
 
 **One sentence:** The human makes all product decisions. The system tracks progress and enforces quality.
 
+**What's new in 0.2.x:** Pins — stable IDs on every must-have, turning your spec into a traceability matrix across code, commits, tests, and verification reports.
+
 ---
 
 ## Why GSR
@@ -80,10 +82,10 @@ Each command tells you what to run next. Context clears between commands — sta
 
 ### PRD Generation (`/gsr:prd`)
 Turns scope into:
-- `docs/PRD.md` — condensed product knowledge (200-300 lines, pure product — no schemas, no routes)
-- `docs/features/*.md` — one file per feature with: user flow, states, business rules, must-haves, skills
+- `docs/PRD.md` — condensed product knowledge (200-300 lines, pure product — no schemas, no routes) with a **Constraints** section: project-wide rules each get a stable ID (`<project>.C1`, `C2`...) that feature files reference by ID
+- `docs/features/*.md` — one file per feature with: user flow, states, business rules, skills, and a **pinned must-haves table** (see Pins below)
 - `CLAUDE.md` — technical instruction manual
-- `docs/STATE.md` — progress tracker
+- `docs/STATE.md` — progress tracker + Pin Coverage table
 - `docs/BACKLOG.md` — deferred work
 
 Also matches skills from the marketplace per feature and runs a "don't hand-roll" sweep.
@@ -93,9 +95,11 @@ Pick a feature, pick a mode:
 
 **Creative mode** (UI, design-sensitive work): You review every diff. Every correction gets asked "add to CLAUDE.md Learned Rules?" — so it never repeats. Corrections compound across sessions.
 
-**Systematic mode** (testing, i18n, accessibility, hardening): Claude generates a task list with pass/fail criteria. You approve. Agents execute. Atomic commits with evidence.
+**Systematic mode** (testing, i18n, accessibility, hardening): Claude generates a task list with pass/fail criteria. You approve. Agents execute. Atomic commits with evidence. The plan is saved to `docs/plans/` — if you hit `/clear` mid-build, running `/gsr:build` again surfaces active plans and offers resume.
 
 Both modes enforce the gate function before every completion claim: build passes, TS clean, lint passes. Never "should work."
+
+**Model-aware dispatch:** GSR selects the right Claude tier per agent role automatically — heavier models for spec review, lighter models for mechanical tasks.
 
 ### When things break (`/gsr:debug`)
 
@@ -113,6 +117,29 @@ To force the gate regardless: `/gsr:build --sketch`. To skip it in one click: "S
 
 **Optional rigor:** gets heavier only when the feature warrants it.
 
+### Pins — Spec-to-Code Traceability
+
+Every must-have in a feature file gets a stable ID called a **pin**:
+
+| Category | Format | Meaning |
+|----------|--------|---------|
+| Truths | `dashboard.T1`, `T2`... | Observable behaviors the user can verify |
+| Artifacts | `dashboard.A1`, `A2`... | Files that must exist with real implementation |
+| Key Links | `dashboard.K1`, `K2`... | Critical imports, calls, and wiring |
+
+PRD-level constraints get project-wide IDs (`<project>.C1`, `C2`...) that feature files reference — so every feature knows which product rules it must respect.
+
+Pins are **append-only and never renumbered**. Once assigned, a pin ID is a stable join key you can use anywhere:
+- In commit messages (`feat(dashboard): implement dashboard.T1 — user can view metrics`)
+- In test descriptions (`it('dashboard.T1: user can view metrics', ...)`)
+- In code comments (`// dashboard.K1: wired via router.tsx`)
+- In debug sessions (which pin broke and why)
+- In verification reports (per-ID evidence and status)
+
+Pin status lifecycle: `pending` → `done` (command/test evidence) → `accepted` (human sign-off in `/gsr:verify`).
+
+STATE.md keeps a **Pin Coverage table** — one row per pin across all verified features, updated automatically on every PASS.
+
 ### Verification (`/gsr:verify`)
 4-tier evidence ladder:
 1. Automated — build, TypeScript, lint
@@ -120,7 +147,21 @@ To force the gate regardless: `/gsr:build --sketch`. To skip it in one click: "S
 3. Tests — test suite execution
 4. Human — only what Claude genuinely can't verify
 
-Produces a structured report (Truths / Artifacts / Key Links / Anti-Patterns). Blockers must be resolved. Minors go to BACKLOG.md. Phase PASS when no blockers and human checks complete.
+For pinned specs, verification runs 6 checks:
+1. Build gate (automated)
+2. TypeScript clean (automated)
+3. Lint clean (automated)
+4. Grep sweep (anti-patterns, artifact existence, key links)
+5. Test suite
+6. **Spec Drift** — for each pin ID, grep `src/` and `tests/` for references; any pin with zero references is flagged
+
+The report carries ID columns throughout: every Truth, Artifact, and Key Link row is stamped with its pin ID. An **Acceptance Coverage** summary counts verified vs. unverified per category — PASS requires `unverified = 0`.
+
+On PASS: pin statuses in the feature file flip to `done` / `accepted`, and STATE.md Pin Coverage table is updated.
+
+For pre-pin specs (no IDs in must-haves), verification runs the legacy 4-tier flow — backwards compatible.
+
+Blockers must be resolved. Minors go to BACKLOG.md.
 
 ---
 
@@ -130,23 +171,23 @@ Produces a structured report (Truths / Artifacts / Key Links / Anti-Patterns). B
 your-project/
 ├── CLAUDE.md                  # Technical instruction manual + Learned Rules
 ├── docs/
-│   ├── PRD.md                 # Product knowledge (what, for whom, why)
+│   ├── PRD.md                 # Product knowledge (what, for whom, why) + Constraint IDs (C1, C2…)
 │   ├── scope.md               # Original vision (historical after PRD)
 │   ├── techstack.md           # Stack + project-wide skills
 │   ├── features/
-│   │   ├── dashboard.md       # Full spec: flow, states, rules, must-haves, skills
+│   │   ├── dashboard.md       # Spec with pinned must-haves: dashboard.T1, .A1, .K1…
 │   │   ├── onboarding.md
 │   │   └── ...
 │   ├── debug/
 │   │   └── 2026-04-18-auth-token-undefined.md   # Active debug session (survives /clear)
 │   ├── plans/
-│   │   └── 2026-04-18-dashboard.md              # Systematic build plan (task table + evidence)
-│   ├── STATE.md               # Progress tracker (~30 lines)
+│   │   └── 2026-04-18-dashboard.md              # Systematic build plan (resumes after /clear)
+│   ├── STATE.md               # Phase + feature progress + Pin Coverage table
 │   └── BACKLOG.md             # Deferred work
 └── src/                       # Code = source of truth for implementation
 ```
 
-Documents describe **what and why**. Code describes **how**. No duplication, no drift.
+Documents describe **what and why**. Code describes **how**. Pin IDs connect the two — a stable join key from spec to commit to test to verification report.
 
 ---
 
