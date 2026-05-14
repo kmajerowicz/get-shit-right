@@ -159,7 +159,14 @@ process.stdin.on('end', () => {
       }
 
       if (cache?.updateAvailable) {
-        updateBadge = ' \x1b[33m⬆ /gsr:update\x1b[0m';
+        // Re-read installed version in case user already updated since cache was written
+        let currentInstalled = '0.0.0';
+        try { currentInstalled = JSON.parse(fs.readFileSync(installedPluginJson, 'utf8')).version || '0.0.0'; } catch(e) {}
+        if (currentInstalled !== cache.latest) {
+          updateBadge = ' \x1b[33m⬆ /gsr:update\x1b[0m';
+        } else {
+          try { fs.unlinkSync(cachePath); } catch(e) {}
+        }
       }
     } catch (e) { /* silent */ }
 
