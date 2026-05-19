@@ -246,7 +246,19 @@ Use `${CLAUDE_PLUGIN_ROOT}/templates/scope-md.md` as the structure. Fill in:
 
 Write the file to the user's project at `docs/scope.md`.
 
-After writing scope.md, update `docs/STATE.md` if it exists: find the `Next action` line and replace its value with `Run /gsr:prd to generate PRD and feature files`. This keeps the status line accurate. If STATE.md does not exist, skip this step.
+After writing scope.md, update `docs/STATE.md`:
+- **If STATE.md exists:** find the `Next Action` line and replace its value with `Run /gsr:prd to generate PRD and feature files`.
+- **If STATE.md does not exist:** create it now with this minimal content:
+
+  ```
+  # STATE.md — [Project Name from scope.md]
+
+  **Project Status:** SCOPE COMPLETE
+  **Last Updated:** [today's date]
+  **Next Action:** Review scope.md, then run `/gsr:prd`
+  ```
+
+This ensures `/gsr:status` always finds STATE.md after scope is complete — even if the session crashes before the user runs `/gsr:prd`.
 
 ---
 
