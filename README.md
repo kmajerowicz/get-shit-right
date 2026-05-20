@@ -83,12 +83,12 @@ Each command tells you what to run next. Context clears between commands — sta
 ### PRD Generation (`/gsr:prd`)
 Turns scope into:
 - `docs/PRD.md` — condensed product knowledge (200-300 lines, pure product — no schemas, no routes) with a **Constraints** section: project-wide rules each get a stable ID (`<project>.C1`, `C2`...) that feature files reference by ID
-- `docs/features/*.md` — one file per feature with: user flow, states, business rules, skills, and a **pinned must-haves table** (see Pins below)
+- `docs/features/*.md` — one file per feature with: user flow, states, business rules, and a **pinned must-haves table** (see Pins below)
 - `CLAUDE.md` — technical instruction manual
 - `docs/STATE.md` — progress tracker + Pin Coverage table
 - `docs/BACKLOG.md` — deferred work
 
-Also matches skills from the marketplace per feature and runs a "don't hand-roll" sweep.
+Also runs a "don't hand-roll" sweep per feature. Skills are matched at build time (Step 3.5) — not stored in feature files.
 
 ### Build (`/gsr:build`)
 Pick a feature, pick a mode:
