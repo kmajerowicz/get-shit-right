@@ -10,7 +10,7 @@
 
 ### How
 1. User gives a small, scoped task: "Build the dashboard (see `docs/features/dashboard.md`)"
-2. System reads the feature file → loads skills listed in the feature's Skills section + project-wide skills from techstack.md → reads relevant SKILL.md files
+2. System reads the feature file → loads project-wide skills from `techstack.md` → feature-specific skills matched dynamically in Step 3.5
 3. Claude reads CLAUDE.md (conventions, references, learned rules)
 4. Plan mode if >2 files, direct implementation otherwise
    - Plans follow the structured format in `docs/patterns/plan-execution.md` — file map first, then task breakdown with checkpoints. User approves the file map before execution begins.

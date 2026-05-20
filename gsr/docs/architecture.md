@@ -96,11 +96,11 @@ project-root/
 │   ├── techstack.md            # Stack, versions, tech decisions
 │   │
 │   ├── features/               # One file per feature (~300 lines max)
-│   │   ├── dashboard.md        # Spec + skills + decisions
-│   │   ├── discover.md         # Spec + skills + decisions
-│   │   ├── tracking.md         # Spec + skills + decisions
-│   │   ├── history.md          # Spec + skills + decisions
-│   │   ├── onboarding.md       # Spec + skills + decisions
+│   │   ├── dashboard.md        # Spec + decisions
+│   │   ├── discover.md         # Spec + decisions
+│   │   ├── tracking.md         # Spec + decisions
+│   │   ├── history.md          # Spec + decisions
+│   │   ├── onboarding.md       # Spec + decisions
 │   │   └── ...                 # One file per feature/screen
 │   │
 │   ├── STATE.md                # Progress tracker (~30 lines, never >50)
@@ -131,7 +131,7 @@ The first thing Claude reads every session. Small, authoritative, grows organica
 - Code conventions (naming, folder structure, patterns)
 - **Learned Rules** section (grows with every `/gsr:learn` correction, each dated)
 
-**Does NOT contain:** Tech stack details (that's techstack.md), skills mapping (skills live in feature files), product knowledge (that's PRD.md), feature specs (that's features/), implementation details (that's code).
+**Does NOT contain:** Tech stack details (that's techstack.md), skills mapping (skills matched at build time in Step 3.5), product knowledge (that's PRD.md), feature specs (that's features/), implementation details (that's code).
 
 **Size:** Starts at ~30-40 lines. Grows to ~80-120 over the life of the project (mostly Learned Rules).
 
@@ -175,7 +175,6 @@ One file per feature or screen. Everything a dev (human or AI) needs to understa
 - **Must-haves** — Truths (observable behaviors), Artifacts (files that must exist with real implementation), Key Links (critical connections between parts). Defined at spec time, checked at verification time.
 - **Don't Hand-Roll** (if relevant — proven libraries/services to use instead of building from scratch)
 - **Known Pitfalls** (if relevant — common mistakes for this type of feature, with warning signs)
-- **Skills** (which skills to load when implementing this feature — matched from skills.sh marketplace during PRD generation)
 - Decision log (choices made during scope/PRD, with rationale)
 - Related features (links to other feature files that interact)
 
@@ -184,21 +183,11 @@ One file per feature or screen. Everything a dev (human or AI) needs to understa
 - API call details, query structures (that's code)
 - Schema field names, types (that's code)
 
-**Skills matching flow** (during PRD generation):
-1. Feature scope confirmed
-2. System browses skills.sh via WebFetch for ideal skills for this feature
-3. Compares with already installed skills (`.agents/skills/`)
-4. Recommends missing skills for installation
-5. Adds confirmed skills to the feature file's Skills section
-6. If no marketplace skill exists for a technology → skip gracefully, note in feature file: "⚠️ No marketplace skill found for [tech] — rely on docs and learned rules"
-7. During build, the workflow loads these skills automatically — Claude can't skip them
-
-**Two layers of skills:**
-- **Project-wide** (in `docs/techstack.md`) — skills that apply to every feature (e.g. `responsive-design` for mobile-first apps)
-- **Feature-specific** (in each feature file) — skills unique to that feature's needs
-- Workflow loads both: project-wide + feature-specific
-
-Skills are **boosters, not blockers** — the system works without them. Niche tech patterns accumulate in CLAUDE.md Learned Rules through corrections over time.
+**Skills matching** (during build, Step 3.5 of `/gsr:build`):
+- Skills are matched dynamically per task via `npx skills find <topic>` — not stored in feature files
+- **Project-wide skills** come from `docs/techstack.md` (loaded at the start of every build)
+- **Feature-specific skills** are discovered and verified in Step 3.5 before any code is written
+- Skills are **boosters, not blockers** — the system works without them. Niche tech patterns accumulate in CLAUDE.md Learned Rules through corrections over time.
 
 **Size:** ~100-300 lines per file. If a feature file exceeds 300 lines, consider splitting into sub-features.
 

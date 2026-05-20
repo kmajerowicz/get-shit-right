@@ -88,7 +88,7 @@ Full analysis: [research/analysis.md](research/analysis.md)
 - Track assumptions from message 1
 - User journey mapping (day 1/7/30) early
 
-Source: [scope-shaping-meta-process.md](/Users/kacpermajerowicz/Downloads/scope-shaping-meta-process.md)
+Source: local design session, not included in repo.
 
 ### Decision 3: Domain expertise adaptation
 
@@ -554,6 +554,21 @@ Three patterns:
 **Why:** Decision 18 said "subagents, not agentic teams" but left operational details open. Without defined roles and statuses, subagent dispatch becomes ad-hoc — inconsistent handoffs, ambiguous completion claims, no escalation path for blockers. The 4-status protocol makes every outcome explicit.
 
 **Impact:** New patterns reference document (`docs/patterns/subagent-patterns.md`). Build spec and verification spec updated to reference subagent patterns. No flow changes — patterns are internal to how skills dispatch work.
+
+### Decision 32: Skills matched at build time — supersedes Decision 12
+
+**What:** Skills are matched dynamically during build (Step 3.5 of `/gsr:build`), not during PRD generation and not stored in feature files.
+
+PRD generation generates feature files **without** a Skills section. At build time, Step 3.5 runs `npx skills find <topic>` for each task in the plan, presents a verification table, and confirms which skills are loaded before any code is written. Project-wide skills still come from `docs/techstack.md`.
+
+**Why:** Decision 12 described skills being matched during PRD generation and stored in the feature file's `## Skills` section. In practice this created stale assignments — the feature file's skills list was written early but read much later, and the ecosystem may have changed in the interim. Dynamic matching at build time picks the best available skill at the moment of implementation, not weeks earlier during scope shaping. It also removes a section from feature files that was not reliably maintained.
+
+**Impact:**
+- Feature files no longer have a `## Skills` section
+- `gsr/templates/feature-md.md` updated: Skills section removed
+- `gsr/docs/architecture.md` updated: feature file description no longer lists Skills; skills matching flow updated to reference Step 3.5
+- `gsr/docs/phases/1-prd-generation.md` updated: Skills Matching Per Feature section removed
+- `gsr/docs/phases/3-build.md` updated: Mode A now references Step 3.5 for skill matching
 
 ### Decision 31: Code review pattern — spec compliance, integration safety, convention adherence
 

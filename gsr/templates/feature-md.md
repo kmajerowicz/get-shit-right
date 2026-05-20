@@ -112,19 +112,6 @@ _Only included if relevant — common mistakes for this type of feature._
 
 ---
 
-## Skills
-
-_Loaded automatically during build._
-
-**Project-wide:** see `docs/techstack.md`
-
-**Feature-specific:**
-- [skill-name] — [why needed for this feature]
-
-<!-- If no marketplace skill found: ⚠️ No marketplace skill found for [tech] — rely on docs and learned rules -->
-
----
-
 ## Decision Log
 
 | Date | Decision | Rationale |

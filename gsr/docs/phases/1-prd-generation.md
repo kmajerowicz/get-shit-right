@@ -14,19 +14,6 @@
 
 ---
 
-## Skills Matching Per Feature
-
-When a feature scope is confirmed during PRD generation:
-
-1. System browses skills.sh via WebFetch for ideal skills for this feature
-2. Compares with already installed skills (`.agents/skills/`)
-3. Recommends missing skills for installation
-4. Adds confirmed skills to the feature file's Skills section
-5. If no marketplace skill exists → skip gracefully, note in feature file
-6. Skills are boosters, not blockers
-
----
-
 ## "Don't Hand-Roll" Sweep Per Feature
 
 When a feature scope is confirmed, before writing the feature file:
@@ -80,7 +67,6 @@ If no relevant items → section omitted (not every feature needs it).
 - **Must-haves** (Truths, Artifacts, Key Links — what verification will check, see below)
 - **Don't Hand-Roll** (if relevant — proven solutions to use instead of building from scratch)
 - **Known Pitfalls** (if relevant — common mistakes for this type of feature)
-- **Skills** (which skills to load when implementing — matched from marketplace)
 - Decision log (choices + rationale)
 - Related features (links to other feature files)
 

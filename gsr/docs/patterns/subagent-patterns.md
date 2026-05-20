@@ -29,16 +29,21 @@ The workhorse. Gets a task, does the work, reports status.
 - Never makes product decisions — escalates via `NEEDS_CONTEXT`
 - Atomic commit per completed task
 
-### Reviewer (systematic mode only)
+### Reviewer (systematic mode only — two stages)
 
-Quality gate. Reviews implementer output against the spec.
+Quality gate. Two separate reviewer agents run sequentially after each implementer.
 
-- Reviews implementer's output against the feature file requirements
-- Checks: does implementation match feature file requirements?
-- Checks: code quality — conventions from CLAUDE.md followed?
-- Reports: `PASS` / `FAIL` with specific issues
+**Stage 1 — Spec reviewer** (`agents/reviewer-spec.md`):
+- Checks one thing only: does the implementation match the feature file?
+- Verifies all Must-have IDs (Truths / Artifacts / Key Links) are satisfied with a pin map (`slug.T1` → `file:line`)
+- Reports: `SPEC_PASS` (with pin map) / `SPEC_FAIL` (with specific gaps) / `SPEC_NEEDS_CONTEXT`
+- Stage 2 runs only if Stage 1 reports `SPEC_PASS`
+
+**Stage 2 — Quality reviewer** (`agents/reviewer-quality.md`):
+- Checks: integration safety, CLAUDE.md conventions, regression risk
+- Does not re-check spec compliance — that's Stage 1's job
+- Reports its own status with specific issues
 - Reviewer never fixes code — only reports issues for implementer to fix
-- In systematic mode, a reviewer checks each implementer's output before the commit
 
 ### Researcher
 
