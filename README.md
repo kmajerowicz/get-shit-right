@@ -1,10 +1,12 @@
 # Get Shit Right (GSR)
 
+[![Release](https://img.shields.io/github/v/release/kmajerowicz/get-shit-right?label=release&sort=semver)](https://github.com/kmajerowicz/get-shit-right/releases)
+
 A Claude Code plugin — an enforced instruction package with protocols and actions that fire exactly when the workflow says so. PRD-first, human-in-the-loop.
 
 **One sentence:** The human makes all product decisions. The system tracks progress and enforces quality.
 
-**What's new in 0.2.9:** Pins — stable IDs on every must-have, turning your spec into a traceability matrix across code, commits, tests, and verification reports.
+**What's new:** Pins — stable IDs on every must-have, turning your spec into a traceability matrix across code, commits, tests, and verification reports. Full history in the [changelog](CHANGELOG.md) and [releases](https://github.com/kmajerowicz/get-shit-right/releases).
 
 ---
 

@@ -3,7 +3,7 @@
 All notable changes to GSR are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and
 [Conventional Commits](https://www.conventionalcommits.org/). New sections are
-generated from commit messages by `npm run release` (see [CONTRIBUTING.md](CONTRIBUTING.md)).
+generated from commit messages by `npm run release` (see [docs/internal/releasing.md](docs/internal/releasing.md)).
 
 <!-- GSR:RELEASES — new versions are inserted directly below this line by `npm run release`. Do not hand-edit generated sections; fix the commit message and regenerate. Entries below 0.2.9 are hand-curated history. -->
 
