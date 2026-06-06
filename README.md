@@ -1,6 +1,6 @@
 # Get Shit Right (GSR)
 
-A Claude Code plugin for building production apps — PRD-first, human-in-the-loop, skills-enforced.
+A Claude Code plugin — an enforced instruction package with protocols and actions that fire exactly when the workflow says so. PRD-first, human-in-the-loop.
 
 **One sentence:** The human makes all product decisions. The system tracks progress and enforces quality.
 
