@@ -3,10 +3,17 @@
   "version": "0.2.11",
   "description": "GSR — PRD-first, human-in-the-loop workflow for building production apps with Claude Code",
   "scripts": {
-    "check": "npm run check:js && npm run check:json && npm run check:docs",
+    "check": "npm run check:js && npm run check:json && npm run check:docs && npm run check:version",
     "check:js": "node --check gsr/hooks/install.js && node --check gsr/hooks/gsr-statusline.js && node --check gsr/hooks/gsr-context-monitor.js",
     "check:json": "node scripts/check-json.js",
-    "check:docs": "node scripts/check-doc-links.js"
+    "check:docs": "node scripts/check-doc-links.js",
+    "check:version": "node scripts/check-version-sync.js",
+    "changelog": "git-cliff --unreleased",
+    "release": "node scripts/release.js",
+    "hooks:install": "node scripts/install-git-hooks.js"
+  },
+  "devDependencies": {
+    "git-cliff": "^2.13.1"
   },
   "license": "MIT"
 }

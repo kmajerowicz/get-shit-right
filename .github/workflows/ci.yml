@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history so commit-lint can see the range
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Static checks (js, json, docs, version sync)
+        run: npm run check
+
+      - name: Lint commit messages
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            RANGE="${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}"
+          else
+            RANGE="${{ github.event.before }}..${{ github.sha }}"
+          fi
+          # Skip when the base is empty (first push / new branch).
+          case "$RANGE" in
+            000000*|*..000000*) echo "No prior ref to compare; skipping." ;;
+            *) node scripts/check-commit-msg.js --range "$RANGE" ;;
+          esac

@@ -1,0 +1,4 @@
+#!/bin/sh
+# GSR commit-msg hook — rejects non-Conventional-Commit messages at commit time.
+# Enabled via: npm run hooks:install  (sets core.hooksPath to .githooks)
+exec node "$(git rev-parse --show-toplevel)/scripts/check-commit-msg.js" "$1"

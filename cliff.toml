@@ -1,0 +1,61 @@
+# git-cliff configuration for GSR
+# Renders ONE release section at a time (Keep a Changelog style).
+# scripts/release.js owns CHANGELOG.md structure and splices the output in,
+# so header/footer are intentionally empty here.
+#
+# The "quiet vs notable" rule lives in [git].commit_parsers below:
+#   notable -> shown in the changelog:  feat, fix, perf, revert, breaking changes
+#   quiet   -> skipped:                 chore, docs, style, refactor, test, ci, build, i18n
+# To change what counts as notable, edit the parsers — nothing else.
+
+[changelog]
+header = ""
+body = """
+{% if version %}\
+## [{{ version | trim_start_matches(pat="v") }}] — {{ timestamp | date(format="%Y-%m-%d") }}
+{% else %}\
+## [Unreleased]
+{% endif %}\
+{% set breaking = commits | filter(attribute="breaking", value=true) %}\
+{% if breaking | length > 0 %}
+### ⚠ Breaking Changes
+{% for commit in breaking %}
+- {% if commit.scope %}**{{ commit.scope }}:** {% endif %}{{ commit.message | upper_first }}\
+{% endfor %}
+{% endif %}\
+{% for group, commits in commits | filter(attribute="breaking", value=false) | group_by(attribute="group") %}
+### {{ group | striptags | trim }}
+{% for commit in commits %}
+- {% if commit.scope %}**{{ commit.scope }}:** {% endif %}{{ commit.message | upper_first }}\
+{% endfor %}
+{% endfor %}
+"""
+footer = ""
+trim = true
+
+[git]
+conventional_commits = true
+filter_unconventional = true
+require_conventional = false
+split_commits = false
+protect_breaking_commits = true
+filter_commits = true
+tag_pattern = "v[0-9]*"
+topo_order = false
+sort_commits = "oldest"
+
+commit_parsers = [
+  { message = "^feat",     group = "<!-- 0 -->Added" },
+  { message = "^fix",      group = "<!-- 1 -->Fixed" },
+  { message = "^perf",     group = "<!-- 2 -->Changed" },
+  { message = "^revert",   group = "<!-- 2 -->Changed" },
+  { message = "^docs",     skip = true },
+  { message = "^style",    skip = true },
+  { message = "^refactor", skip = true },
+  { message = "^test",     skip = true },
+  { message = "^chore",    skip = true },
+  { message = "^ci",       skip = true },
+  { message = "^build",    skip = true },
+  { message = "^i18n",     skip = true },
+  { message = ".*",        skip = true },
+]
