@@ -4,7 +4,7 @@ A Claude Code plugin — an enforced instruction package with protocols and acti
 
 **One sentence:** The human makes all product decisions. The system tracks progress and enforces quality.
 
-**What's new in 0.2.x:** Pins — stable IDs on every must-have, turning your spec into a traceability matrix across code, commits, tests, and verification reports.
+**What's new in 0.2.9:** Pins — stable IDs on every must-have, turning your spec into a traceability matrix across code, commits, tests, and verification reports.
 
 ---
 
@@ -99,7 +99,7 @@ Pick a feature, pick a mode:
 
 Both modes enforce the gate function before every completion claim: build passes, TS clean, lint passes. Never "should work."
 
-**Model-aware dispatch:** GSR selects the right Claude tier per agent role automatically — heavier models for spec review, lighter models for mechanical tasks.
+**Model-aware dispatch:** GSR selects the right Claude tier per agent role automatically — heavier models for reasoning-heavy phases, lighter models for bounded tasks.
 
 ### When things break (`/gsr:debug`)
 
