@@ -7,6 +7,17 @@ generated from commit messages by `npm run release` (see [CONTRIBUTING.md](CONTR
 
 <!-- GSR:RELEASES — new versions are inserted directly below this line by `npm run release`. Do not hand-edit generated sections; fix the commit message and regenerate. Entries below 0.2.9 are hand-curated history. -->
 
+## [0.2.12] — 2026-06-06
+
+### Added
+
+- Changelog, release, and commit-lint pipeline
+
+### Fixed
+
+- **statusline:** Hide update badge immediately after gsr:update
+- **scope:** Create STATE.md stub after scope completes
+
 ---
 
 ## [0.2.9] — 2026-05-11
