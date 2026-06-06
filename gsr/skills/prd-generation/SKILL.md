@@ -18,7 +18,7 @@ This skill runs Phase 1 (PRD generation) + Phase 2 (project init) in one flow.
 
 Before any detection or action, show this one-liner to the user (exact text):
 
-> 💡 Ten etap jest reasoning-heavy (PRD i feature files kształtują całą implementację). Najlepiej pójdzie na Opusie — jeśli nie jesteś na Opusie, rozważ `/model opus` teraz i wróć. Inaczej jedziemy dalej.
+> 💡 This step is reasoning-heavy (PRD and feature files shape the entire implementation). It works best on Opus — if you're not on Opus, consider `/model opus` now and come back. Otherwise, let's keep going.
 
 Do not wait for a response. Proceed immediately to "Step 0: Detect Mode" below. Show this reminder only once per session.
 

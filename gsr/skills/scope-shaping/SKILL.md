@@ -19,7 +19,7 @@ You are executing the `/gsr:scope` command. Your job is to turn a raw idea (Star
 
 Before any detection or question, show this one-liner to the user (exact text):
 
-> 💡 Ten etap jest reasoning-heavy (scope decyduje o całym downstreamie). Najlepiej pójdzie na Opusie — jeśli nie jesteś na Opusie, rozważ `/model opus` teraz i wróć. Inaczej jedziemy dalej.
+> 💡 This step is reasoning-heavy (scope decides everything downstream). It works best on Opus — if you're not on Opus, consider `/model opus` now and come back. Otherwise, let's keep going.
 
 Do not wait for a response. Proceed immediately to "Detect Entry Point" below. Show this reminder only once per session.
 
