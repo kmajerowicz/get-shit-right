@@ -15,6 +15,16 @@
 
 ---
 
+## Gate
+
+_Commands GSR runs before any completion claim (`${CLAUDE_PLUGIN_ROOT}/skills/gate/SKILL.md`). Replace the defaults below with this project's actual equivalents._
+
+1. `npm run build` — must pass with 0 errors
+2. `npx tsc --noEmit` — must report 0 TypeScript errors
+3. Lint if configured — must pass
+
+---
+
 ## Project-Wide Skills
 
 _Skills that apply to every feature in this project. Loaded automatically during build._

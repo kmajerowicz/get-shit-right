@@ -1,3 +1,7 @@
+---
+description: Show current phase, feature progress, next action, active sessions, and in-progress plans
+---
+
 You are running the `/gsr:status` command.
 
 **Working directory check:** If `.gsr-session.json` exists and `project_dir` points to a different directory than `pwd`, `cd` there first.

@@ -1,3 +1,7 @@
+---
+description: Index an existing codebase, populate CLAUDE.md, and get told what to do next
+---
+
 You are running the `/gsr:learn` command.
 
 **Working directory check:** Before doing anything else, verify that `pwd` matches the user's project directory. If CLAUDE.md exists, check that the project name matches. If something looks wrong (you're in a different project's folder, or in a system directory), check `.gsr-session.json` in the current directory — it records the last known project directory. If it exists and points elsewhere, `cd` there. Otherwise, stop and ask the user to confirm the correct directory before proceeding.

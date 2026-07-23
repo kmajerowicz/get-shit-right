@@ -1,3 +1,8 @@
+---
+name: gsr-quick
+description: Execute one bounded task with GSR invariants (evidence, human ownership of product decisions, atomic commits) and zero pipeline ceremony — no scope, no PRD, no mode selection. Use for small tasks that don't warrant the full GSR flow.
+---
+
 # /gsr:quick — Quick Task Skill
 
 One bounded task, GSR invariants, zero ceremony. No scope, no PRD, no feature
@@ -22,9 +27,7 @@ file, no mode selection, no skills-matching gate.
 2. Restate the task in one line; if scope is genuinely ambiguous, ask ONE
    clarifying question, else proceed.
 3. Implement in the smallest reasonable diff.
-4. Gate function: build + type-check + lint as configured for this project
-   (from CLAUDE.md/package.json; default `npm run build`, `npx tsc --noEmit`,
-   lint if configured). Runtime smoke test if the change has a critical path.
+4. Run the gate per `${CLAUDE_PLUGIN_ROOT}/skills/gate/SKILL.md` (single source of truth).
 5. Report with the evidence format:
    `✅ <command> → <output summary> → "<claim>"`
 6. Commit: `<type>: <task> — <evidence summary>`.

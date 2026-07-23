@@ -1,3 +1,8 @@
+---
+name: gsr-prd
+description: Generate docs/PRD.md, docs/features/*.md, and project infrastructure (CLAUDE.md, STATE.md, BACKLOG.md, techstack.md) from docs/scope.md. Use after scope shaping is complete, or to update the PRD when scope has changed.
+---
+
 # /gsr:prd — PRD Generation Skill
 
 You are executing the `/gsr:prd` command. Your job is to generate `docs/PRD.md`, `docs/features/*.md`, and the full project infrastructure from `docs/scope.md`.
@@ -220,6 +225,7 @@ Use `${CLAUDE_PLUGIN_ROOT}/templates/backlog-md.md`. Fill in:
 Use `${CLAUDE_PLUGIN_ROOT}/templates/techstack-md.md`. Fill in:
 - Tech stack from scope.md
 - Project-wide skills (responsive-design, etc. — based on what was identified as project-wide)
+- **Gate section** — replace the npm defaults with this project's actual build/type-check/lint commands, inferred from the detected stack (e.g. `pytest` + `mypy` for Python, `cargo build` + `cargo test` for Rust, `go build` + `go test` for Go). Only keep the npm defaults if the stack is genuinely Node/npm-based.
 
 ---
 

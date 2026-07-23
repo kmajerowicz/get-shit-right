@@ -1,3 +1,7 @@
+---
+description: Update GSR to the latest version and reinstall hooks
+---
+
 You are running the `/gsr:update` command.
 
 Update GSR to the latest version and reinstall hooks.

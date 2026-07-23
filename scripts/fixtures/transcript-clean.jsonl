@@ -1,0 +1,2 @@
+{"type":"user","message":{"content":"do the thing"}}
+{"type":"assistant","message":{"content":[{"type":"text","text":"✅ npm run build → Exit 0, 0 errors → \"Build passes\""}]}}

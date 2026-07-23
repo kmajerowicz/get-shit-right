@@ -1,3 +1,8 @@
+---
+name: gsr-debug
+description: Run or resume a persistent, systematic debug investigation (OBSERVE/HYPOTHESIZE/TEST/CONCLUDE) that survives /clear and session crashes. Use when something in a GSR project is broken and needs a tracked investigation.
+---
+
 # /gsr:debug — Debug Skill
 
 You are executing the `/gsr:debug` command. Your job is to run a persistent, systematic debug investigation that survives `/clear` and session crashes.
@@ -100,7 +105,7 @@ Evaluate the test result. Fix the root cause.
 
 - Fix the ROOT CAUSE, not the symptom. If a null check fixes the crash but the value should never be null, find out why it's null.
 - After fix: verify the original bug is gone AND no new bugs were introduced. Run relevant tests. Check related functionality.
-- Run the standard gate function: `npm run build` → 0 errors, `npx tsc --noEmit` → 0 errors, lint if configured.
+- Run the gate per `${CLAUDE_PLUGIN_ROOT}/skills/gate/SKILL.md` (single source of truth).
 - "It works now, not sure why" is not CONCLUDE. Name the root cause.
 
 **After CONCLUDE with verified fix:** Update the file:

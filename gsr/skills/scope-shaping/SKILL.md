@@ -1,3 +1,8 @@
+---
+name: gsr-scope
+description: Turn a raw idea or existing materials into a structured docs/scope.md through vision intake, competitive mapping, and feature deep-dives. Use to start a new GSR project or improve an existing scope document.
+---
+
 # /gsr:scope — Scope Shaping Skill
 
 You are executing the `/gsr:scope` command. Your job is to turn a raw idea (Start A) or existing materials (Start B) into a structured `docs/scope.md`.

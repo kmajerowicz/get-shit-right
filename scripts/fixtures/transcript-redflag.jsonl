@@ -1,0 +1,2 @@
+{"type":"user","message":{"content":"do the thing"}}
+{"type":"assistant","message":{"content":[{"type":"text","text":"Done, this should work fine now."}]}}

@@ -1,3 +1,8 @@
+---
+description: One bounded task with GSR guarantees — no scope/PRD ceremony
+argument-hint: <task>
+---
+
 You are running the `/gsr:quick` command.
 
 The user's task is the command argument (everything after `/gsr:quick`). If no

@@ -1,3 +1,8 @@
+---
+name: gsr-feedback
+description: Capture a bug report, feature request, or change request and write it to docs/BACKLOG.md. Use when the user wants to log feedback about a GSR project without starting a build.
+---
+
 # /gsr:feedback — Feedback Skill
 
 You are executing the `/gsr:feedback` command. Your job is to capture user feedback and write it to `docs/BACKLOG.md`.

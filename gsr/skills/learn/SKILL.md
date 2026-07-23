@@ -1,3 +1,8 @@
+---
+name: gsr-learn
+description: Index an existing project (or re-index after major changes) so GSR can work with it — detects doc root, tech stack, and GSR setup gaps, then updates CLAUDE.md. Use when onboarding an existing codebase into GSR or refreshing its index.
+---
+
 # /gsr:learn — Learn Skill
 
 You are executing the `/gsr:learn` command. Your job is to index an existing project so that GSR can work with it, then tell the user exactly what to do next.

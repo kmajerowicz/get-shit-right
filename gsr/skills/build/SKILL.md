@@ -1,3 +1,8 @@
+---
+name: gsr-build
+description: Build a feature from a GSR feature file — creative or systematic mode. Use when implementing features in a project with docs/PRD.md.
+---
+
 # /gsr:build — Build Skill
 
 You are executing the `/gsr:build` command. Your job is to build a specific feature from the project's feature files.
@@ -255,26 +260,7 @@ Once confirmed: load each installed skill's SKILL.md before writing any code.
 
 ### Rules — Mode A
 
-**Banned completion phrases (Red Flag Language):**
-- "should work", "should pass" → run the command, show the output
-- "probably works", "likely fine" → run the command, show the output
-- "seems correct", "seems to work" → run the command, show the output
-- "looks good", "I believe this passes" → run the command, show the output
-- "Done!" / "All done!" → show evidence first, then state completion
-- "It works" → show what command proved it works
-
-If you catch yourself reaching for hedging language, you haven't verified. Go run the gate function.
-
-**Required gate function before every "done, test it":**
-1. `npm run build` (or equivalent) → must pass with 0 errors
-2. `npx tsc --noEmit` → must report 0 TypeScript errors
-3. Lint if configured → must pass
-4. **Runtime smoke test** — if the feature has a critical path (file processing, data transformation, API call, PDF generation, etc.), verify it actually runs. Options:
-   - Write and run a minimal test/script that exercises the critical path
-   - If it's a UI feature, verify the dev server renders without console errors
-   - Build clean ≠ works correctly. A TypeScript-clean app can still crash at runtime on `undefined` property access, missing imports, or wrong data shapes.
-
-If any check fails → fix it. Then run all checks again. Then claim done using the evidence format:
+Run the gate per `${CLAUDE_PLUGIN_ROOT}/skills/gate/SKILL.md` (single source of truth — gate steps, banned completion phrases, evidence format) before every "done, test it." Then claim done using the evidence format:
 ```
 done, test it:
 ✅ npm run build → Exit 0, 0 errors → "Build passes"
@@ -339,11 +325,7 @@ Sequential: task [3] depends on [1]
 
 7. Atomic commit per task with evidence: `git commit -m "feat: [task] — build passes, 0 TS errors, 12/12 tests pass"`
 
-8. Mini-verification after each task:
-   - `npm run build` → 0 errors
-   - `npx tsc --noEmit` → 0 errors
-   - Lint if configured → pass
-   Fix before committing. Never commit a broken build.
+8. Mini-verification after each task: run the gate per `${CLAUDE_PLUGIN_ROOT}/skills/gate/SKILL.md`. Fix before committing. Never commit a broken build.
 
 9. Set `status: complete` in `docs/plans/<slug>.md` frontmatter. Update `updated`. Then update STATE.md.
 

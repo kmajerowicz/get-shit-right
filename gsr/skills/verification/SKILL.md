@@ -1,3 +1,8 @@
+---
+name: gsr-verify
+description: Verify a completed feature or build phase against its pinned must-haves with an evidence-based report — build, grep, visual, tests, human tiers. Use when a feature or phase is done and needs to be checked before declaring PASS.
+---
+
 # /gsr:verify — Verification Skill
 
 You are executing the `/gsr:verify` command. Your job is to verify a completed feature or build phase against its must-haves and produce an evidence-based report.
@@ -217,7 +222,7 @@ Step 4 human checklist.
 
 ## Evidence Format
 
-Every verification claim must follow the evidence format: show the command, the actual output, then the verdict. This makes results scannable and trustworthy.
+Run the gate per `${CLAUDE_PLUGIN_ROOT}/skills/gate/SKILL.md` (single source of truth for banned phrases and the evidence format). Every verification claim must follow the same format: show the command, the actual output, then the verdict. Verification-specific examples:
 
 ```
 ✅ npm run build → Exit 0, 0 errors → "Build passes"
@@ -226,32 +231,6 @@ Every verification claim must follow the evidence format: show the command, the 
 ❌ grep -r "console.log" src/ → 3 matches (auth.ts:12, api.ts:45, utils.ts:8) → BLOCKER: debug logs in production code
 ⚠️ grep -r "TODO" src/ → 1 match (config.ts:22) → MINOR: moved to BACKLOG.md
 ```
-
-Rules:
-- `✅` = check passed with evidence
-- `❌` = check failed — blocker
-- `⚠️` = check found minor issue — not blocking
-- Always show the actual command, actual output summary, then the claim
-- Never write "should pass", "probably works", "seems correct", or "looks good" — these are red flag phrases that signal skipped verification (see Red Flag Language below)
-
----
-
-## Red Flag Language
-
-The following phrases are **banned** in verification output. If you catch yourself writing any of them, stop — you haven't actually verified:
-
-| Banned Phrase | What To Do Instead |
-|---------------|-------------------|
-| "should work" | Run the command. Show the output. |
-| "should pass" | Run the command. Show the output. |
-| "probably works" | Run the command. Show the output. |
-| "seems correct" | Run the command. Show the output. |
-| "looks good" | Run the command. Show the output. |
-| "seems to work" | Run the command. Show the output. |
-| "I believe this passes" | Run the command. Show the output. |
-| "likely fine" | Run the command. Show the output. |
-| "Done!" / "All done!" | Show evidence, then state completion. |
-| "It works" | Show what command proved it works. |
 
 If you find yourself using hedging language, it means you haven't run the verification. Go back to Step 2 and actually execute the checks.
 
@@ -443,4 +422,4 @@ Red flags:
 | "I'll mark this as PASS and let the user find issues in testing" | PASS means verified, not hoped-for. Run the checks. |
 | "The anti-pattern sweep found nothing, must be clean" | Did you add project-specific patterns from CLAUDE.md Learned Rules? |
 | "I'll ask the human to verify the build passes" | Run `npm run build`. You can do this yourself. |
-| "This should pass" / "Looks good" / "Probably works" | Red flag language. You haven't verified. Run the command, show the output, then claim. See Red Flag Language section above. |
+| "This should pass" / "Looks good" / "Probably works" | Red flag language. You haven't verified. Run the command, show the output, then claim. See `${CLAUDE_PLUGIN_ROOT}/skills/gate/SKILL.md`. |
