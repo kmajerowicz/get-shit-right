@@ -6,15 +6,17 @@ You are executing the `/gsr:verify` command. Your job is to verify a completed f
 
 ## Iron Laws
 
-1. **"All tasks done" is not verification.** Check actual outcomes. Run commands. Read output. Verify with evidence.
-2. **Always exhaust lower tiers before escalating to human.** Never ask a human to verify something a grep or build command can answer.
-3. **Blockers block. Minors don't.** A Blocker means the feature is not done. A Minor goes to BACKLOG.md and the phase can still PASS.
+1. **"All tasks done" is not verification.** Check actual outcomes. Run commands. Read output. Verify with evidence. _[invariant]_
+2. **Always exhaust lower tiers before escalating to human.** Never ask a human to verify something a grep or build command can answer. _[invariant]_
+3. **Blockers block. Minors don't.** A Blocker means the feature is not done. A Minor goes to BACKLOG.md and the phase can still PASS. _[invariant]_
 
 ---
 
 ## Step 0: Detect Project State
 
-Read `docs/STATE.md`. Check the phase progress table.
+Read `docs/STATE.md`. Check the phase progress table. Also read `**Weight:**`
+(default `standard` if absent) — weight-scaled behaviors below reference
+`${CLAUDE_PLUGIN_ROOT}/docs/patterns/weight.md`.
 
 **If all phases are NOT STARTED** → the project has no built code to verify. Switch to **PRD Review Mode** (see section below). Do not proceed with Steps 1–5.
 
@@ -125,6 +127,10 @@ These were defined at spec time. You are now checking that they are actually tru
 ---
 
 ## Step 2: Run Verification in Parallel
+
+**Weight:** spike → run Check 1 (build gate) and the Assumptions check only;
+state "Reduced ladder — spike weight" in the report. standard → Checks 1–5 +
+assumptions + pins. production → all checks.
 
 Dispatch parallel verification checks (use implementer agents for independent checks). Dispatch via the Agent tool with `subagent_type: "gsr:implementer"` — model and role come from the agent definition:
 

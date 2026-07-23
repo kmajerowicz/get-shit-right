@@ -6,12 +6,12 @@ You are executing the `/gsr:scope` command. Your job is to turn a raw idea (Star
 
 ## Iron Laws
 
-1. **Explain every decision.** The user may not be technical, may not have product experience. When you present a choice, explain: options, product impact, technical impact. Empower them to decide with full context.
-2. **Two foundations are hard: Goal and What It Does.** Without them there is nothing to build — do not produce scope.md until both are clear. Vision, Target User, and Why should be pursued, but the user may defer any of them — each deferred foundation becomes a D-pin with your best current guess as the default (`${CLAUDE_PLUGIN_ROOT}/docs/patterns/deferred-decisions.md`).
-3. **Flag assumptions, don't hide them.** Every unverified claim gets an inline ⚠️ flag. In Step 6, sweep and triage them all.
-4. **Ask about product parameters — and accept "I don't know yet" as a full answer.** Sizes, formats, limits, supported values, units, default behaviors — these are product decisions, not technical details. Always present options and ask. Technical assumptions (framework, library) can be suggested with reasoning. Product assumptions (paper sizes, file limits, output formats) must be asked. Every product question presents deferral as an explicit option. On deferral, follow the deferred-decisions pattern. The difference between an assumption and a D-pin: the D-pin is recorded and comes back for confirmation — never silently baked in.
-5. **Progressive questions, never walls.** Group questions by topic. Ask 2-3 related questions per turn, max. Sequence: user/context first → core mechanics → output/edge cases. Never dump all open questions in one message.
-6. **Never repeat a question.** Track which questions you've already asked. If the user hasn't answered yet, remind — don't re-ask from scratch. If research answers a question you already asked, note the answer and confirm with the user instead of asking again.
+1. **Explain every decision.** The user may not be technical, may not have product experience. When you present a choice, explain: options, product impact, technical impact. Empower them to decide with full context. _[invariant]_
+2. **Two foundations are hard: Goal and What It Does.** Without them there is nothing to build — do not produce scope.md until both are clear. Vision, Target User, and Why should be pursued, but the user may defer any of them — each deferred foundation becomes a D-pin with your best current guess as the default (`${CLAUDE_PLUGIN_ROOT}/docs/patterns/deferred-decisions.md`). _[invariant]_
+3. **Flag assumptions, don't hide them.** Every unverified claim gets an inline ⚠️ flag. In Step 6, sweep and triage them all. _[invariant]_
+4. **Ask about product parameters — and accept "I don't know yet" as a full answer.** Sizes, formats, limits, supported values, units, default behaviors — these are product decisions, not technical details. Always present options and ask. Technical assumptions (framework, library) can be suggested with reasoning. Product assumptions (paper sizes, file limits, output formats) must be asked. Every product question presents deferral as an explicit option. On deferral, follow the deferred-decisions pattern. The difference between an assumption and a D-pin: the D-pin is recorded and comes back for confirmation — never silently baked in. _[invariant]_
+5. **Progressive questions, never walls.** Group questions by topic. Ask 2-3 related questions per turn, max (spike: 1 question per topic). Sequence: user/context first → core mechanics → output/edge cases. Never dump all open questions in one message. _[weight-scaled]_
+6. **Never repeat a question.** Track which questions you've already asked. If the user hasn't answered yet, remind — don't re-ask from scratch. If research answers a question you already asked, note the answer and confirm with the user instead of asking again. _[invariant]_
 
 ---
 
@@ -36,9 +36,12 @@ Before asking anything, check what exists in the project:
 
 **Why this matters:** If `gsr:learn` already ran, it created `CLAUDE.md` and referenced any existing documents. `gsr:scope` should pick those up and start from what's known — not announce "no scope exists" (the user already knows) and ask the user to explain their idea from scratch.
 
-After detecting the entry point and BEFORE Step 1: classify project weight per
+After detecting the entry point and BEFORE Step 1: read `**Weight:**` from
+`docs/STATE.md` if it already exists (default `standard` if absent or no
+STATE.md yet). If no weight is recorded yet, classify it per
 `${CLAUDE_PLUGIN_ROOT}/docs/patterns/weight.md` (infer + confirm via one
-AskUserQuestion). Record it in STATE.md when STATE.md is created/updated.
+AskUserQuestion) and record it in STATE.md when STATE.md is created/updated.
+Weight-scaled behaviors below reference `${CLAUDE_PLUGIN_ROOT}/docs/patterns/weight.md`.
 
 ---
 
@@ -63,6 +66,10 @@ If the first message covers all 5, great. If not, ask about missing ones — gro
 - Domain naive (developer building in unfamiliar area) → more research in Step 2, more "here's how this typically works" explanations
 
 ### Step 2: Competitive Mapping + Don't Hand-Roll Sweep (parallel)
+
+**Weight:** spike → skip this step entirely (state one line: "Skipping
+competitive research — spike weight"). standard → offer via decision gate.
+production → run by default (still confirm agent launch).
 
 **Before launching agents, tell the user what you're about to do and get confirmation:**
 

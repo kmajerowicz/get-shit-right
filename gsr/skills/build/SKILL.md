@@ -6,11 +6,11 @@ You are executing the `/gsr:build` command. Your job is to build a specific feat
 
 ## Iron Laws
 
-1. **Never claim done without evidence.** Run the gate function before every completion claim. Evidence format: "build passes (0 errors), TS clean." Never "should work."
-2. **Corrections compound.** Every correction the user makes → ask "Should I add this to CLAUDE.md Learned Rules?" If yes, append it with today's date.
-3. **Skills are mandatory, not optional.** Skills are matched to tasks in Step 3.5. Do not skip the verification gate. Do not start implementing before skills are confirmed.
-4. **Never reference assets that don't exist.** No placeholder image URLs, no `src="/images/..."` pointing to nonexistent files, no icon references without the icon being present. If UI needs a graphic, use inline SVG, CSS shapes, unicode characters, or descriptive text. Hallucinated images break user trust instantly.
-5. **Tests match what's built.** Only give testing instructions for features that are actually implemented and functional. Never list test scenarios for placeholder/coming-soon screens. If a feature depends on an unbuilt feature, say so explicitly: "Upload works, but full flow needs Configure built next."
+1. **Never claim done without evidence.** Run the gate function before every completion claim. Evidence format: "build passes (0 errors), TS clean." Never "should work." _[invariant]_
+2. **Corrections compound.** Every correction the user makes → ask "Should I add this to CLAUDE.md Learned Rules?" If yes, append it with today's date. _[invariant]_
+3. **Skills matching always runs; how hard it gates scales with weight.** Skills are matched to tasks in Step 3.5. Do not skip the verification gate. Do not start implementing before skills are confirmed. _[weight-scaled]_
+4. **Never reference assets that don't exist.** No placeholder image URLs, no `src="/images/..."` pointing to nonexistent files, no icon references without the icon being present. If UI needs a graphic, use inline SVG, CSS shapes, unicode characters, or descriptive text. Hallucinated images break user trust instantly. _[invariant]_
+5. **Tests match what's built.** Only give testing instructions for features that are actually implemented and functional. Never list test scenarios for placeholder/coming-soon screens. If a feature depends on an unbuilt feature, say so explicitly: "Upload works, but full flow needs Configure built next." _[invariant]_
 
 ---
 
@@ -21,7 +21,13 @@ Read these files before doing anything else:
 2. `docs/STATE.md` — current phase and feature status
 3. `docs/techstack.md` — project-wide skills
 
+Read `**Weight:**` from `docs/STATE.md` (default `standard` if absent).
+Weight-scaled behaviors below reference `${CLAUDE_PLUGIN_ROOT}/docs/patterns/weight.md`.
+
 ### Infrastructure Pre-Check
+
+**Weight:** spike → skip this check. standard → ask once, proceed on any
+answer. production → gate as written below.
 
 After reading `docs/techstack.md`, scan for external services that require provisioning before code can run (Supabase, Firebase, PlanetScale, Neon, Stripe, Clerk, etc.).
 
@@ -111,6 +117,9 @@ Read `${CLAUDE_PLUGIN_ROOT}/docs/patterns/feature-sketch.md` for full pattern do
 
 **Skip this step entirely if** `FORCE_SKETCH` is not set AND none of the heuristic conditions below trigger.
 
+**Weight:** spike → heuristic off, `--sketch` flag only. production → fire if
+ANY single condition below is true.
+
 **Heuristic — fire the gate if any of these are true in the feature file:**
 1. Fewer than 3 concrete states (empty / loading / error / success / offline / partial) mentioned
 2. No acceptance criteria or done-when language in the must-haves section
@@ -157,6 +166,10 @@ Put Creative first labeled "(Recommended)" if the feature has any UI; otherwise 
 ---
 
 ## Step 3.5: Skills Matching + Verification
+
+**Weight:** spike → auto-match, list results in one line, do NOT stop for
+confirmation. standard → show the table, proceed without a hard stop unless a
+skill needs installation. production → full verification gate as written below.
 
 Run this step regardless of mode, after the task list (Mode B) or file map (Mode A) is drafted — before anything executes.
 

@@ -8,9 +8,9 @@ This skill runs Phase 1 (PRD generation) + Phase 2 (project init) in one flow.
 
 ## Iron Laws
 
-1. **PRD is purely product.** No tech stack, no schemas, no routes, no design tokens. Those live in code and CLAUDE.md. If you catch yourself writing a column name or route path in PRD.md — stop. Move it to code.
-2. **Every build phase must have a demo sentence.** "User can [do X] after this phase." If you can't write it, the phase is too abstract. Restructure.
-3. **Skills are boosters, not blockers.** The PRD is complete whether or not skills are installed. Skills enhance quality, not enable completion.
+1. **PRD is purely product.** No tech stack, no schemas, no routes, no design tokens. Those live in code and CLAUDE.md. If you catch yourself writing a column name or route path in PRD.md — stop. Move it to code. _[invariant]_
+2. **Every build phase must have a demo sentence.** "User can [do X] after this phase." If you can't write it, the phase is too abstract. Restructure. _[invariant]_
+3. **Skills are boosters, not blockers.** The PRD is complete whether or not skills are installed. Skills enhance quality, not enable completion. _[invariant]_
 
 ---
 
@@ -25,6 +25,9 @@ Do not wait for a response. Proceed immediately to "Step 0: Detect Mode" below. 
 ---
 
 ## Step 0: Detect Mode
+
+Read `**Weight:**` from `docs/STATE.md` (default `standard` if absent).
+Weight-scaled behaviors below reference `${CLAUDE_PLUGIN_ROOT}/docs/patterns/weight.md`.
 
 Before doing anything, check if `docs/PRD.md` already exists.
 
@@ -49,7 +52,7 @@ Use `${CLAUDE_PLUGIN_ROOT}/templates/prd-md.md` as the structure. Fill in from s
 1. **Project summary** — 2-3 sentences: what, for whom, why
 2. **Business goals** — measurable goals + success metrics
 3. **Target users** — primary persona, day 1/7/30 journeys
-4. **MVP scope** — what's in, what's explicitly out (from scope.md v2 backlog)
+4. **MVP scope** — what's in, what's explicitly out (from scope.md v2 backlog) (spike: no v2 backlog)
 5. **High-level architecture** — system diagram (boxes and arrows, not code). Infer from tech stack and project type.
 6. **Conceptual data model** — entities, relationships, key business rules. Stable level: "User has many Dogs" not "users.id BIGINT NOT NULL"
 7. **Feature index** — table with all features and links to their files (files don't exist yet — create the links anyway)
@@ -59,7 +62,7 @@ Use `${CLAUDE_PLUGIN_ROOT}/templates/prd-md.md` as the structure. Fill in from s
 11. **Research areas status** — from scope.md
 12. **Assumptions Ledger** — migrate the ledger from scope.md verbatim (same IDs), then append any new deferrals from PRD-stage decisions. This is now the single home of the ledger.
 
-**PRD.md must be 200-300 lines.** If it grows past 400, something belongs in a feature file.
+**PRD.md must be 200-300 lines** (spike weight: 1 page max — foundations, feature list, build order, ledger; skip sections 5, 8, 9 unless content already exists). If it grows past 400, something belongs in a feature file.
 
 Before presenting to the user, run a mandatory self-verification pass:
 
