@@ -7,6 +7,19 @@ generated from commit messages by `npm run release` (see [docs/internal/releasin
 
 <!-- GSR:RELEASES — new versions are inserted directly below this line by `npm run release`. Do not hand-edit generated sections; fix the commit message and regenerate. Entries below 0.2.9 are hand-curated history. -->
 
+## [0.3.0] — 2026-07-23
+
+### Added
+
+- **patterns:** Decision gates via AskUserQuestion, retire plan-mode picker
+- **pins:** Deferred decisions — D-pins, assumptions ledger, revisit checkpoints
+- **commands:** /gsr:quick — bounded tasks with invariants, zero ceremony
+
+### Fixed
+
+- **hooks:** Session-start reads cwd from stdin JSON, not CLAUDE_CWD
+- **agents:** Frontmatter-driven model dispatch, drop stale hardcoded model IDs
+
 ## [0.2.12] — 2026-06-06
 
 ### Added
