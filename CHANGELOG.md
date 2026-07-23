@@ -7,6 +7,13 @@ generated from commit messages by `npm run release` (see [docs/internal/releasin
 
 <!-- GSR:RELEASES — new versions are inserted directly below this line by `npm run release`. Do not hand-edit generated sections; fix the commit message and regenerate. Entries below 0.2.9 are hand-curated history. -->
 
+## [0.5.0] — 2026-07-23
+
+### Added
+
+- **verify:** Visual flow verification tier — the feature file becomes an executable spec
+- **skills:** Frontmatter + gate extraction — ambient GSR, single source of truth
+
 ## [0.4.0] — 2026-07-23
 
 ### Added
