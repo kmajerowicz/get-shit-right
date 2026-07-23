@@ -111,6 +111,8 @@ Both modes enforce the gate function before every completion claim: build passes
 
 **Model-aware dispatch:** GSR selects the right Claude tier per agent role automatically — heavier models for reasoning-heavy phases, lighter models for bounded tasks.
 
+**Batch build:** say "build all" / "build everything" and GSR builds every feature in the phase sequentially, stopping only for blocking errors or product decisions. In batch mode GSR can push a notification to your phone when it needs a product decision or finishes — start the batch and walk away.
+
 ### When things break (`/gsr:debug`)
 
 Run `/gsr:debug` when something stops working and you need to track the investigation. GSR creates a file at `docs/debug/<date>-<slug>.md` that records the symptom, reproduction steps, current hypothesis, evidence, and eliminated causes. Each phase transition writes to disk.

@@ -74,6 +74,12 @@ Read feature statuses from `docs/STATE.md`.
 4. After each feature: give a one-line status update ("Upload done ✓ — moving to Configure") instead of full test instructions
 5. Give full test instructions only at the end, covering all built features together
 6. If you hit a blocking error or ambiguity requiring a product decision, stop and ask — then resume batch after the answer
+7. **Notifications (optional):** if a push/notification tool is available in
+   this session (e.g. PushNotification — check the available tools; NEVER fail
+   or pause because it's absent), send a short push whenever batch pauses for a
+   decision ("GSR: decision needed — <topic>") and once when the batch finishes
+   ("GSR: batch done — <N> features built, <M> assumptions recorded"). No
+   notification tool → proceed silently, exactly as before.
 
 The user can also interrupt batch mode at any time to switch to feature-by-feature.
 
