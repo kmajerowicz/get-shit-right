@@ -47,6 +47,7 @@ claude plugin install gsr
 | `/gsr:prd` | Turn scope into PRD + feature files + project infrastructure |
 | `/gsr:build` | Build a specific feature — creative (you review every diff) or systematic (agent-driven) |
 | `/gsr:build --sketch` | Force a design sketch before mode selection — useful for conceptually risky features |
+| `/gsr:quick <task>` | One bounded task with GSR guarantees (gate function, evidence, atomic commit) — no scope/PRD ceremony |
 | `/gsr:debug` | Start or resume a persistent debug session that survives `/clear` |
 | `/gsr:verify` | Verify a feature or phase with evidence — build passes, grep results, human checks |
 | `/gsr:learn` | Index an existing codebase, populate CLAUDE.md, and get told what to do next |
