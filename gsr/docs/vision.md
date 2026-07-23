@@ -95,6 +95,7 @@ See [Plugin Design](plans/2026-03-15-gsr-plugin-design.md) for full architecture
 10. **Explain every choice.** The user may or may not be technical. May or may not be product-experienced. When presenting a decision, always explain: what are the options, what's the impact from a product perspective (UX, scope, timeline), and what's the impact from a technical perspective (complexity, maintainability, risk). Never assume the user knows — empower them to decide with full context.
 11. **Enforce, don't hope.** Critical rules include Red Flags and Common Rationalizations tables — preventing Claude from rationalizing its way past them. Borrowed from superpowers.
 12. **Context survives.** Debug sessions and build plans write to disk. A fresh session can resume where the last one ended.
+13. **Rigor scales with stakes; decisions can wait for evidence.** Evidence and human ownership of product decisions are invariants — they hold at every project size. Ceremony is not: a **weight** (spike/standard/production, `docs/patterns/weight.md`) dials how much process each step runs, and any product question the user can't answer yet becomes a tracked **D-pin** (`docs/patterns/deferred-decisions.md`) instead of a hard gate — deferred, never delegated, revisited only once there's a prototype to judge it against.
 
 ---
 

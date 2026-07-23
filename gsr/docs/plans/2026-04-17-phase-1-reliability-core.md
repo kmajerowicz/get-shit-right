@@ -1,7 +1,7 @@
 # Phase 1 — Reliability Core
 
 **Date:** 2026-04-17
-**Status:** planned, not started
+**Status:** shipped — debug persistence, plan-file persistence, and the staged reviewer split all landed prior to the 2026-07-23 adaptive-GSR train (see `gsr/skills/debug/SKILL.md`, `gsr/templates/plan-md.md`, `gsr/agents/reviewer-spec.md` + `reviewer-quality.md`)
 **Owner:** Kacper
 **Target version:** 0.3.0 (after tickets 1+2 ship); 0.3.x patches thereafter
 
