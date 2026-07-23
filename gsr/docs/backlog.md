@@ -76,6 +76,68 @@ Open topics, questions, and ideas for discussion. Anyone can add items or respon
 
 ---
 
+### Capability Research (July 2026): Visual Verification Tier
+
+**Context:** Feature files already contain executable test scripts in prose — User Story/Flow steps + States table. Claude Code can drive a browser (Playwright MCP / Chrome extension) and read screenshots natively. Meanwhile user-1's build ended in a runtime crash ("Cannot read properties of undefined") that build-gate + grep could never catch.
+
+**Proposal:** New verification tier between Grep and Human: GSR opens the dev server, walks the feature file's user flow step by step, screenshots each state (empty/loading/error/full), and checks against the States table. Demo sentence becomes machine-checkable. Human checks shrink to genuine judgment calls (aesthetics, feel). Evidence format: screenshot + step log per pin ID. This is the biggest possible deepening of "evidence, not hope" — no SDD competitor verifies against the spec's *user flow*.
+
+**Status:** ✅ Accepted (2026-07-23) → Ticket T12 in [plans/2026-07-23-adaptive-gsr.md](plans/2026-07-23-adaptive-gsr.md)
+
+---
+
+### Capability Research (July 2026): Enforcement as Code (Hooks, not Prose)
+
+**Context:** Iron Laws are enforced by prose — rationalization tables that cost context and can still be rationalized past. Claude Code hooks now support decision control (`decision: "block"`) and Stop hooks can inspect the transcript.
+
+**Proposal:** Deterministic enforcement layer: (1) PreToolUse hook blocks `git commit` when the gate function hasn't run since last edit (tracked via a bridge file); (2) Stop hook greps the final message for Red Flag Language ("should work", "looks good") without accompanying evidence format and injects a correction prompt. "Enforce, don't hope" stops being an instruction and becomes infrastructure. Prose tables stay as the explanation; hooks become the guarantee.
+
+**Status:** ✅ Accepted (2026-07-23) → Ticket T9 in [plans/2026-07-23-adaptive-gsr.md](plans/2026-07-23-adaptive-gsr.md)
+
+---
+
+### Capability Research (July 2026): Batch Build + PushNotification = "Decyduj z telefonu"
+
+**Context:** Batch mode exists, but the PM must babysit the terminal waiting for decision gates. Claude Code now has PushNotification, claude.ai/code web/mobile sessions, and agent teams.
+
+**Proposal:** In batch mode, when a decision gate fires, send a push notification with the AskUserQuestion options; the PM answers from their phone, build continues. The flow becomes: PM starts batch build, walks away, gets pinged only for product decisions. This is the purest possible expression of "human thinks, AI executes" — and a demo-killer feature for the PM audience no competitor has.
+
+**Status:** ✅ Accepted (2026-07-23) → Ticket T10 in [plans/2026-07-23-adaptive-gsr.md](plans/2026-07-23-adaptive-gsr.md)
+
+---
+
+### Capability Research (July 2026): Runtime Monitors During Build
+
+**Context:** Plugins can now declare background monitors — a shell command whose stdout streams to Claude as notifications for the whole session. The runtime smoke test today is a one-shot check.
+
+**Proposal:** During `/gsr:build`, register the dev server (or test watcher) as a monitor. Claude sees runtime errors *the moment they happen* — a crash during creative mode gets caught mid-build instead of at verify. Optionally a CI monitor watching `gh run watch` after push.
+
+---
+
+### Capability Research (July 2026): CI Verify + Pin-Driven Changelog
+
+**Context:** Pins are a join key from spec → commit → test, but verification runs only interactively. Claude Code runs headless (Agent SDK / GitHub Actions); commits already carry pin IDs; the GSR repo itself uses git-cliff.
+
+**Proposal:** (1) `gsr-verify` GitHub Action: on PR, run the spec-drift + pin-coverage checks headlessly, post the pinned evidence report as a PR comment — spec drift becomes visible in code review, which is the enterprise/team story (OpenSpec's niche, but with real evidence). (2) `/gsr:ship` extension: generate feature-level release notes from pin-tagged commits ("dashboard.T1–T4 shipped, dashboard.D2 confirmed"). Traceability from idea to release note.
+
+---
+
+### Capability Research (July 2026): Native Memory Bridge
+
+**Context:** Claude Code now has automatic memory (personal, per-user). GSR's Learned Rules are project-level and git-shared. Without a defined relationship, corrections split-brain between the two stores.
+
+**Proposal:** Define the contract: Learned Rules = team truth (git, reviewed), auto-memory = personal observations. On session start (or during the Learned Rules ask), GSR offers to promote relevant personal memories into CLAUDE.md Learned Rules. Corrections compound *across the team*, not just across sessions — the market gap none of the SDD tools address (all are single-player).
+
+---
+
+### Capability Research (July 2026): Spec Import — GSR as the Verification Layer
+
+**Context:** Spec-driven development went mainstream (Spec Kit ~80k stars, Kiro, BMAD, OpenSpec). Teams already *have* specs in these formats. GSR's unique piece is not spec authoring — it's pins + evidence-based verification of specs.
+
+**Proposal:** Extend `/gsr:learn` to recognize and import foreign spec formats (Spec Kit specs/constitution, Kiro specs, plain PRDs) into pinned feature files. Positioning: "bring your spec, GSR makes it verifiable." Rides the SDD wave instead of competing with it head-on.
+
+---
+
 ## Resolved (moved to decisions.md)
 
 - Update notifications → implemented via statusline (shows `GSR v0.x.x → v0.y.y available` passively) — shipped in v0.2.x
