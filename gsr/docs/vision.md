@@ -61,7 +61,7 @@ User has a running product and wants to build a new feature or develop existing 
 
 ## Commands
 
-GSR is a Claude Code plugin with 9 explicit commands:
+GSR is a Claude Code plugin with 10 explicit commands:
 
 | Command | What it does | Phases |
 |---------|-------------|--------|
@@ -69,6 +69,7 @@ GSR is a Claude Code plugin with 9 explicit commands:
 | `/gsr:scope` | Idea or materials → structured scope document | Phase 0 |
 | `/gsr:prd` | Scope → condensed PRD + feature files + project init | Phase 1 + 2 |
 | `/gsr:build` | Pick feature → pick mode (creative/systematic) → build | Phase 3 |
+| `/gsr:quick` | One bounded task with GSR invariants, no scope/PRD ceremony | - |
 | `/gsr:debug` | Start or resume a persistent debug session that survives `/clear` | Phase 3 |
 | `/gsr:verify` | Verify feature against PRD success criteria | Phase 4 |
 | `/gsr:status` | Show current project status — phases, features, next action | - |
