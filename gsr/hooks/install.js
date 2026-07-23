@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 // GSR Hooks Installer
-// Copies hooks to ~/.claude/hooks/ and configures settings.json
+// Copies the statusline to ~/.claude/hooks/ and configures settings.json.
+// Context monitor and enforcement hooks run straight from the plugin
+// directory via hooks.json — they need no installation here.
 
 const fs = require('fs');
 const path = require('path');
@@ -10,6 +12,15 @@ const claudeDir = process.env.CLAUDE_CONFIG_DIR || path.join(os.homedir(), '.cla
 const hooksDir = path.join(claudeDir, 'hooks');
 const settingsPath = path.join(claudeDir, 'settings.json');
 const srcDir = __dirname;
+const FORCE = process.argv.includes('--force');
+
+function readPluginVersion() {
+  try {
+    return JSON.parse(fs.readFileSync(path.join(srcDir, '..', '.claude-plugin', 'plugin.json'), 'utf8')).version;
+  } catch (e) {
+    return '0.0.0';
+  }
+}
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 
@@ -33,28 +44,27 @@ if (!fs.existsSync(hooksDir)) {
   ok(`Created ${hooksDir}`);
 }
 
-// ── Copy hook files ───────────────────────────────────────────────────────
+// ── Copy the statusline ──────────────────────────────────────────────────
 
-const hookFiles = ['gsr-statusline.js', 'gsr-context-monitor.js'];
+const file = 'gsr-statusline.js';
+const src = path.join(srcDir, file);
+const dst = path.join(hooksDir, file);
 
-for (const file of hookFiles) {
-  const src = path.join(srcDir, file);
-  const dst = path.join(hooksDir, file);
-
-  if (!fs.existsSync(src)) {
-    err(`Source not found: ${src}`);
-    process.exit(1);
-  }
-
-  // Check if GSD version exists — don't overwrite, coexist
-  const gsdEquiv = file.replace('gsr-', 'gsd-');
-  if (fs.existsSync(path.join(hooksDir, gsdEquiv))) {
-    warn(`GSD hook found (${gsdEquiv}) — GSR hook will be installed alongside it`);
-  }
-
-  fs.copyFileSync(src, dst);
-  ok(`Copied ${file} → ${dst}`);
+if (!fs.existsSync(src)) {
+  err(`Source not found: ${src}`);
+  process.exit(1);
 }
+
+// Check if GSD version exists — don't overwrite, coexist
+const gsdEquiv = file.replace('gsr-', 'gsd-');
+if (fs.existsSync(path.join(hooksDir, gsdEquiv))) {
+  warn(`GSD hook found (${gsdEquiv}) — GSR hook will be installed alongside it`);
+}
+
+const version = readPluginVersion();
+const stamped = `// gsr-hook-version: ${version}\n${fs.readFileSync(src, 'utf8')}`;
+fs.writeFileSync(dst, stamped);
+ok(`Copied ${file} → ${dst}`);
 
 // ── Update settings.json ──────────────────────────────────────────────────
 
@@ -71,42 +81,20 @@ if (fs.existsSync(settingsPath)) {
 // Statusline
 const statuslineCmd = `node "${path.join(hooksDir, 'gsr-statusline.js')}"`;
 const existingStatusline = settings.statusLine?.command || '';
+const existingIsForeign = existingStatusline &&
+  !existingStatusline.includes('gsr-statusline') &&
+  !existingStatusline.includes('gsd-statusline');
 
 if (existingStatusline.includes('gsd-statusline')) {
   warn('Status line is configured for GSD — replacing with GSR');
 }
-settings.statusLine = { type: 'command', command: statuslineCmd };
-ok('Status line configured');
 
-// Context monitor hook
-const monitorCmd = `node "${path.join(hooksDir, 'gsr-context-monitor.js')}"`;
-if (!settings.hooks) settings.hooks = {};
-if (!settings.hooks.PostToolUse) settings.hooks.PostToolUse = [];
-
-const postToolHooks = settings.hooks.PostToolUse;
-const gsrMonitorExists = postToolHooks.some(entry =>
-  entry.hooks?.some(h => h.command?.includes('gsr-context-monitor'))
-);
-const gsdMonitorExists = postToolHooks.some(entry =>
-  entry.hooks?.some(h => h.command?.includes('gsd-context-monitor'))
-);
-
-// Remove any existing GSR or GSD context monitor entries (idempotent)
-settings.hooks.PostToolUse = postToolHooks.filter(entry =>
-  !entry.hooks?.some(h =>
-    h.command?.includes('gsr-context-monitor') ||
-    h.command?.includes('gsd-context-monitor')
-  )
-);
-if (gsdMonitorExists) warn('GSD context monitor replaced with GSR');
-
-settings.hooks.PostToolUse.push({
-  hooks: [{
-    type: 'command',
-    command: monitorCmd
-  }]
-});
-ok('Context monitor configured');
+if (existingIsForeign && !FORCE) {
+  warn('Existing custom status line detected — keeping it. Run with --force to replace.');
+} else {
+  settings.statusLine = { type: 'command', command: statuslineCmd };
+  ok('Status line configured');
+}
 
 // Write settings
 fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2) + '\n');
@@ -116,5 +104,5 @@ ok(`Updated ${settingsPath}`);
 
 console.log('\n\x1b[32m\x1b[1mDone!\x1b[0m Restart Claude Code to activate.\n');
 console.log('  Status line: model │ current focus │ directory │ context bar');
-console.log('  Context monitor: warns agent at 65% and 75% context usage');
+console.log('  Context monitor and enforcement hooks run from the plugin directory automatically.');
 console.log('');

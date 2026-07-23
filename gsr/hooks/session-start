@@ -24,10 +24,20 @@ process.stdin.on('end', () => {
 function main(data) {
   const cwd = data.cwd || process.env.CLAUDE_PROJECT_DIR || process.cwd();
 
-  // ── Auto-install hooks if not yet configured ────────────────────────────
+  // ── Auto-install / auto-refresh the statusline hook ─────────────────────
   const claudeDir = process.env.CLAUDE_CONFIG_DIR || path.join(os.homedir(), '.claude');
   const statuslineDst = path.join(claudeDir, 'hooks', 'gsr-statusline.js');
-  if (!fs.existsSync(statuslineDst)) {
+  let installedVersion = null;
+  if (fs.existsSync(statuslineDst)) {
+    const firstLine = fs.readFileSync(statuslineDst, 'utf8').split('\n', 1)[0];
+    const m = firstLine.match(/^\/\/ gsr-hook-version: (.+)$/);
+    installedVersion = m ? m[1] : null;
+  }
+  let currentVersion = null;
+  try {
+    currentVersion = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '.claude-plugin', 'plugin.json'), 'utf8')).version;
+  } catch (e) { /* best-effort */ }
+  if (!fs.existsSync(statuslineDst) || installedVersion !== currentVersion) {
     try {
       const installScript = path.join(__dirname, 'install.js');
       if (fs.existsSync(installScript)) {
