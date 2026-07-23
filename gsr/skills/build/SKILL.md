@@ -305,14 +305,14 @@ Sequential: task [3] depends on [1]
 
 5. Execute tasks — parallelizable ones via subagent implementers:
    - Read `${CLAUDE_PLUGIN_ROOT}/agents/implementer.md` for the implementer agent role
-   - Each Agent tool call for the implementer must pass `model: "claude-sonnet-4-6"` (see implementer.md — Recommended Model)
+   - Dispatch via the Agent tool with `subagent_type: "gsr:implementer"` — model and role come from the agent definition
    - Each agent gets: task description, CLAUDE.md content, feature file content, file boundaries, success criteria
    - In systematic mode, dispatch two staged reviewers after each implementer:
-     1. **Stage 1 — Spec:** read `${CLAUDE_PLUGIN_ROOT}/agents/reviewer-spec.md`. Agent tool call must pass `model: "claude-sonnet-4-6"`.
+     1. **Stage 1 — Spec:** read `${CLAUDE_PLUGIN_ROOT}/agents/reviewer-spec.md`. Dispatch via the Agent tool with `subagent_type: "gsr:reviewer-spec"` — model and role come from the agent definition.
         - SPEC_PASS → proceed to Stage 2
         - SPEC_FAIL → fail task back to implementer (or escalate to user if it's a product decision). Do not run Stage 2.
         - NEEDS_INFO → surface question to user, await answer, re-run Stage 1
-     2. **Stage 2 — Quality:** read `${CLAUDE_PLUGIN_ROOT}/agents/reviewer-quality.md`. Agent tool call must pass `model: "claude-sonnet-4-6"`.
+     2. **Stage 2 — Quality:** read `${CLAUDE_PLUGIN_ROOT}/agents/reviewer-quality.md`. Dispatch via the Agent tool with `subagent_type: "gsr:reviewer-quality"` — model and role come from the agent definition.
         - APPROVED or APPROVED_WITH_CONCERNS → task done, update plan file
         - CHANGES_REQUESTED → fail task back to implementer
    - After each implementer+reviewer cycle: update the task's row in `docs/plans/<slug>.md` — set Status to `done` (or `failed`), write the commit SHA and gate output in the Evidence column. Update `updated` in frontmatter.

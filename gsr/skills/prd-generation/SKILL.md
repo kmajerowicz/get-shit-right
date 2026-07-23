@@ -37,7 +37,7 @@ Before doing anything, check if `docs/PRD.md` already exists.
 
 **If PRD.md does not exist → Full generation mode:**
 - Read `docs/scope.md` and any design references the user mentions
-- Resolve research areas from scope.md marked "blocking PRD" before writing — dispatch researcher agents in parallel for independent research questions. Each Agent tool call must pass `model: "claude-opus-4-7"` (see `${CLAUDE_PLUGIN_ROOT}/agents/researcher.md`).
+- Resolve research areas from scope.md marked "blocking PRD" before writing — dispatch researcher agents in parallel for independent research questions. Dispatch via the Agent tool with `subagent_type: "gsr:researcher"` — model and role come from the agent definition.
 - Proceed through Step 1 in full
 
 ---
@@ -129,7 +129,7 @@ For each feature in the feature index, generate `docs/features/<name>.md` using 
 
 **No skills matching here.** Skills are matched to tasks at build time, not at feature file generation time. Do not add a Skills section to feature files.
 
-Run Step 2a in **parallel for each feature** (use researcher agents). Each Agent tool call must pass `model: "claude-opus-4-7"` (see `${CLAUDE_PLUGIN_ROOT}/agents/researcher.md`):
+Run Step 2a in **parallel for each feature** (use researcher agents). Dispatch via the Agent tool with `subagent_type: "gsr:researcher"` — model and role come from the agent definition:
 
 ### Step 2a: Don't Hand-Roll Sweep
 

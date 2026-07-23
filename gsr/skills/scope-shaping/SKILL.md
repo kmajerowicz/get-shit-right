@@ -70,7 +70,7 @@ Ready to research. I'll launch 2 agents in parallel:
 This will take 1-3 minutes. OK to proceed?
 ```
 
-Wait for confirmation. Then research in parallel using researcher agents. Each Agent tool call must pass `model: "claude-opus-4-7"` (see `${CLAUDE_PLUGIN_ROOT}/agents/researcher.md` — Recommended Model).
+Wait for confirmation. Then research in parallel using researcher agents. Dispatch via the Agent tool with `subagent_type: "gsr:researcher"` — model and role come from the agent definition.
 
 **Agent 1 — Competitive mapping:**
 "Research [primary competitor]'s UX for [primary use case]. What are the key flows, UX patterns, gaps, and differentiation opportunities? Include ALL relevant competitors and alternatives (from free/open-source to premium). For each: full pricing range (cheapest to most expensive plan). The user needs this for business validation."
@@ -132,7 +132,7 @@ Full document review. Check everything:
   - **Blocking PRD** → note for PRD phase
   - **Blocking build** → flag in scope, resolve when you get there
 
-For research areas that are blocking scope: dispatch researcher agents and integrate findings before proceeding. Pass `model: "claude-opus-4-7"` on each Agent tool call (see `${CLAUDE_PLUGIN_ROOT}/agents/researcher.md`).
+For research areas that are blocking scope: dispatch researcher agents and integrate findings before proceeding. Dispatch via the Agent tool with `subagent_type: "gsr:researcher"` — model and role come from the agent definition.
 
 ### Step 7: Final Review (Two-Pass Rule)
 

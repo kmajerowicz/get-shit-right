@@ -71,7 +71,7 @@ For each major area of the codebase, understand:
 5. **Auth** — how is authentication handled?
 6. **External services** — what third-party services are configured?
 
-For large codebases (>50 files in src/), dispatch parallel researcher agents to cover different areas simultaneously. Each Agent tool call must pass `model: "claude-opus-4-7"` (see `${CLAUDE_PLUGIN_ROOT}/agents/researcher.md` — Recommended Model). For small projects, do this directly.
+For large codebases (>50 files in src/), dispatch parallel researcher agents to cover different areas simultaneously. Dispatch via the Agent tool with `subagent_type: "gsr:researcher"` — model and role come from the agent definition. For small projects, do this directly.
 
 ---
 
