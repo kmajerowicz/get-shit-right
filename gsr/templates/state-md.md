@@ -3,6 +3,7 @@
 **Project Status:** IN PROGRESS
 **Last Updated:** [date]
 **Open Assumptions:** 0
+**Weight:** standard
 **Next Action:** Run `/gsr:build` → pick a feature from Phase 1
 
 ---

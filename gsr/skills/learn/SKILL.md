@@ -119,6 +119,11 @@ After indexing, output a structured assessment:
 ### Doc Root
 [Path used for GSR artifacts, e.g. `.ai/` or `docs/`]
 
+### Weight
+[Current `**Weight:**` value from STATE.md. If STATE.md exists without a Weight
+line, classify it now per `${CLAUDE_PLUGIN_ROOT}/docs/patterns/weight.md`
+(infer + confirm via one AskUserQuestion) and add it.]
+
 ### Tech Stack Detected
 [Framework, language, key libraries, version of node/etc.]
 

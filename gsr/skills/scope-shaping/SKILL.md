@@ -36,6 +36,10 @@ Before asking anything, check what exists in the project:
 
 **Why this matters:** If `gsr:learn` already ran, it created `CLAUDE.md` and referenced any existing documents. `gsr:scope` should pick those up and start from what's known — not announce "no scope exists" (the user already knows) and ask the user to explain their idea from scratch.
 
+After detecting the entry point and BEFORE Step 1: classify project weight per
+`${CLAUDE_PLUGIN_ROOT}/docs/patterns/weight.md` (infer + confirm via one
+AskUserQuestion). Record it in STATE.md when STATE.md is created/updated.
+
 ---
 
 ## Start A: Empty Page

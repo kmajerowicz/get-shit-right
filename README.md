@@ -80,6 +80,13 @@ Each command tells you what to run next. Context clears between commands — sta
 
 ## How It Works
 
+Every project gets a **weight** — `spike` (demo, experiment), `standard` (side
+project, default), or `production` (real users, real stakes) — set once at
+`/gsr:scope` or `/gsr:learn` and changeable anytime. Weight is a rigor dial: it
+scales how much ceremony each step below runs (competitive research, PRD size,
+verification depth). It never scales the invariants — evidence before "done",
+human owns product decisions, atomic commits — those hold at every weight.
+
 ### Scope Shaping (`/gsr:scope`)
 7-step process: vision intake → competitive mapping → first draft → prioritization → feature deep-dives → consistency audit → final review. Surfaces edge cases, "don't hand-roll" opportunities, and known pitfalls before a line of code is written.
 
