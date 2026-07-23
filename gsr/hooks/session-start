@@ -10,107 +10,119 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
-const cwd = process.env.CLAUDE_CWD || process.cwd();
+let input = '';
+const stdinTimeout = setTimeout(() => main({}), 2000);
+process.stdin.setEncoding('utf8');
+process.stdin.on('data', c => (input += c));
+process.stdin.on('end', () => {
+  clearTimeout(stdinTimeout);
+  let data = {};
+  try { data = JSON.parse(input); } catch (e) { /* fall through */ }
+  main(data);
+});
 
-// ── Auto-install hooks if not yet configured ──────────────────────────────
-const claudeDir = process.env.CLAUDE_CONFIG_DIR || path.join(os.homedir(), '.claude');
-const statuslineDst = path.join(claudeDir, 'hooks', 'gsr-statusline.js');
-if (!fs.existsSync(statuslineDst)) {
-  try {
-    const installScript = path.join(__dirname, 'install.js');
-    if (fs.existsSync(installScript)) {
-      require('child_process').execFileSync(process.execPath, [installScript], { stdio: 'ignore' });
-    }
-  } catch (e) { /* best-effort */ }
-}
+function main(data) {
+  const cwd = data.cwd || process.env.CLAUDE_PROJECT_DIR || process.cwd();
 
-// Check if this is a GSR project
-const stateFile = path.join(cwd, 'docs', 'STATE.md');
-const claudeFile = path.join(cwd, 'CLAUDE.md');
-const isGsrProject = fs.existsSync(stateFile) || (
-  fs.existsSync(claudeFile) &&
-  fs.readFileSync(claudeFile, 'utf8').includes('GSR')
-);
-
-if (isGsrProject) {
-  // Read current state
-  let stateSnippet = '';
-  if (fs.existsSync(stateFile)) {
-    const state = fs.readFileSync(stateFile, 'utf8');
-    // Extract just the first 20 lines (current focus + phase progress)
-    stateSnippet = state.split('\n').slice(0, 20).join('\n');
+  // ── Auto-install hooks if not yet configured ────────────────────────────
+  const claudeDir = process.env.CLAUDE_CONFIG_DIR || path.join(os.homedir(), '.claude');
+  const statuslineDst = path.join(claudeDir, 'hooks', 'gsr-statusline.js');
+  if (!fs.existsSync(statuslineDst)) {
+    try {
+      const installScript = path.join(__dirname, 'install.js');
+      if (fs.existsSync(installScript)) {
+        require('child_process').execFileSync(process.execPath, [installScript], { stdio: 'ignore' });
+      }
+    } catch (e) { /* best-effort */ }
   }
 
-  // Detect active (in-progress) plan files
-  const STALE_DAYS = 7;
-  const plansDir = path.join(cwd, 'docs', 'plans');
-  let activePlansBlock = '';
+  // Check if this is a GSR project
+  const stateFile = path.join(cwd, 'docs', 'STATE.md');
+  const claudeFile = path.join(cwd, 'CLAUDE.md');
+  const isGsrProject = fs.existsSync(stateFile) || (
+    fs.existsSync(claudeFile) &&
+    fs.readFileSync(claudeFile, 'utf8').includes('GSR')
+  );
 
-  if (fs.existsSync(plansDir)) {
-    const planFiles = fs.readdirSync(plansDir).filter(f => f.endsWith('.md'));
-    const activeLines = [];
+  if (isGsrProject) {
+    // Read current state
+    let stateSnippet = '';
+    if (fs.existsSync(stateFile)) {
+      const state = fs.readFileSync(stateFile, 'utf8');
+      // Extract just the first 20 lines (current focus + phase progress)
+      stateSnippet = state.split('\n').slice(0, 20).join('\n');
+    }
 
-    for (const file of planFiles) {
-      try {
-        const content = fs.readFileSync(path.join(plansDir, file), 'utf8');
-        const lines = content.split('\n');
+    // Detect active (in-progress) plan files
+    const STALE_DAYS = 7;
+    const plansDir = path.join(cwd, 'docs', 'plans');
+    let activePlansBlock = '';
 
-        // Parse frontmatter (between first two --- lines)
-        if (lines[0] !== '---') continue;
-        const fmEnd = lines.indexOf('---', 1);
-        if (fmEnd === -1) continue;
-        const fm = lines.slice(1, fmEnd).join('\n');
+    if (fs.existsSync(plansDir)) {
+      const planFiles = fs.readdirSync(plansDir).filter(f => f.endsWith('.md'));
+      const activeLines = [];
 
-        const statusMatch = fm.match(/^status:\s*(.+)$/m);
-        if (!statusMatch || statusMatch[1].trim() !== 'in_progress') continue;
+      for (const file of planFiles) {
+        try {
+          const content = fs.readFileSync(path.join(plansDir, file), 'utf8');
+          const lines = content.split('\n');
 
-        const featureMatch = fm.match(/^feature:\s*(.+)$/m);
-        const updatedMatch = fm.match(/^updated:\s*(.+)$/m);
-        const feature = featureMatch ? featureMatch[1].trim() : file.replace('.md', '');
-        const updated = updatedMatch ? updatedMatch[1].trim() : null;
+          // Parse frontmatter (between first two --- lines)
+          if (lines[0] !== '---') continue;
+          const fmEnd = lines.indexOf('---', 1);
+          if (fmEnd === -1) continue;
+          const fm = lines.slice(1, fmEnd).join('\n');
 
-        // Check staleness
-        let isStale = false;
-        if (updated) {
-          const updatedMs = Date.parse(updated);
-          if (!isNaN(updatedMs)) {
-            const daysDiff = (Date.now() - updatedMs) / (1000 * 60 * 60 * 24);
-            isStale = daysDiff > STALE_DAYS;
+          const statusMatch = fm.match(/^status:\s*(.+)$/m);
+          if (!statusMatch || statusMatch[1].trim() !== 'in_progress') continue;
+
+          const featureMatch = fm.match(/^feature:\s*(.+)$/m);
+          const updatedMatch = fm.match(/^updated:\s*(.+)$/m);
+          const feature = featureMatch ? featureMatch[1].trim() : file.replace('.md', '');
+          const updated = updatedMatch ? updatedMatch[1].trim() : null;
+
+          // Check staleness
+          let isStale = false;
+          if (updated) {
+            const updatedMs = Date.parse(updated);
+            if (!isNaN(updatedMs)) {
+              const daysDiff = (Date.now() - updatedMs) / (1000 * 60 * 60 * 24);
+              isStale = daysDiff > STALE_DAYS;
+            }
           }
-        }
 
-        // Count done vs total tasks from the task table
-        const taskRows = lines.filter(l => /^\|\s*\d+\s*\|/.test(l));
-        const total = taskRows.length;
-        const done = taskRows.filter(l => /\|\s*done\s*\|/i.test(l)).length;
+          // Count done vs total tasks from the task table
+          const taskRows = lines.filter(l => /^\|\s*\d+\s*\|/.test(l));
+          const total = taskRows.length;
+          const done = taskRows.filter(l => /\|\s*done\s*\|/i.test(l)).length;
 
-        // Find first non-done task description
-        const nextRow = taskRows.find(l => !/\|\s*done\s*\|/i.test(l));
-        let nextTask = '';
-        if (nextRow) {
-          const cols = nextRow.split('|').map(c => c.trim());
-          // cols: ['', ID, Description, Done When, Files, Status, Evidence, '']
-          if (cols.length >= 3) nextTask = `Task ${cols[1]} — ${cols[2]}`;
-        }
+          // Find first non-done task description
+          const nextRow = taskRows.find(l => !/\|\s*done\s*\|/i.test(l));
+          let nextTask = '';
+          if (nextRow) {
+            const cols = nextRow.split('|').map(c => c.trim());
+            // cols: ['', ID, Description, Done When, Files, Status, Evidence, '']
+            if (cols.length >= 3) nextTask = `Task ${cols[1]} — ${cols[2]}`;
+          }
 
-        const label = isStale ? '⚠️  Stale plan (possibly abandoned)' : 'Active plan — resume available';
-        const updatedLabel = updated ? `, last updated ${updated}` : '';
-        activeLines.push(
-          `${label}:\n` +
-          `  Feature: ${feature}${updatedLabel}\n` +
-          `  File: docs/plans/${file}\n` +
-          `  Progress: ${done}/${total} tasks done` +
-          (nextTask ? `\n  Next task: ${nextTask}` : '')
-        );
-      } catch (e) { /* skip malformed plan files */ }
+          const label = isStale ? '⚠️  Stale plan (possibly abandoned)' : 'Active plan — resume available';
+          const updatedLabel = updated ? `, last updated ${updated}` : '';
+          activeLines.push(
+            `${label}:\n` +
+            `  Feature: ${feature}${updatedLabel}\n` +
+            `  File: docs/plans/${file}\n` +
+            `  Progress: ${done}/${total} tasks done` +
+            (nextTask ? `\n  Next task: ${nextTask}` : '')
+          );
+        } catch (e) { /* skip malformed plan files */ }
+      }
+
+      if (activeLines.length > 0) {
+        activePlansBlock = '\n' + activeLines.join('\n\n') + '\n\nRun /gsr:build to resume.';
+      }
     }
 
-    if (activeLines.length > 0) {
-      activePlansBlock = '\n' + activeLines.join('\n\n') + '\n\nRun /gsr:build to resume.';
-    }
-  }
-
-  console.log(`
+    console.log(`
 <gsr-context>
 This is a GSR (Get Shit Right) project. Available commands:
 - /gsr:scope  — shape idea into structured scope
@@ -122,13 +134,14 @@ This is a GSR (Get Shit Right) project. Available commands:
 ${stateSnippet ? `Current project state:\n${stateSnippet}` : ''}${activePlansBlock}
 </gsr-context>
 `);
-} else {
-  // Not a GSR project — remind user GSR is available
-  console.log(`
+  } else {
+    // Not a GSR project — remind user GSR is available
+    console.log(`
 <gsr-context>
 GSR (Get Shit Right) is available. To start:
 - New project: run /gsr:scope
 - Existing project: run /gsr:learn
 </gsr-context>
 `);
+  }
 }
