@@ -6,7 +6,7 @@ A Claude Code plugin — an enforced instruction package with protocols and acti
 
 **One sentence:** The human makes all product decisions. The system tracks progress and enforces quality.
 
-**What's new:** Pins — stable IDs on every must-have, turning your spec into a traceability matrix across code, commits, tests, and verification reports. Full history in the [changelog](CHANGELOG.md) and [releases](https://github.com/kmajerowicz/get-shit-right/releases).
+**What's new:** Deferred decisions — GSR now takes "I don't know yet" as a full answer. Defer any product question and GSR records it as a tracked assumption (a **D-pin**) instead of blocking, then brings it back once you have a prototype to judge it against. Paired with a project **weight** dial (spike/standard/production), `/gsr:quick` for bounded tasks with zero pipeline ceremony, and a visual verification tier that walks your feature's user flow in a real browser. Full history in the [changelog](CHANGELOG.md) and [releases](https://github.com/kmajerowicz/get-shit-right/releases).
 
 ---
 
