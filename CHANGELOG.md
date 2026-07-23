@@ -7,6 +7,15 @@ generated from commit messages by `npm run release` (see [docs/internal/releasin
 
 <!-- GSR:RELEASES — new versions are inserted directly below this line by `npm run release`. Do not hand-edit generated sections; fix the commit message and regenerate. Entries below 0.2.9 are hand-curated history. -->
 
+## [0.4.0] — 2026-07-23
+
+### Added
+
+- **weight:** Project weight classification — spike/standard/production
+- **weight:** Thread rigor matrix through skills, tag Iron Laws invariant vs weight-scaled
+- **hooks:** Enforcement as code — gate guard, red-flag guard, plugin-side registration
+- **build:** Push notifications at batch decision gates and completion
+
 ## [0.3.0] — 2026-07-23
 
 ### Added
