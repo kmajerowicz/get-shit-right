@@ -223,7 +223,7 @@ In Step 6, sweep all flags and triage them (blocking scope / blocking PRD / bloc
 - Claude drives ~70% through structure and questions, user drives ~30% through corrections
 - User's strongest contribution: domain expertise and corrections
 - Claude's strongest contribution: structure, edge cases, "what happens when X is empty/missing"
-- **Multi-option decisions use the decision gate pattern.** Read `${CLAUDE_PLUGIN_ROOT}/docs/patterns/decision-gate.md`. Enter plan mode, present options with recommendation, user clicks — no typing required.
+- **Multi-option decisions use the decision gate pattern.** Read `${CLAUDE_PLUGIN_ROOT}/docs/patterns/decision-gate.md` — present options via AskUserQuestion with the recommendation first; the user can also type a free-text answer via "Other".
 - **Questions go at the end, never inline.** Structure every message as: update/reasoning first → separator (`---`) → numbered questions with options. The user should be able to scroll to the bottom and see exactly what they need to decide. Never bury a product question inside a paragraph of reasoning.
 - **Track question state.** Mentally maintain which questions are: (a) asked and answered, (b) asked and pending, (c) not yet asked. When research returns and provides information that answers a pending question, don't re-ask — instead say "Research confirmed X. Does that match your expectation?"
 - **File creation communication.** When you write a file (scope.md, PRD, etc.), never ask "do you want to create it?" after it's already written. Instead: "scope.md is ready. Review it and tell me what to change." The file exists — the question is whether the content is right, not whether it should exist.

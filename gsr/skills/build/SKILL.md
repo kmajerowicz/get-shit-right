@@ -80,7 +80,7 @@ Once the user picks a feature, read:
 2. `docs/features/<name>.md` — the complete product spec
 3. `docs/techstack.md` — project-wide skills
 
-**Prerequisite check:** Before loading anything else, scan the feature file for dependencies on other features. Cross-reference with STATE.md. If any prerequisite feature is `not started`, `in progress`, or `blocked`: use the decision gate pattern (`${CLAUDE_PLUGIN_ROOT}/docs/patterns/decision-gate.md`). Enter plan mode and present:
+**Prerequisite check:** Before loading anything else, scan the feature file for dependencies on other features. Cross-reference with STATE.md. If any prerequisite feature is `not started`, `in progress`, or `blocked`: use the decision gate pattern (`${CLAUDE_PLUGIN_ROOT}/docs/patterns/decision-gate.md`). Present via AskUserQuestion:
 
 **Option 1 — Build [prerequisite] first**
 Safe path. Avoids integration failures mid-build.
@@ -146,17 +146,12 @@ On **Skip**: proceed to Step 3 silently. No file written.
 
 ## Step 3: Mode Selection
 
-Use the decision gate pattern (`${CLAUDE_PLUGIN_ROOT}/docs/patterns/decision-gate.md`). Enter plan mode and present:
+Use the decision gate pattern (`${CLAUDE_PLUGIN_ROOT}/docs/patterns/decision-gate.md`). Present via AskUserQuestion with two options:
 
-**Option 1 — Creative**
-You review every diff as it's written. Best for UI, screens, design-sensitive work.
+- **Creative** — you review every diff as it's written. Best for UI, screens, design-sensitive work.
+- **Systematic** — Claude generates a task list, you approve it, then Claude executes. Best for testing, i18n, accessibility, security, refactoring.
 
-**Option 2 — Systematic**
-Claude generates a task list, you approve it, then Claude executes. Best for testing, i18n, accessibility, security, refactoring.
-
-**Recommendation: Creative** if the feature has any UI. Systematic if it's purely backend/infrastructure.
-
-User clicks their choice.
+Put Creative first labeled "(Recommended)" if the feature has any UI; otherwise put Systematic first labeled "(Recommended)". Each option's description states the tradeoff above.
 
 ---
 

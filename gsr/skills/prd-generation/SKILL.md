@@ -101,7 +101,7 @@ Don't add every edge case to the PRD — but if a missing edge case would cause 
 
 After self-verification: fix all issues you found, then present PRD.md with a summary of what you caught and fixed. If you fixed nothing, say so — "Self-review passed clean" is a valid outcome.
 
-For each open decision or ambiguous assumption found: use the decision gate pattern (`${CLAUDE_PLUGIN_ROOT}/docs/patterns/decision-gate.md`). Enter plan mode, present options with recommendation, user clicks. One decision at a time.
+For each open decision or ambiguous assumption found: use the decision gate pattern (`${CLAUDE_PLUGIN_ROOT}/docs/patterns/decision-gate.md`) — present options via AskUserQuestion with the recommendation first. One decision at a time.
 
 **Final step — always, regardless of how many decisions were resolved:**
 Present a concise summary instead of sending the user to read a long document:
