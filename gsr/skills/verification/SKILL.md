@@ -192,6 +192,15 @@ Verdict per ID: `OK` or `DRIFT: found in [file:line], missing from spec`.
 
 If any DRIFT found → Blocker. Resolve by either restoring the removed requirement or removing the stale reference from code.
 
+### Check 7: Assumptions (Tier 1 — Ledger read)
+Read the PRD Assumptions Ledger. For each row with Status `assumed`:
+- Severity `blocking` → **Blocker** ("Open blocking assumption <id> — confirm or
+  revise before PASS").
+- Severity `non-blocking` → list in the report under "Open assumptions" — never
+  blocks.
+On PASS, if the user confirmed any assumption during Step 4 human checks, flip
+its Status to `confirmed` with today's date.
+
 ---
 
 ## Evidence Format

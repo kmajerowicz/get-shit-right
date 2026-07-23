@@ -80,3 +80,13 @@
 | Decision | Choice | Rationale |
 |---------|--------|-----------|
 | | | |
+
+---
+
+## Assumptions Ledger
+
+_Deferred decisions — see deferred-decisions pattern. Append-only._
+
+| ID | Assumption (default taken) | Source question | Severity | Status | Date |
+|----|---------------------------|-----------------|----------|--------|------|
+| `<project>.D1` | [Default taken, e.g. "Target user: solo hobbyist, not teams"] | [What was asked] | non-blocking / blocking | assumed | [date] |

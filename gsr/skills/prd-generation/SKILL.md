@@ -57,6 +57,7 @@ Use `${CLAUDE_PLUGIN_ROOT}/templates/prd-md.md` as the structure. Fill in from s
 9. **Design direction** — visual inspiration, color palette intent, typography intent (from scope or ask)
 10. **Build phases** — ordered phases, each with: type, demo sentence, must-haves summary
 11. **Research areas status** — from scope.md
+12. **Assumptions Ledger** — migrate the ledger from scope.md verbatim (same IDs), then append any new deferrals from PRD-stage decisions. This is now the single home of the ledger.
 
 **PRD.md must be 200-300 lines.** If it grows past 400, something belongs in a feature file.
 
@@ -173,6 +174,8 @@ For each feature, define must-haves at product level (no file paths):
 - [Feature A] reads from [Feature B]
 - [Component] calls [API/service]
 ```
+
+**Assign pin IDs as you write every must-have** — `<feature-slug>.T<n>` / `.A<n>` / `.K<n>` per the feature-md template, all with Status `pending`. A feature file without pin IDs in its Must-Haves tables is incomplete. If the feature depends on any D-pin, list it under **Assumptions touched**.
 
 ### Generate the Feature File
 

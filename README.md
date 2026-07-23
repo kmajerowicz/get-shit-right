@@ -131,6 +131,8 @@ Every must-have in a feature file gets a stable ID called a **pin**:
 
 PRD-level constraints get project-wide IDs (`<project>.C1`, `C2`...) that feature files reference — so every feature knows which product rules it must respect.
 
+**Deferred decisions get their own category: D-pins.** When you can't answer a product question yet, GSR takes a sensible default, assigns `<project>.D1`, `D2`... and records it in the PRD's Assumptions Ledger instead of blocking. Lifecycle: `assumed` → `confirmed` or `revised` — GSR brings it back once you have a working prototype to judge it against, never before. Deferred ≠ delegated: you still make the call, just when you have evidence for it.
+
 Pins are **append-only and never renumbered**. Once assigned, a pin ID is a stable join key you can use anywhere:
 - In commit messages (`feat(dashboard): implement dashboard.T1 — user can view metrics`)
 - In test descriptions (`it('dashboard.T1: user can view metrics', ...)`)
@@ -173,7 +175,7 @@ Blockers must be resolved. Minors go to BACKLOG.md.
 your-project/
 ├── CLAUDE.md                  # Technical instruction manual + Learned Rules
 ├── docs/
-│   ├── PRD.md                 # Product knowledge (what, for whom, why) + Constraint IDs (C1, C2…)
+│   ├── PRD.md                 # Product knowledge (what, for whom, why) + Constraint IDs (C1, C2…) + Assumptions Ledger (D1, D2…)
 │   ├── scope.md               # Original vision (historical after PRD)
 │   ├── techstack.md           # Stack + project-wide skills
 │   ├── features/

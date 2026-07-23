@@ -79,6 +79,7 @@ Once the user picks a feature, read:
 1. `docs/STATE.md` — check that all prerequisite features for this feature are done
 2. `docs/features/<name>.md` — the complete product spec
 3. `docs/techstack.md` — project-wide skills
+4. PRD.md Assumptions Ledger — note any D-pins listed under the feature's "Assumptions touched".
 
 **Prerequisite check:** Before loading anything else, scan the feature file for dependencies on other features. Cross-reference with STATE.md. If any prerequisite feature is `not started`, `in progress`, or `blocked`: use the decision gate pattern (`${CLAUDE_PLUGIN_ROOT}/docs/patterns/decision-gate.md`). Present via AskUserQuestion:
 
@@ -343,6 +344,13 @@ After feature is complete (user approved or all systematic tasks done):
 Update `docs/STATE.md`:
 - Feature status: `in progress` → `done`
 - Last updated: today's date
+
+**Assumption revisit checkpoint:** After updating STATE.md, check the PRD
+Assumptions Ledger for rows with Status `assumed` whose area this feature
+touches. If any: present up to 3 (oldest first) via one AskUserQuestion —
+"You've now seen this working. <assumption>: confirm / revise / keep
+deferred." Update the ledger and the Open Assumptions count in STATE.md.
+Follow `${CLAUDE_PLUGIN_ROOT}/docs/patterns/deferred-decisions.md`.
 
 **Phase completion check:** After updating, check if this was the last feature in the current phase (all features in the phase are now `done`).
 

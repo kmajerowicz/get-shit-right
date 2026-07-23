@@ -34,6 +34,11 @@ Parse it and output a structured status report using this exact format:
 ### Blockers
 [List any features with status BLOCKED, or phases with status BLOCKED. If none, write "None."]
 
+### Open Assumptions
+[Count + IDs of ledger rows with Status `assumed` from PRD.md, oldest first,
+e.g. "2 open: project.D1 (paper sizes), project.D3 (pricing tier)". If PRD.md
+or the ledger is missing, write "None."]
+
 ### Deferred to Backlog
 [List items from the Deferred section, or "None." if empty]
 

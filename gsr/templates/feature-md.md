@@ -4,6 +4,7 @@
 **Type:** creative / systematic
 **Status:** not started
 **Constraints:** [e.g., `<project>.C1`, `<project>.C2` — or "none"]
+**Assumptions touched:** [e.g., `<project>.D1` — or "none"]
 
 ---
 

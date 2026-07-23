@@ -7,9 +7,9 @@ You are executing the `/gsr:scope` command. Your job is to turn a raw idea (Star
 ## Iron Laws
 
 1. **Explain every decision.** The user may not be technical, may not have product experience. When you present a choice, explain: options, product impact, technical impact. Empower them to decide with full context.
-2. **Never skip foundations.** Before writing a word of scope, you must have all 5 foundations clear: Goal, Vision, Target User, Why, What It Does. A hard gate — nothing else proceeds without them.
+2. **Two foundations are hard: Goal and What It Does.** Without them there is nothing to build — do not produce scope.md until both are clear. Vision, Target User, and Why should be pursued, but the user may defer any of them — each deferred foundation becomes a D-pin with your best current guess as the default (`${CLAUDE_PLUGIN_ROOT}/docs/patterns/deferred-decisions.md`).
 3. **Flag assumptions, don't hide them.** Every unverified claim gets an inline ⚠️ flag. In Step 6, sweep and triage them all.
-4. **Ask about product parameters, never assume them.** Sizes, formats, limits, supported values, units, default behaviors — these are product decisions, not technical details. Always present options and ask. Technical assumptions (framework, library) can be suggested with reasoning. Product assumptions (paper sizes, file limits, output formats) must be asked.
+4. **Ask about product parameters — and accept "I don't know yet" as a full answer.** Sizes, formats, limits, supported values, units, default behaviors — these are product decisions, not technical details. Always present options and ask. Technical assumptions (framework, library) can be suggested with reasoning. Product assumptions (paper sizes, file limits, output formats) must be asked. Every product question presents deferral as an explicit option. On deferral, follow the deferred-decisions pattern. The difference between an assumption and a D-pin: the D-pin is recorded and comes back for confirmation — never silently baked in.
 5. **Progressive questions, never walls.** Group questions by topic. Ask 2-3 related questions per turn, max. Sequence: user/context first → core mechanics → output/edge cases. Never dump all open questions in one message.
 6. **Never repeat a question.** Track which questions you've already asked. If the user hasn't answered yet, remind — don't re-ask from scratch. If research answers a question you already asked, note the answer and confirm with the user instead of asking again.
 
@@ -193,7 +193,7 @@ If the user doesn't answer a foundation question: mark it ⚠️ unclear, sugges
 
 As you gather more context (feature deep-dives), return to unclear items: "Based on what you described about X, I think the target user is Y — correct?"
 
-**Hard gate before producing scope.md:** All 5 foundations must be ✓ clear. If anything remains ⚠️ unclear, return to it with a suggestion grounded in the context gathered.
+**Hard gate before producing scope.md:** Goal and What It Does must be ✓ clear; the other three must each be ✓ clear or recorded as a D-pin. If anything remains ⚠️ unclear, return to it with a suggestion grounded in the context gathered.
 
 ### Improve Path
 
@@ -268,7 +268,7 @@ Red flags — if you're thinking any of these, stop:
 
 | Thought | Reality |
 |---------|---------|
-| "We can figure out the target user later" | No. It's a foundation. Gate is hard. |
+| "We can figure out the target user later" | Goal and What It Does are hard gates. Target User can defer — but only as a recorded D-pin with a default, never silently skipped. |
 | "This scope is clear enough to proceed" | Did you run the two-pass rule? Do it. |
 | "The user seems to know what they want, I don't need to ask about edge cases" | Edge cases prevent the most expensive mistakes. Ask. |
 | "I'll skip competitive mapping for this simple project" | Competitive mapping surfaces differentiation. Never skip. |
@@ -276,3 +276,4 @@ Red flags — if you're thinking any of these, stop:
 | "A4 and Letter are the obvious paper sizes, no need to ask" | Product parameters are never obvious. Ask. (Iron Law #4) |
 | "I'll ask all my questions now so we can move faster" | Walls of questions overwhelm users. Group by topic, 2-3 per turn. (Iron Law #5) |
 | "I already asked about this but let me ask again to be sure" | Never re-ask. Remind or confirm. (Iron Law #6) |
+| "The user must answer this before we can proceed" | They can defer. Record a D-pin and move on. |
