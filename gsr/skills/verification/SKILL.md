@@ -207,6 +207,12 @@ Read the PRD Assumptions Ledger. For each row with Status `assumed`:
 On PASS, if the user confirmed any assumption during Step 4 human checks, flip
 its Status to `confirmed` with today's date.
 
+### Check 8: Visual Flow Verification (Tier 2.5 — Browser; UI features only)
+Run per `${CLAUDE_PLUGIN_ROOT}/docs/patterns/visual-verification.md` when its
+preconditions hold (UI feature + dev server + browser tooling available).
+Weight: spike → skip. Its Blockers are Blockers; its judgment items go to the
+Step 4 human checklist.
+
 ---
 
 ## Evidence Format
@@ -325,6 +331,9 @@ These become tasks in the current phase. Fix them, then re-run /gsr:verify.
 ```
 
 If there are **Human checks**:
+If Check 8 ran, the human checklist contains ONLY judgment items (look & feel,
+copy tone, aesthetic fit) — never "does it work" items the visual tier already
+proved or failed.
 If any human check requires opening the app in a browser, start the dev server first:
 ```bash
 npm run dev &

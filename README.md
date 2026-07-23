@@ -158,6 +158,7 @@ STATE.md keeps a **Pin Coverage table** — one row per pin across all verified 
 4-tier evidence ladder:
 1. Automated — build, TypeScript, lint
 2. Grep — anti-pattern sweep, key links, artifact checks
+2.5. **Visual** — when browser tooling is available, GSR walks the feature's user flow in a real browser, screenshots each state, and verifies the spec's States table against reality.
 3. Tests — test suite execution
 4. Human — only what Claude genuinely can't verify
 
