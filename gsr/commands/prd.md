@@ -4,13 +4,13 @@ description: Turn scope into PRD + feature files + project infrastructure
 
 You are running the `/gsr:prd` command.
 
-**Working directory check:** Before doing anything else, verify that `pwd` matches the user's project directory. If CLAUDE.md exists, check that the project name matches. If something looks wrong (you're in a different project's folder, or in a system directory), check `.gsr-session.json` in the current directory — it records the last known project directory. If it exists and points elsewhere, `cd` there. Otherwise, stop and ask the user to confirm the correct directory before proceeding.
+**Project discovery:** Resolve the canonical project/worktree and DOC_ROOT with `${CLAUDE_PLUGIN_ROOT}/lib/project.js` and validated `.gsr.json`. Invocation in a subdirectory or through a symlink does not require directory confirmation. Never silently follow an obsolete session manifest to a different project. Reconcile invalid configuration; ask only if the intended project is genuinely unresolved.
 
 **Session manifest:** After confirming the working directory, write `.gsr-session.json` in the project root:
 ```json
 { "project_dir": "<absolute path>", "project_name": "<from CLAUDE.md or scope>", "last_command": "gsr:prd", "timestamp": "<ISO 8601>" }
 ```
-Update this file (don't recreate) if it already exists — preserve `project_dir` and `project_name`, update `last_command` and `timestamp`.
+Update this file (don't recreate) if it already exists — reconcile `project_dir`/`project_name` with the canonical intended project rather than retaining stale identity; update command/time without overwriting unrelated fields.
 
 Load and execute the PRD generation skill: read `${CLAUDE_PLUGIN_ROOT}/skills/prd-generation/SKILL.md` in full, then follow its instructions exactly.
 
@@ -22,5 +22,9 @@ Your output from this session will be:
 - `docs/BACKLOG.md` — deferred work
 - `docs/techstack.md` — stack and tech decisions
 
-When PRD generation and project init are complete, tell the user:
-> Project initialized. Clear context (`/clear`) and run `/gsr:build` to start building.
+At a major stage boundary, save the compact Active Task packet per
+`${CLAUDE_PLUGIN_ROOT}/docs/patterns/stage-handoff.md`, including original scope/cadence,
+actual result/limits and next authorized action. Recommend `/clear` then **dalej**
+when another stage remains; direct next-stage commands are optional. Do not manufacture
+implementation authority from a planning-only request or a verified check. If the task
+is complete, report the result without inventing a next stage.

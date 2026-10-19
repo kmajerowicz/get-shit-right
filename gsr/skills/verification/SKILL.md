@@ -9,6 +9,47 @@ You are executing the `/gsr:verify` command. Your job is to verify a completed f
 
 ---
 
+## Fresh-context stage handoff
+
+At a major stage or long-build increment, follow
+`${CLAUDE_PLUGIN_ROOT}/docs/patterns/stage-handoff.md`. Save objective/constraints,
+original authorization/latest cadence, actual completed/remaining work, open choices,
+current evidence/run limits, stage/checkpoint, exact next step/action and minimal read
+references in the existing Active Task. Keep requirements in covered source documents.
+Recommend `/clear` then **dalej** after saving. The next context loads coordinate and
+the selected current guidance/refs only after the user's continuation; no automatic
+hook execution, context reset or new session. Direct commands remain scoped optional
+controls. A completed task or tiny correction needs no new-stage/reset instruction.
+Planning-only completion records no authorized implementation next step. Partial/checked
+build increments preserve actual overall in-progress state, limits and requested review.
+
+## Collaboration contract
+
+Explicit task authorization and constraints override generic workflow defaults within host permissions. Read settled answers from the conversation and project files; never ask for them again. A planning-only request does not authorize implementation. Prepare plans, research material uncertainties, load installed skills, record state and run proportionate checks without separate approval. Weight controls rigor, not authority or review cadence. Honor explicitly requested per-chunk review and later instructions narrowing autonomy; otherwise continue reversible work in scope. Ask only for an unresolved consequential product choice or a real installation, spending, publishing, destructive-action or host permission boundary. Continue independent authorized work while a decision is pending. Completion reports give the outcome, brief verification and unresolved limits; detailed evidence stays accessible.
+
+Discover the canonical project and DOC_ROOT using `${CLAUDE_PLUGIN_ROOT}/lib/project.js` and validated `.gsr.json`; below, `docs/` means that resolved DOC_ROOT, not an assumed folder. Invalid discovery/configuration is a diagnostic to reconcile, never permission to silently switch projects.
+
+### Task continuation and completion
+
+When authorized work updates STATE, add/update one optional `## Active Task` section
+without rewriting unrelated sections. Record objective, constraints, authorized scope,
+source/date of authorization in prose, explicit review cadence, current plan/task relative
+to DOC_ROOT, last verified run reference and next action. The template is
+`${CLAUDE_PLUGIN_ROOT}/templates/state-md.md`; legacy files remain valid.
+
+On resume read this section by heading (not the first 20 lines), read the referenced
+current task/plan, inspect actual repository state and observe current evidence freshness.
+Reconcile missing references and conflicting recorded progress with files; a done box is
+not proof and stale tests do not reset implemented work. Resume remaining authorized work
+without re-asking settled decisions. Preserve explicitly requested review boundaries;
+later instructions narrowing autonomy override STATE. No session record expands authority.
+
+At completion recheck evidence freshness. Report outcome, brief actual verification/run
+reference and unresolved limitations or necessary decision. Keep detailed gate output in
+records, not duplicate STATE assertions. Browser/manual observations and unavailable
+coverage remain explicit; machine checks never establish human acceptance. Do not demand
+user acceptance for each successful automated check.
+
 ## Iron Laws
 
 1. **"All tasks done" is not verification.** Check actual outcomes. Run commands. Read output. Verify with evidence. _[invariant]_
@@ -19,19 +60,22 @@ You are executing the `/gsr:verify` command. Your job is to verify a completed f
 
 ## Step 0: Detect Project State
 
-Read `docs/STATE.md`. Check the phase progress table. Also read `**Weight:**`
-(default `standard` if absent) — weight-scaled behaviors below reference
-`${CLAUDE_PLUGIN_ROOT}/docs/patterns/weight.md`.
+Resolve the explicit requested feature/phase/spec target first, otherwise an unambiguous
+saved task. Read the focused spec and inspect actual code/tests/integration before choosing
+verification versus spec review. A sufficient focused feature does not require whole PRD
+or STATE. Read existing STATE/weight as summaries (standard if absent); reconcile stale
+phase/checkbox labels with files and current evidence. `NOT STARTED` never proves no code.
 
-**If all phases are NOT STARTED** → the project has no built code to verify. Switch to **PRD Review Mode** (see section below). Do not proceed with Steps 1–5.
-
-**Otherwise** → continue to Step 1 (build verification).
+Use PRD/spec review only when that is the requested operation, or inspection actually
+shows no implementation for the target. If there is no full PRD, review the focused spec
+and relevant existing code constraints. Do not auto-implement during a direct verification
+request. Otherwise continue to build/behavior verification against the requested contract.
 
 ---
 
 ## PRD Review Mode
 
-The project has no built phases yet. Instead of verifying code, verify the spec — catch problems now before they become expensive to fix mid-build.
+The requested target is spec-only or actually has no implementation. Verify its focused spec/applicable PRD — catch problems now before they become expensive to fix mid-build.
 
 Run all 5 checks below. For each: fix what you can directly in `docs/PRD.md` and `docs/features/*.md`, surface what needs a user decision as a decision gate.
 
@@ -55,7 +99,7 @@ For each conflict found: either move the dependency earlier, swap phase order, o
 
 ### Check 3: Open Decisions
 
-Scan PRD.md and all feature files for anything ambiguous, assumed, or marked ⚠️. List them. Surface each as a decision gate — one at a time.
+Scan for ambiguity and assumptions; reconcile supplied answers first. List unresolved items; ask only about consequential product choices and honor existing deferrals.
 
 ### Check 4: Completeness
 
@@ -94,7 +138,7 @@ After running all 5 checks, present a structured report:
 - "Review passed clean" if nothing found
 
 ### Open Decisions
-[Each surfaced as a decision gate, one at a time]
+[Only consequential unresolved product choices need a decision gate]
 
 ### Gaps Requiring Input
 [Anything that needs user clarification before building]
@@ -110,7 +154,7 @@ If **NEEDS DECISIONS** or **HAS GAPS**: work through them before declaring ready
 
 ## Step 0: Determine Scope
 
-Ask the user: "Verify a specific feature, or a full build phase?"
+Use the feature/phase requested in the conversation or current authorized task. Ask only if verification scope remains genuinely unresolved.
 
 - **Feature verification** → read that feature file's must-haves
 - **Phase verification** → read all feature files in that phase + PRD build phase must-haves
@@ -133,19 +177,13 @@ These were defined at spec time. You are now checking that they are actually tru
 
 ## Step 2: Run Verification in Parallel
 
-**Weight:** spike → run Check 1 (build gate) and the Assumptions check only;
-state "Reduced ladder — spike weight" in the report. standard → Checks 1–5 +
-assumptions + pins. production → all checks.
+Select checks by changed behavior and stakes, using configured profiles only within documented applicability. Weight scales depth, not evidence requirements: a critical behavioral change needs behavioral checks at any weight; documentation alone needs no browser journey.
 
 Dispatch parallel verification checks (use implementer agents for independent checks). Dispatch via the Agent tool with `subagent_type: "gsr:implementer"` — model and role come from the agent definition:
 
-### Check 1: Build & TypeScript (Tier 1 — Automated)
-```bash
-npm run build      # must pass with 0 errors
-npx tsc --noEmit   # must report 0 TypeScript errors
-npm run lint       # must pass if configured
-```
-Report using evidence format (see Evidence Format below).
+### Check 1: Configured checks (Automated)
+
+Discover the project and validated `.gsr.json`; invoke `node "${CLAUDE_PLUGIN_ROOT}/scripts/run-checks.js" --cwd "<canonical-project-root>"` with an applicable configured `--profile` only when justified. Read actual result records and freshness per the gate skill. No hardcoded stack defaults; unavailable/failed/stale results remain explicit.
 
 ### Check 2: Anti-Pattern Sweep (Tier 2 — Grep)
 Standard patterns:
@@ -179,12 +217,12 @@ Report each as: WIRED / NOT WIRED
 
 ### Check 5: Truth Verification (Tier 2/3 — Command + Behavioral)
 For each Truth in must-haves:
-- Try to verify with a command or grep
+- Verify behavior with relevant tests/runtime observations; grep establishes only static presence/wiring
 - If needs manual check → mark as HUMAN
 
 ```bash
-npm test               # if tests cover this truth
-# grep for key patterns that prove the truth
+# Use the configured test/runtime check covering this truth through the shared runner.
+# Static patterns alone do not prove behavioral truth.
 ```
 
 ### Check 6: Spec Drift (Tier 2 — Grep, pinned specs only)
@@ -215,19 +253,15 @@ its Status to `confirmed` with today's date.
 ### Check 8: Visual Flow Verification (Tier 2.5 — Browser; UI features only)
 Run per `${CLAUDE_PLUGIN_ROOT}/docs/patterns/visual-verification.md` when its
 preconditions hold (UI feature + dev server + browser tooling available).
-Weight: spike → skip. Its Blockers are Blockers; its judgment items go to the
-Step 4 human checklist.
+Scale visual checks to changed behavior. Missing relevant tooling stays unavailable with its consequence reported; judgment remains separate from machine evidence.
 
 ---
 
 ## Evidence Format
 
-Run the gate per `${CLAUDE_PLUGIN_ROOT}/skills/gate/SKILL.md` (single source of truth for banned phrases and the evidence format). Every verification claim must follow the same format: show the command, the actual output, then the verdict. Verification-specific examples:
+Run the gate per `${CLAUDE_PLUGIN_ROOT}/skills/gate/SKILL.md`. Record check/profile/run references and exact supported conclusions; browser/manual observations remain separately attributed. No mandatory emoji syntax or full per-edit output. Illustrative static observations:
 
 ```
-✅ npm run build → Exit 0, 0 errors → "Build passes"
-✅ npx tsc --noEmit → Exit 0, 0 errors → "TypeScript clean"
-✅ npm run lint → Exit 0, 0 warnings → "Lint passes"
 ❌ grep -r "console.log" src/ → 3 matches (auth.ts:12, api.ts:45, utils.ts:8) → BLOCKER: debug logs in production code
 ⚠️ grep -r "TODO" src/ → 1 match (config.ts:22) → MINOR: moved to BACKLOG.md
 ```
@@ -244,10 +278,7 @@ Format the report per `docs/phases/4-verification.md`:
 ## [Feature/Phase] Verification — [date]
 
 ### Evidence Summary
-✅ npm run build → Exit 0, 0 errors → "Build passes"
-✅ npx tsc --noEmit → Exit 0 → "TypeScript clean"
-✅ npm run lint → Exit 0 → "Lint passes"
-✅ npm test → 24/24 pass → "All tests pass"
+[Configured profile, run reference, actual results, freshness and limitations]
 
 ### Demo Check
 > After this phase: [demo sentence from PRD]
@@ -281,7 +312,7 @@ Key Links:  [X]/[Y] wired
 Total:      [X]/[Y] must-haves satisfied — [U] unverified
 ```
 
-**PASS requires `unverified = 0`.** Every pin must have evidence in at least one tier. A pin with status `pending` in the feature file counts as unverified — it is a blocker.
+**Verification PASS requires applicable must-haves to have sufficient evidence.** Pending pins are valid inputs to first verification, not automatic blockers. Evaluate current requirements and evidence, then update statuses. Command/grep results never imply human acceptance; report automated verification and human acceptance separately. Missing behavioral evidence remains unverified.
 
 ### Anti-Patterns
 | File | Pattern | Severity |
@@ -297,7 +328,7 @@ Human checks needed: [list or "none"]
 
 ## Step 4: Present Report + Human Checks
 
-Show the full verification report.
+Present outcome, brief verification and unresolved limits; keep the detailed report accessible.
 
 If there are **Blockers**:
 ```
@@ -313,11 +344,7 @@ If there are **Human checks**:
 If Check 8 ran, the human checklist contains ONLY judgment items (look & feel,
 copy tone, aesthetic fit) — never "does it work" items the visual tier already
 proved or failed.
-If any human check requires opening the app in a browser, start the dev server first:
-```bash
-npm run dev &
-```
-Wait 2–3 seconds, then confirm it started (look for "ready" or "localhost" in output). If it fails to start, report the error before presenting checks.
+When browser checks are relevant, use the project's actual configured development server command and observe readiness. No npm default. If it cannot run, report unavailable coverage and its consequence.
 
 Then present the checklist:
 ```
@@ -329,7 +356,7 @@ Human verification needed:
 Mark each as pass or fail.
 ```
 
-Wait for the user to complete human checks.
+Wait only for required human judgment or requested review boundaries. Otherwise finish the verified subset and report outstanding acceptance/behavioral coverage without a repeated approval loop.
 
 ---
 
@@ -337,8 +364,9 @@ Wait for the user to complete human checks.
 
 Based on outcome:
 
-**If PASS (no blockers, human checks complete):**
-- Append verification report to STATE.md
+**If verification PASS (no applicable blockers or missing required behavioral evidence):**
+- Report automated verification separately from human acceptance; pending judgment never becomes accepted from a command pass
+- Record only concise outcome, current run/artifact reference and limitations in STATE.md; detailed gate results stay in evidence records and verification artifacts
 - Update feature/phase status to PASS with date
 - Move Minor anti-patterns to BACKLOG.md
 - For pinned specs: update each must-have row's Status in the feature file:
@@ -350,7 +378,7 @@ Based on outcome:
 **If BLOCKED:**
 - Update feature/phase status to BLOCKED
 - List blockers in STATE.md
-- Don't append full report yet — it gets appended after re-verification
+- Record concise blocker/next action and evidence reference in STATE; keep detailed failure/re-verification results in evidence records and artifacts
 
 **Phase PASS flow:**
 Check if all features in the phase are PASS → if yes, phase is PASS.
@@ -381,33 +409,15 @@ Present the triage as a table:
 
 For any item where the categorization is non-obvious or you're uncertain: use the decision gate pattern (`${CLAUDE_PLUGIN_ROOT}/docs/patterns/decision-gate.md`) — present the options via AskUserQuestion with your recommendation first.
 
-For items where the categorization is clear: include them in the table without a decision gate — just present and ask for confirmation at the end: "Does this look right? Adjust any categorizations before we finalize."
+For items where the categorization is clear: include them in the table without a decision gate — present recommendations without a routine confirmation pause. Do not silently change product priorities or expand the authorized build scope.
 
-After user confirms:
+For recommendations within existing settled product decisions:
 3. If any 'must before launch' items → "These become a new build phase. Run `/gsr:build` to continue."
-4. If nothing 'must before launch' → run the Deployment Check below before declaring done.
+4. If nothing 'must before launch' → report completion of the authorized local scope. Deployment is separate; inspect it only when relevant to the requested task.
 
 ### Deployment Check
 
-Read `docs/techstack.md`. If it mentions a hosting provider (Vercel, Netlify, Railway, Fly.io, Render, etc.):
-
-Check for deployment signals:
-- `vercel.json` exists, or `.vercel/` directory exists → likely configured
-- `netlify.toml` exists → likely configured
-- Ask the user directly:
-
-```
-One last thing — your stack uses [host]. Is it deployed?
-
-1. Yes — live at [URL]
-2. Not yet — I'll deploy now
-
-Deploying now means the project is actually live, not just built.
-```
-
-If the user says "not yet": walk them through the deployment steps for their specific host (e.g. for Vercel: `vercel --prod`, confirm env vars are set, smoke test the live URL). Do not declare DONE until they confirm it's live.
-
-If the stack has no hosting provider, or the user confirms it's already live → "Project is DONE."
+Deployment is a separate authorized action, not an automatic condition for finishing a local implementation/verification task. Read existing deployment evidence before asking. Configuration files do not prove a live deployment; report what was actually observed. If deployment/publication is requested and not yet authorized, prepare the concrete reviewable result and request only that permission. Do not publish, spend money or require the user to deploy merely because local work is complete.
 
 ---
 
@@ -417,9 +427,9 @@ Red flags:
 
 | Thought | Reality |
 |---------|---------|
-| "The tests pass, that means everything works" | Tests cover what you tested. Run the full verification ladder. |
+| "The tests pass, that means everything works" | Tests cover only their behaviors. Run meaningful applicable checks and report uncovered requirements. |
 | "This console.log is just debug, not a stub" | Check if it's replacing real functionality. If replacing → Blocker. If debug → Minor. |
 | "I'll mark this as PASS and let the user find issues in testing" | PASS means verified, not hoped-for. Run the checks. |
 | "The anti-pattern sweep found nothing, must be clean" | Did you add project-specific patterns from CLAUDE.md Learned Rules? |
-| "I'll ask the human to verify the build passes" | Run `npm run build`. You can do this yourself. |
+| "I'll ask the human to verify the build passes" | Run the configured check through the internal runner. Report if unavailable. |
 | "This should pass" / "Looks good" / "Probably works" | Red flag language. You haven't verified. Run the command, show the output, then claim. See `${CLAUDE_PLUGIN_ROOT}/skills/gate/SKILL.md`. |

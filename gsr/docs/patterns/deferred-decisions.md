@@ -32,9 +32,7 @@ Rows are never deleted.
 ## Revisit checkpoints (the only places assumptions come back)
 
 1. **After a feature build completes** (build skill Step 4): list open
-   assumptions whose area the built feature touches; one AskUserQuestion —
-   confirm / revise / keep deferred. Max 3 assumptions per checkpoint; oldest
-   first; never re-ask one the user just kept deferred.
+   assumptions whose area the built feature touches. List open assumptions without a routine approval pause; ask confirm / revise / keep deferred only when new evidence makes a consequential choice actionable or review is explicitly requested. Max 3 at a checkpoint; never re-ask recently deferred choices. Machine checks never confirm assumptions.
 2. **`/gsr:verify`**: `blocking` + `assumed` = Blocker. Non-blocking open
    assumptions are listed in the report, never block.
 3. **`/gsr:status`**: shows the open-assumption count.

@@ -1,16 +1,15 @@
 'use strict';
 // Read-only structural handoff observations. Never executes stages or decides authority.
 const fs = require('fs');
-const { reference, sections } = require('./task-handoff');
+const { reference, sections, headingKey } = require('./task-handoff');
 const STEPS = ['scope', 'prd', 'build', 'verify', 'debug', 'learn', 'quick', 'status', 'none'];
 const CHECKPOINTS = ['completed', 'checked-increment', 'partial'];
 function checkReference(item) {
   if (!fs.existsSync(item.file)) return `Reference missing: ${item.relative}`;
   if (item.section) {
     if (!item.relative.endsWith('.md')) return 'Section reference requires a Markdown heading';
-    const normalize = value => value.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-|-$/g, '');
-    const names = [...sections(fs.readFileSync(item.file, 'utf8'), true).keys()];
-    const matched = names.filter(name => normalize(name) === normalize(item.section));
+    const names = [...sections(fs.readFileSync(item.file, 'utf8'), true, item.section).keys()];
+    const matched = names.filter(name => headingKey(name) === headingKey(item.section));
     if (matched.length > 1) return `Ambiguous reference section: ${item.relative}#${item.section}`;
     if (!matched.length) return `Reference section missing: ${item.relative}#${item.section}`;
   }

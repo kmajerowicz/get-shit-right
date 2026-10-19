@@ -1,6 +1,6 @@
 # Feature Sketch Pattern
 
-**A lightweight design checkpoint that fires before mode selection when a feature is ambiguous. Keeps the build from starting on a shaky foundation.**
+**A lightweight design checkpoint that fires before implementation when a feature is ambiguous. Keeps the build from starting on a shaky foundation.**
 
 ---
 
@@ -8,13 +8,13 @@
 
 A sketch is not a PRD and not a task list. It is a 15-25 line alignment artifact that answers: "Do we agree on what we're building and how?" It lives in the feature file, not in a separate doc.
 
-The sketch gate fires automatically when the heuristic detects ambiguity, or unconditionally when `--sketch` is passed. If neither condition applies, it is silent — the build proceeds to Step 3 without any prompt.
+Prepare a sketch when heuristics indicate material uncertainty, or when `--sketch` requests the artifact. Heuristics never create automatic approval gates. If neither condition applies, it is silent — the build proceeds to Step 3 without any prompt.
 
 ---
 
 ## Heuristic — When to Fire
 
-Fire the sketch gate if **any** of these are true in the feature file:
+Inspect whether a sketch would help if **any** of these are true in the feature file:
 
 1. **Fewer than 3 concrete states** — the feature file mentions fewer than 3 of: empty, loading, error, success, offline, partial
 2. **No acceptance criteria** — no done-when language, no explicit acceptance criteria, no verifiable must-haves
@@ -27,7 +27,7 @@ If none trigger and `--sketch` was not passed: skip silently. Do not prompt. Do 
 
 ## Override
 
-`/gsr:build --sketch` forces the gate regardless of what the heuristic finds. Use case: the feature file looks clean but the builder knows it's conceptually risky in ways the heuristic can't see.
+`/gsr:build --sketch` requests sketch preparation regardless of what the heuristic finds. Use case: the feature file looks clean but the builder knows it's conceptually risky in ways the heuristic can't see.
 
 ---
 
@@ -49,19 +49,9 @@ Keep it to 15-25 lines. Every element is mandatory:
 
 ## Flow
 
-1. Gate fires (heuristic or `--sketch`) → Claude proposes sketch inline
-2. User reviews:
-   - **Approve** → sketch appended to feature file, proceed to Step 3
-   - **Edit** → user says what to change, Claude revises, loop back to step 2
-   - **Skip** → proceed to Step 3, no file written (one-click escape, no friction)
-3. On Approve: append to `docs/features/<name>.md` as:
-   ```markdown
-   ## Build Sketch — <YYYY-MM-DD>
-   <sketch content>
-   ```
-   The feature file is the canonical home. Do not create a separate sketch file.
-
----
+1. Inspect relevant risks using supplied context and prepare a sketch where useful.
+2. Append it to DOC_ROOT/features/<name>.md under `## Build Sketch — <YYYY-MM-DD>` when within authorized work; no separate file is needed.
+3. Proceed under existing implementation authorization. If planning-only, finish with the artifact. Ask only for an unresolved consequential product choice, or pause at an explicitly requested sketch review boundary. A sketch request alone does not imply a second approval.
 
 ## Why the Feature File
 

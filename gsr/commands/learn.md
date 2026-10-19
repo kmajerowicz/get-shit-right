@@ -4,17 +4,12 @@ description: Index an existing codebase, populate CLAUDE.md, and get told what t
 
 You are running the `/gsr:learn` command.
 
-**Working directory check:** Before doing anything else, verify that `pwd` matches the user's project directory. If CLAUDE.md exists, check that the project name matches. If something looks wrong (you're in a different project's folder, or in a system directory), check `.gsr-session.json` in the current directory — it records the last known project directory. If it exists and points elsewhere, `cd` there. Otherwise, stop and ask the user to confirm the correct directory before proceeding.
+**Project discovery:** Resolve canonical project/DOC_ROOT using `${CLAUDE_PLUGIN_ROOT}/lib/project.js` and validated `.gsr.json`. A stale `.gsr-session.json` is navigation only; never `cd` to its project automatically. Ask only if the intended project is genuinely unclear. Preserve useful existing docs and use the resolved DOC_ROOT.
 
-**Session manifest:** After confirming the working directory, write `.gsr-session.json` in the project root:
-```json
-{ "project_dir": "<absolute path>", "project_name": "<from CLAUDE.md or scope>", "last_command": "gsr:learn", "timestamp": "<ISO 8601>" }
-```
-Update this file (don't recreate) if it already exists — preserve `project_dir` and `project_name`, update `last_command` and `timestamp`.
+**Operation boundary:** Direct learn indexes and updates relevant documentation only; it never implements the contextual feature, provisions services or enters a full pipeline. Internally a broader authorized task may reuse its bounded assessment for focused feature preparation. No whole-PRD requirement or compulsory weight confirmation.
+
+If maintaining a session manifest, reconcile it against the canonical intended project; update stale project identity rather than preserving an incorrect path.
 
 Load and execute the learn skill: read `${CLAUDE_PLUGIN_ROOT}/skills/learn/SKILL.md` in full, then follow its instructions exactly.
 
-When indexing is complete, tell the user the next step based on the assessment:
-- If scope is unclear or missing: run `/gsr:scope`
-- If scope exists but no PRD: run `/gsr:prd`
-- If PRD exists: run `/gsr:build`
+When indexing is complete, return the bounded assessment and concrete next action. Existing-product features use focused scope/spec preparation without a full PRD. For a broader authorized task save the compact stage handoff, recommend `/clear` then **"dalej"**; direct commands remain optional. Standalone indexing ends here, without implementation.

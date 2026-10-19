@@ -124,3 +124,31 @@ _Only included if relevant — common mistakes for this type of feature._
 ## Related Features
 
 - [Feature name] (`docs/features/[name].md`) — [how they interact]
+
+
+---
+
+## Task Context
+
+_Optional for a focused existing-product feature. No full PRD required. These summaries
+never authorize work or override the latest user instruction._
+
+**Objective:** [bounded change; reuse the supplied request]
+**Constraints / out of scope:** [user constraints and affected scope limits]
+**Authorized scope:** [planning/build/local checks as actually requested]
+**Authorization source/date:** [user instruction in prose]
+**Review cadence:** [explicit boundaries; otherwise continue within the bounded stage]
+**Current step / next action:** [concrete step]
+**Dependencies:** [existing features/services or none with reason]
+**Verification needs:** [configured checks and behavioral observations needed]
+**Research / skill references:** [relevant existing guidance, not invented assets]
+
+## Integration Points
+
+[Existing entry/data/filter/auth flows affected; compatibility and regression needs.
+Omit or mark inapplicable with a reason for a new standalone feature.]
+
+## Open Decisions
+
+[Only actual consequential unresolved choices or valid recorded deferrals with
+source/default/severity. Do not create mandatory questions for empty template fields.]

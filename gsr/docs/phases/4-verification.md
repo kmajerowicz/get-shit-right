@@ -16,7 +16,7 @@
 
 ## Gate Function — 5-Step Verification Protocol
 
-Before ANY completion claim (in both build and verify phases), Claude follows this exact sequence:
+Before verification claims, discover the project/DOC_ROOT and validated `.gsr.json`, using the shared runner and freshness reconciliation per `skills/gate/SKILL.md`. No command-name or prose pattern creates evidence. For each claim:
 
 1. **IDENTIFY** — Name the command that proves the claim
 2. **RUN** — Execute the command
@@ -30,26 +30,26 @@ No shortcuts. No skipping steps. No claiming based on "I just wrote the code so 
 
 **Claim: "Build passes"**
 ```
-IDENTIFY: npm run build
-RUN:      npm run build
-READ:     "Compiled successfully. 0 errors, 0 warnings."
-VERIFY:   Output explicitly says 0 errors → claim supported
-CLAIM:    "Build passes (0 errors, 0 warnings)"
+IDENTIFY: configured build check
+RUN:      internal runner, applicable configured profile
+READ:     Runner records actual child exit 0, no signal/timeout, bounded output excerpt
+VERIFY:   Required results are present and current input/config fingerprints match
+CLAIM:    "Configured build check passed for the recorded current local inputs"
 ```
 
-**Claim: "No hardcoded API keys"**
+**Claim: "No matches for searched key patterns"**
 ```
 IDENTIFY: grep -r "sk-\|AKIA\|ghp_\|api_key\s*=" src/
 RUN:      grep -r "sk-\|AKIA\|ghp_\|api_key\s*=" src/
 READ:     0 matches
 VERIFY:   No matches for common key patterns → claim supported
-CLAIM:    "grep confirms no hardcoded API keys (0 matches for sk-, AKIA, ghp_, api_key= patterns)"
+CLAIM:    "No matches for the searched key patterns; not proof all secrets are absent"
 ```
 
 **Claim: "All tests pass"**
 ```
-IDENTIFY: npm test
-RUN:      npm test
+IDENTIFY: configured test check
+RUN:      internal runner, applicable configured profile
 READ:     "Tests: 12 passed, 12 total. Suites: 4 passed, 4 total."
 VERIFY:   All tests pass, none skipped → claim supported
 CLAIM:    "Test suite: 12/12 pass across 4 suites"
@@ -76,15 +76,13 @@ These phrases are **never allowed** in completion claims. They signal guessing, 
 
 ## Verification Ladder — 4 Tiers of Evidence
 
-Always start at Tier 1 and exhaust each tier before moving to the next. Never ask a human to verify something a machine can check.
+Choose applicable tiers by changed behavior and stakes; no universal full ladder for documentation edits. Never ask a human to verify an available machine check. Human acceptance is separate from command passing; missing required runtime/browser coverage remains unverified.
 
 ### Tier 1: AUTOMATED (cheapest — machine says pass/fail)
-- `npm run build` — compiles without errors
-- `npx tsc --noEmit` — no TypeScript errors
-- `npm run lint` — no lint violations
-- CI pipeline green
+- Actual configured static checks via `node "${CLAUDE_PLUGIN_ROOT}/scripts/run-checks.js" --cwd "<canonical-project-root>" [--profile <applicable-name>]`
+- Recorded child results and current input/configuration fingerprints; no hardcoded stack defaults
 
-**Use for:** Every completion claim, minimum bar.
+**Use for:** Applicable static checks; not behavioral or human acceptance proof.
 
 ### Tier 2: GREP (pattern search — anti-patterns absent, expected patterns present)
 - `grep -r "TODO\|FIXME\|HACK" src/` — no leftover markers
@@ -96,10 +94,8 @@ Always start at Tier 1 and exhaust each tier before moving to the next. Never as
 **Use for:** Checking code patterns, anti-patterns, completeness.
 
 ### Tier 3: TEST (test suite execution — pass/fail with output)
-- `npm test` — full suite
-- `npm test -- --coverage` — coverage thresholds
-- `npm run e2e` — end-to-end tests
-- Specific test files: `npm test -- dashboard.test.ts`
+- Configured project test/runtime checks, selected according to documented profile applicability
+- Missing tools/checks are unavailable, never fabricated as passing
 
 **Use for:** Behavioral verification, regression checks, feature correctness.
 
@@ -109,7 +105,7 @@ Always start at Tier 1 and exhaust each tier before moving to the next. Never as
 - "Verify dark mode contrast is readable"
 - "Check that animation feels smooth, not janky"
 
-**Use for:** Visual quality, feel, taste, device-specific behavior — things no command can verify. Only after Tiers 1-3 are exhausted.
+**Use for:** Visual quality, feel, taste, device-specific behavior — things no command can verify. After applicable automated checks; respect requested review cadence.
 
 ---
 
@@ -134,7 +130,7 @@ Appended to STATE.md as phase completion record.
 | # | Truth | Status | Evidence |
 |---|-------|--------|----------|
 | 1 | User can sign up with email | PASS | POST /api/auth/signup returns 201 |
-| 2 | Dashboard renders with real data | PASS | grep: no mock data in /dashboard |
+| 2 | Dashboard renders with real data | HUMAN / UNVERIFIED | Static grep found no mock pattern; runtime data/render check still needed |
 | 3 | Pull-to-refresh works on mobile | HUMAN | needs manual test on device |
 
 ### Artifacts
@@ -178,7 +174,7 @@ Human checks needed: mobile pull-to-refresh, demo sentence
 
 ## Anti-Pattern Sweep
 
-Standard grep patterns to run on every verification:
+Static patterns to select when applicable:
 
 - `console.log` used as placeholder for real functionality
 - `TODO`, `FIXME`, `HACK` in production code
