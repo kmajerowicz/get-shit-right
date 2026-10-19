@@ -6,7 +6,7 @@ A Claude Code plugin — an enforced instruction package with protocols and acti
 
 **One sentence:** The human makes all product decisions. The system tracks progress and enforces quality.
 
-**What's new in 0.6.0 (candidate):** Source-bound verification, focused task coordination, previews before implementation and durable Autopilot task queues. Includes corrections V1–V5 from verification of Phases 1–2. See the [candidate notes](docs/releases/0.6.0.md) for installation, supported observations and remaining validation. This candidate has not been published.
+**What's new in 0.6.0:** Source-bound verification, focused task coordination, previews before implementation and durable Autopilot task queues. Includes corrections V1–V5 from verification of Phases 1–2. See the [release notes](docs/releases/0.6.0.md) for installation and details.
 
 ---
 

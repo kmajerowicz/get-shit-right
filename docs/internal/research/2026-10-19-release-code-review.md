@@ -30,3 +30,7 @@ Native Chrome controlled through CUA opened the shipped local file. Observed des
 One isolated typo trial attempted Claude subscription inference, but returned `Failed to authenticate: OAuth session expired and could not be refreshed`, no model usage and no edit. The user then stated that no Claude account is currently available. The official login attempt was cancelled; no subscription was purchased and no API fallback was used. All inherited host/model scenario outcomes remain unobserved. Browser/installed-helper/source checks do not replace them.
 
 Integration merges are authorized. Public rollout still requires either the original model observations or an explicit owner revision of that release requirement after reviewing this limitation. Do not claim model correctness or erase the unobserved ledgers.
+
+## Owner release decision
+
+After reviewing green PR #19 and the remaining model-trial condition, the owner instructed: “wydajemy 0.6.0 bez tej informacji”. This explicitly revises the earlier release requirement: proceed with 0.6.0 using the observed source, 71-test, CI, installation and browser results; omit the model-trial disclaimer from public release notes. Historical model scenario outcomes stay unobserved, not passing. No claim of completed model validation is introduced.

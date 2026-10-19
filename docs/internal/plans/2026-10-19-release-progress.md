@@ -41,3 +41,7 @@ The owner explicitly authorized CR and ordered merges after successful checks. S
 The 0.6.0 metadata can be prepared on the isolated candidate without publishing or tagging it. After resolving live checks and reviewing the final candidate, tag that existing checked commit; do not run a second bump. Keep release notes' candidate status until actual rollout.
 
 Follow the [deployment plan](2026-10-15-phase-1-4-deployment.md) for remaining D2–D8 requirements. Effectiveness studies remain deferred until availability to users.
+
+## Final publication authorization
+
+The owner accepted publication after reviewing the remaining model-trial condition: “wydajemy 0.6.0 bez tej informacji”. The earlier model-trial rollout requirement is superseded for this release. Historical outcomes remain unchanged; public notes omit that disclaimer. PRs #14–#18 are merged; final PR #19 passed integration CI. Final documentation cleanup is followed by current CI, merge to main, tag/Release and public-channel installation checks. This is execution of the authorized release, without another routine approval.
