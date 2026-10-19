@@ -71,6 +71,17 @@ is not full implementation. Preserve show-and-wait across resets. Reuse settled 
 record observations vs simulations and update only affected requirements from feedback.
 Do not introduce a public preview command/flag or make --sketch request a prototype.
 
+## Existing-product change sequences
+
+For a substantial authorized change or several corrections, use
+`${CLAUDE_PLUGIN_ROOT}/skills/autopilot/SKILL.md`: inspect current impact, prepare bounded
+per-task context and execute sequentially with durable checkpoints and bounded retries.
+A selected saved queue is inspected against actual current sources/evidence before resume.
+The model reconciles current intent; JSON fields never grant authority. Quick, planning,
+review and explicit status/verify commands keep their requested operation. No new public
+command or mandatory mode question; no full PRD requirement. Relevant previews remain
+optional. Preserve per-chunk waits and later narrowing without another start approval.
+
 ## Execute the next bounded stage
 
 Load the existing applicable SKILL.md, rather than telling the user to coordinate

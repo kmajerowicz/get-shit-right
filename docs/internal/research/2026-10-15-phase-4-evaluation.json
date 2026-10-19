@@ -1,0 +1,346 @@
+{
+  "schemaVersion": 1,
+  "phase": 4,
+  "date": "2026-10-15",
+  "implementer": "Sol in Codex; exact runtime model identifier unavailable",
+  "targetHost": "Claude Code 2.1.274",
+  "baseline": "2026-10-15-phase-4-baseline.json",
+  "deterministic": [
+    {
+      "command": "npm run check",
+      "exitCode": 0,
+      "tests": 68,
+      "javascriptFiles": 43,
+      "log": "/tmp/gsr-phase4-final-check.log",
+      "autopilotTests": 17,
+      "limits": "Local helper/process/fixture behavior; no model or interactive clear proof"
+    },
+    {
+      "scenarios": [
+        "P4-S1",
+        "P4-S2",
+        "P4-S3",
+        "P4-S4"
+      ],
+      "observation": "Map/source/ID mutation, partial links and unsafe/unknown references exercised",
+      "kind": "deterministic"
+    },
+    {
+      "scenarios": [
+        "P4-S5",
+        "P4-S6"
+      ],
+      "observation": "Inherited policy, bounded excerpts, explicit expansion/gap plan and unrelated sentinel exclusion exercised",
+      "kind": "deterministic"
+    },
+    {
+      "scenarios": [
+        "P4-S8"
+      ],
+      "observation": "Actual helper child killed SIGTERM; new process inspected running and recorded actual failure with counters retained",
+      "kind": "process checkpoint; not model /clear"
+    },
+    {
+      "scenarios": [
+        "P4-S9",
+        "P4-S10",
+        "P4-S11",
+        "P4-S13",
+        "P4-S14"
+      ],
+      "observation": "External edits, latest failed over old green, unavailable/masked results, no-progress signatures, corrupt checkpoints, live/dead locks and persistent budgets exercised",
+      "kind": "deterministic"
+    },
+    {
+      "scenarios": [
+        "P4-S12"
+      ],
+      "observation": "Explicit review directive rejects writes, requested task review gates next start, weakening policies requires actual change source in covered context",
+      "kind": "helper guard only; natural-language adherence unobserved"
+    },
+    {
+      "scenarios": [
+        "P4-S15",
+        "P4-S16"
+      ],
+      "observation": "Real synthetic CLI before/after artifacts, missing coverage unobserved, historical checked/current stale-failed distinct; reports read-only",
+      "kind": "deterministic"
+    }
+  ],
+  "startup": [
+    {
+      "command": "npm run smoke:host",
+      "exitCode": 0,
+      "host": "Claude Code 2.1.274",
+      "skills": 12,
+      "commands": 11,
+      "packetDelivered": true,
+      "modelInvoked": false,
+      "log": "/tmp/gsr-phase4-host.log"
+    },
+    {
+      "command": "npm run smoke:installed",
+      "exitCode": 0,
+      "host": "Claude Code 2.1.274",
+      "settingsPreserved": true,
+      "skills": 12,
+      "commands": 11,
+      "modelInvoked": false,
+      "installedScenario": "Actual synthetic guest edit, installed runner, checkpoint, map refresh, explicit reconciliation and current report passed",
+      "log": "/tmp/gsr-phase4-installed-final.log",
+      "limits": "Temp catalog 0.6.0-test.1 only, repo version unchanged; no model end-to-end trial"
+    }
+  ],
+  "modelTrials": [
+    {
+      "id": "P4-S1",
+      "revision": "2026-10-15.1",
+      "status": "unobserved",
+      "host": null,
+      "model": null,
+      "tools": [],
+      "steps": [],
+      "result": null,
+      "evidence": [],
+      "violations": [],
+      "cost": null,
+      "duration": null,
+      "reason": "No isolated authenticated model session/inference invoked under local-test scope; helper processes do not prove actual model resume or boundaries"
+    },
+    {
+      "id": "P4-S2",
+      "revision": "2026-10-15.1",
+      "status": "unobserved",
+      "host": null,
+      "model": null,
+      "tools": [],
+      "steps": [],
+      "result": null,
+      "evidence": [],
+      "violations": [],
+      "cost": null,
+      "duration": null,
+      "reason": "No isolated authenticated model session/inference invoked under local-test scope; helper processes do not prove actual model resume or boundaries"
+    },
+    {
+      "id": "P4-S3",
+      "revision": "2026-10-15.1",
+      "status": "unobserved",
+      "host": null,
+      "model": null,
+      "tools": [],
+      "steps": [],
+      "result": null,
+      "evidence": [],
+      "violations": [],
+      "cost": null,
+      "duration": null,
+      "reason": "No isolated authenticated model session/inference invoked under local-test scope; helper processes do not prove actual model resume or boundaries"
+    },
+    {
+      "id": "P4-S4",
+      "revision": "2026-10-15.1",
+      "status": "unobserved",
+      "host": null,
+      "model": null,
+      "tools": [],
+      "steps": [],
+      "result": null,
+      "evidence": [],
+      "violations": [],
+      "cost": null,
+      "duration": null,
+      "reason": "No isolated authenticated model session/inference invoked under local-test scope; helper processes do not prove actual model resume or boundaries"
+    },
+    {
+      "id": "P4-S5",
+      "revision": "2026-10-15.1",
+      "status": "unobserved",
+      "host": null,
+      "model": null,
+      "tools": [],
+      "steps": [],
+      "result": null,
+      "evidence": [],
+      "violations": [],
+      "cost": null,
+      "duration": null,
+      "reason": "No isolated authenticated model session/inference invoked under local-test scope; helper processes do not prove actual model resume or boundaries"
+    },
+    {
+      "id": "P4-S6",
+      "revision": "2026-10-15.1",
+      "status": "unobserved",
+      "host": null,
+      "model": null,
+      "tools": [],
+      "steps": [],
+      "result": null,
+      "evidence": [],
+      "violations": [],
+      "cost": null,
+      "duration": null,
+      "reason": "No isolated authenticated model session/inference invoked under local-test scope; helper processes do not prove actual model resume or boundaries"
+    },
+    {
+      "id": "P4-S7",
+      "revision": "2026-10-15.1",
+      "status": "unobserved",
+      "host": null,
+      "model": null,
+      "tools": [],
+      "steps": [],
+      "result": null,
+      "evidence": [],
+      "violations": [],
+      "cost": null,
+      "duration": null,
+      "reason": "No isolated authenticated model session/inference invoked under local-test scope; helper processes do not prove actual model resume or boundaries"
+    },
+    {
+      "id": "P4-S8",
+      "revision": "2026-10-15.1",
+      "status": "unobserved",
+      "host": null,
+      "model": null,
+      "tools": [],
+      "steps": [],
+      "result": null,
+      "evidence": [],
+      "violations": [],
+      "cost": null,
+      "duration": null,
+      "reason": "No isolated authenticated model session/inference invoked under local-test scope; helper processes do not prove actual model resume or boundaries"
+    },
+    {
+      "id": "P4-S9",
+      "revision": "2026-10-15.1",
+      "status": "unobserved",
+      "host": null,
+      "model": null,
+      "tools": [],
+      "steps": [],
+      "result": null,
+      "evidence": [],
+      "violations": [],
+      "cost": null,
+      "duration": null,
+      "reason": "No isolated authenticated model session/inference invoked under local-test scope; helper processes do not prove actual model resume or boundaries"
+    },
+    {
+      "id": "P4-S10",
+      "revision": "2026-10-15.1",
+      "status": "unobserved",
+      "host": null,
+      "model": null,
+      "tools": [],
+      "steps": [],
+      "result": null,
+      "evidence": [],
+      "violations": [],
+      "cost": null,
+      "duration": null,
+      "reason": "No isolated authenticated model session/inference invoked under local-test scope; helper processes do not prove actual model resume or boundaries"
+    },
+    {
+      "id": "P4-S11",
+      "revision": "2026-10-15.1",
+      "status": "unobserved",
+      "host": null,
+      "model": null,
+      "tools": [],
+      "steps": [],
+      "result": null,
+      "evidence": [],
+      "violations": [],
+      "cost": null,
+      "duration": null,
+      "reason": "No isolated authenticated model session/inference invoked under local-test scope; helper processes do not prove actual model resume or boundaries"
+    },
+    {
+      "id": "P4-S12",
+      "revision": "2026-10-15.1",
+      "status": "unobserved",
+      "host": null,
+      "model": null,
+      "tools": [],
+      "steps": [],
+      "result": null,
+      "evidence": [],
+      "violations": [],
+      "cost": null,
+      "duration": null,
+      "reason": "No isolated authenticated model session/inference invoked under local-test scope; helper processes do not prove actual model resume or boundaries"
+    },
+    {
+      "id": "P4-S13",
+      "revision": "2026-10-15.1",
+      "status": "unobserved",
+      "host": null,
+      "model": null,
+      "tools": [],
+      "steps": [],
+      "result": null,
+      "evidence": [],
+      "violations": [],
+      "cost": null,
+      "duration": null,
+      "reason": "No isolated authenticated model session/inference invoked under local-test scope; helper processes do not prove actual model resume or boundaries"
+    },
+    {
+      "id": "P4-S14",
+      "revision": "2026-10-15.1",
+      "status": "unobserved",
+      "host": null,
+      "model": null,
+      "tools": [],
+      "steps": [],
+      "result": null,
+      "evidence": [],
+      "violations": [],
+      "cost": null,
+      "duration": null,
+      "reason": "No isolated authenticated model session/inference invoked under local-test scope; helper processes do not prove actual model resume or boundaries"
+    },
+    {
+      "id": "P4-S15",
+      "revision": "2026-10-15.1",
+      "status": "unobserved",
+      "host": null,
+      "model": null,
+      "tools": [],
+      "steps": [],
+      "result": null,
+      "evidence": [],
+      "violations": [],
+      "cost": null,
+      "duration": null,
+      "reason": "No isolated authenticated model session/inference invoked under local-test scope; helper processes do not prove actual model resume or boundaries"
+    },
+    {
+      "id": "P4-S16",
+      "revision": "2026-10-15.1",
+      "status": "unobserved",
+      "host": null,
+      "model": null,
+      "tools": [],
+      "steps": [],
+      "result": null,
+      "evidence": [],
+      "violations": [],
+      "cost": null,
+      "duration": null,
+      "reason": "No isolated authenticated model session/inference invoked under local-test scope; helper processes do not prove actual model resume or boundaries"
+    }
+  ],
+  "publicReadiness": "unverified",
+  "effectiveness": "Deferred until phases 1\u20134 complete and tool available to users. No benchmark/telemetry.",
+  "remainingCorrectnessGaps": [
+    "Natural-language model routing, semantic map completeness and research reuse (including P4-S7) unobserved",
+    "Actual interactive /clear \u2192 bare dalej and requested review/narrowing adherence unobserved",
+    "Inherited S1\u2013S8, C1\u2013C12 and P3-S1\u2013S13 model outcomes remain unobserved",
+    "Phase 3 browser visual/readability/keyboard observations unavailable through enabled CUA browsers",
+    "No remote/production storage, credit spend enforcement, autonomous fresh-session rollover or cross-host parity proof"
+  ],
+  "retainedRunner": "2026-10-15-phase-4-run-reference.json"
+}

@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "objective": "Allow booking without an account and preserve the current appearance",
+  "scope": "Guest entry, validation and booking persistence",
+  "exclusions": ["No redesign", "No publishing", "Cancellation remains deferred"],
+  "coverage": "reviewed",
+  "gaps": [],
+  "entries": [
+    {"id":"booking.T1","requirement":{"ref":"features/booking.md#Requirements"},"implementation":[{"ref":"@project/src/booking.js"}],"checks":["booking"],"dependsOn":[],"rationale":"The reserve entry enforces account presence before writing to the repository."},
+    {"id":"booking.T2","requirement":{"ref":"features/booking.md#Requirements"},"implementation":[{"ref":"@project/src/booking.js"}],"checks":["booking"],"dependsOn":["booking.T1"],"rationale":"The same entry validates time before repository writes; retain this regression."}
+  ]
+}

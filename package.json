@@ -3,7 +3,7 @@
   "version": "0.5.0",
   "description": "GSR \u2014 PRD-first, human-in-the-loop workflow for building production apps with Claude Code",
   "scripts": {
-    "check": "npm run check:js && npm run check:json && npm run check:docs && npm run check:version && npm run check:hooks && npm run check:install && npm run check:project && npm run check:runner && npm run check:freshness && npm run check:resume && npm run check:handoff && npm run check:coordination && npm run check:packet && npm run check:preview",
+    "check": "npm run check:js && npm run check:json && npm run check:docs && npm run check:version && npm run check:hooks && npm run check:install && npm run check:project && npm run check:runner && npm run check:freshness && npm run check:resume && npm run check:handoff && npm run check:coordination && npm run check:packet && npm run check:preview && npm run check:autopilot",
     "check:js": "node scripts/check-js.js",
     "check:json": "node scripts/check-json.js",
     "check:docs": "node scripts/check-doc-links.js",
@@ -22,7 +22,8 @@
     "check:packet": "node scripts/test-stage-packet.js",
     "smoke:host": "node scripts/smoke-host.js",
     "check:preview": "node scripts/test-preview.js",
-    "smoke:installed": "node scripts/smoke-installed.js"
+    "smoke:installed": "node scripts/smoke-installed.js",
+    "check:autopilot": "node scripts/test-autopilot.js"
   },
   "devDependencies": {
     "git-cliff": "^2.13.1"

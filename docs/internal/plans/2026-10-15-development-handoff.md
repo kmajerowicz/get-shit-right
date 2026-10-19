@@ -1,83 +1,111 @@
-# Kontynuacja rozwoju GSR — 2026-10-15
+# GSR development checkpoint — local scope delivered, 2026-10-15
 
-## Zlecenie i obowiązujące granice
+## Outcome and current scope
 
-Właściciel autoryzował kod, dokumentację i lokalne testy w kolejności:
-V1–V5 → sprawdzenie → Faza 3 P3-T1–T8 → szczegółowy plan wykonawczy
-zaakceptowanych czterech punktów Fazy 4 → realizacja Fazy 4.
-Pracować etapami, bez ponownego pytania o rozpoczęcie. Istniejący working tree
-Faz 1–2 zachować; brak resetu do HEAD, commitów, stagingu, tagów, push i publikacji.
-Nie czytać ani kopiować niezwiązanych osobistych plików, zwłaszcza CV. Odczyty tylko
-w repo i dokładnych źródłach instrukcji; nie szukać rekurencyjnie w katalogu domowym.
-Nie uruchamiać fingerprintu tego całego workspace — objąłby osobisty untracked plik.
-Testy runnera i snapshoty mają korzystać z jawnie wybranych źródeł/syntetycznych fixture.
-Bez dodatkowych modeli/agentów, nowych płatnych usług lub instalacji. Faktyczne
-ograniczenia hosta/narzędzi opisywać; nie nadawać modelowym próbom statusu PASS na
-podstawie parsera lub samej inspekcji promptu. Badania kosztów, czasu i UX dopiero po
-ukończeniu Faz 1–4 i udostępnieniu użytkownikom. Publikacja nie jest objęta zleceniem.
+Owner requested V1–V5, Phase 3, then a detailed plan followed by all four Phase 4 points.
+**This local code/documentation/test scope is delivered.** Do not restart implementation
+or reset the working tree. Old planning-only/pending statements are historical; latest
+results below govern continuation. No commits/publication were authorized or performed.
 
-Historyczne zdania "planning only" i "nie implementuj Fazy 4" w starych promptach
-nie nadpisują bieżącego zlecenia użytkownika, które obejmuje obie fazy.
+- V1–V5: [results](2026-10-15-phase-1-2-corrections.md), original regressions repaired.
+- Phase 3: [plan](2026-10-14-phase-3.md), [report](../research/2026-10-15-phase-3-implementation.md),
+  51 tests baseline, preview/feedback/resume/progress and actual local examples delivered.
+- Phase 4: [plan](2026-10-15-phase-4.md) written before code; [report](../research/2026-10-15-phase-4-implementation.md)
+  and [ledger](../research/2026-10-15-phase-4-evaluation.json), **68 tests / 43 JS**, all local checks pass.
 
-## Zakończony etap
+## What Phase 4 added
 
-**V1–V5 wdrożone i sprawdzone lokalnie.** Szczegóły i dowody:
-[plan poprawek](2026-10-15-phase-1-2-corrections.md#Wyniki-wykonania--2026-10-15).
+`gsr/lib/change-impact.js`, `task-package.js`, `execution-queue.js`, `outcome-report.js`,
+internal `gsr/scripts/autopilot.js`, hidden/model-invocable autopilot skill, patterns/templates,
+coordinate/build/verify/status/handoff integration, README and 17 regression tests/fixtures.
+Shared task-handoff parser has optional section ranges; default behavior/legacy tests retained.
 
-Zmiany tej sesji:
-- `gsr/lib/config.js`: default = jawne ID + wszystkie required.
-- `gsr/lib/fingerprint.js`: administracyjne pola rozpoznanego session manifestu.
-- `gsr/lib/project.js`: normalizacja docRoot po walidacji.
-- `gsr/lib/task-handoff.js`, `stage-packet.js`: duplicate diagnostics tylko żądanego celu referencji, domyślny parser pozostaje ścisły.
-- `gsr/commands/status.md`, `gsr/docs/patterns/task-coordination.md`: focused feature/Active Task i next action przed legacy fallback, decyzje bez PRD/STATE, read-only.
-- Kontrakt weryfikacji i techstack template: zgodność default i freshness.
-- Runner/freshness/packet/coordination tests, nowe `scripts/fixtures/corrections/`, check-json dla fixture.
+One covered `DOC_ROOT/work/<slug>/context.json` embeds one derived map + tasks/shared policy
+(internal simplification of initially proposed impact/context files to avoid drifting copies).
+Requirements/decisions keep existing owners; STATE's Execution Queue is administrative only.
+No new exclusion, public command, stage enum, dependency, model runner or background executor.
 
-Dowody końcowe: `npm run check` exit 0, **45 testów**, 32 JS, JSON/linki/wersje
-poprawne. `npm run smoke:host` exit 0, Claude Code **2.1.274**, SessionStart i
-packetDelivered true, 11 commands/10 skills, **modelInvoked false**. `git diff --check`
-exit 0. Node **v26.0.0**, bazowy HEAD **fa92074c5044dfd0de9dda577ef5c53cf5bc2307**;
-HEAD nie obejmuje istniejących Faz 1–2 ani nowych poprawek. Nie mylić go z kandydatem.
-Wersje źródeł i run locatory Faz 1–2 to dowody historyczne.
+Helpers validate actual refs/UTF-8 bounded excerpts/source identities, retain constraints,
+authorization source/date/scope/cadence, surface gaps and keep default required coverage.
+Queue records one running step, persistent attempts/budgets, actual default evidence and
+repeat signatures. New runId does not count as progress. Code/context changes require
+explicit semantic refresh/reconciliation; checked history stays separate from current tests.
+Review/wait directives reject writes; actual user source is required for weakening retained
+policy or widening budgets. Never fabricate directives/reviewedThrough/policyChangeSource.
 
-V3: ręcznie prześledzona instrukcja i test realnych odczytów czterech fixture,
-nie faktyczny modelowy routing komendy. Modelowe wyniki V3 i Faz 1–2 pozostają
-unobserved. Brak znanej regresji deterministycznej w poprawionych obszarach.
+One active queue/project; initialize refuses destructive replacement. Preserve/archive old
+queue explicitly before a different assignment. Conservative covered-context refresh can
+require an extra current run before advancing. These are limits, not measured inefficiency.
 
-## Dokładny następny krok
+## Evidence retained
 
-**P3-T1 — baseline i scenariusze.** Faza 3 nie została jeszcze zaimplementowana.
+- `npm run check`: exit 0, **68 tests / 43 JS**,
+  `/tmp/gsr-phase4-final-check.log`. Final report/docs/JSON/diff checks pass separately.
+- 17 Phase 4 tests include actual guest code edit/runner; fresh vs stale context/STATE;
+  same-ID/source deletion, unsafe refs, partial mapping, explicit context expansion;
+  real child SIGTERM/new-process checkpoint; old green vs newest failure; unavailable/
+  masked results; unchanged retries, budgets, policy retention, read-only reports and
+  cooperating live/dead lock handling. Process reset is not model /clear.
+- `npm run smoke:host`: exit 0, Claude Code **2.1.274**, **11 commands/12 skills**,
+  SessionStart + packet delivered, modelInvoked false. `/tmp/gsr-phase4-host.log`.
+- `npm run smoke:installed`: exit 0, actual isolated marketplace/install/update/startup,
+  custom statusline preserved. Installed-copy helper actually prepares/starts a synthetic
+  booking task, edits code, runs installed runner, records checkpoint, refreshes mapping,
+  rechecks/reconciles and reports checked/passing. `/tmp/gsr-phase4-installed-final.log`.
+  Disposable catalog only used 0.6.0-test.1 for cache upgrade; repo stays 0.5.0.
+- Safe pre-Phase-3 and pre-Phase-4 source snapshots have hash manifests under research;
+  final machine runner locator is added to the report/ledger if retained. These locators
+  refer to selected temp snapshots, never this full workspace. Missing tmp data is missing
+  evidence, not a green reusable result.
+- Node **v26.0.0**. Repository HEAD remains **fa92074c5044dfd0de9dda577ef5c53cf5bc2307**;
+  uncommitted/untracked Phase 1–4 source is the candidate. Do not reset/ship just HEAD.
 
-Po "dalej" ogłoś wznowienie P3-T1 i:
-1. Odczytaj minimalny zestaw poniżej, sprawdź aktualny `git status --short` bez resetu.
-2. Utwórz `docs/internal/plans/2026-10-14-phase-3.md` z P3-T1–T8 i wynikami per krok.
-   Załóż `scripts/fixtures/phase-3/scenarios.json` dla wszystkich P3-S1–S13 oraz ledger
-   poprawności pod `docs/internal/research/`. Każdy wynik live początkowo unobserved.
-3. Zapisz baseline po poprawkach: wersje, bezpieczny zestaw źródeł, rzeczywiste wyniki
-   check (wyżej); nowy check wykonaj przy zmianach lub konieczności uzgodnienia stanu.
-   Jeśli tworzysz snapshot, jawnie kopiuj tylko GSR/scripts/właściwe docs i konfiguracje;
-   uwzględnij ignored build skill oraz untracked źródła Faz 1–2. Nie kopiuj katalogu root
-   rekurencyjnie, .git ani osobistych plików. Nie dodawaj wykluczenia CV do fingerprintu.
-4. Następnie kolejno P3-T2 rekord/pattern → T3 routing/internal preview skill → T4 demo
-   → T5 feedback/D-piny/resume → T6 mapa postępu (routing V3 już naprawiony)
-   → T7 sprawdzenia/realne próby w dostępnych granicach → T8 gotowość wydania.
-5. Braki modelowe raportuj jako unobserved z konkretną przyczyną; implementacja,
-   startup/discovery, rzeczywiste zachowanie modelu i release readiness to osobne stany.
-   Nie omijaj niedokończonej implementacji Fazy 3 przechodząc do Fazy 4.
-6. Przed Fazą 4: potwierdź V1–V5/Fazę 3, technicznie sprawdź możliwości jednego hosta,
-   zapisz szczegółowy plan wszystkich czterech punktów, potem go wykonuj. Nie zaczynaj
-   benchmarków i nie pytaj ponownie o autoryzowaną implementację.
+## Outstanding correctness observations
 
-## Minimalny read set na wznowienie
+**Public release readiness remains unverified.** All model P4-S1–S16, inherited Phase 1
+S1–S8, Phase 2 C1–C12 and Phase 3 P3-S1–S13 outcomes are unobserved. Implementing Sol
+is not a product trial. No isolated authenticated model/inference session was invoked
+under local-test scope. Semantic map adequacy/research reuse, natural-language routing,
+actual /clear → bare dalej, cadence and later narrowing require real observations.
 
-1. Ten handoff.
-2. [Wyniki V1–V5](2026-10-15-phase-1-2-corrections.md).
-3. [Pełny kontrakt i zadania Fazy 3](../research/2026-10-14-phase-3-handoff.md).
-4. [Stan Fazy 2](../research/2026-10-13-phase-2-implementation.md) — rozróżnienie testów i live.
-5. [Kierunek Fazy 4](../research/2026-10-14-phase-4-direction.md) — planować po Fazie 3.
-6. `package.json` — bieżące kontrole; dalej tylko pliki właściwe dla zadania.
+Phase 3 visual readability/keyboard/browser cases also remain unobserved: CUA iab
+unavailable and listBrowsers empty. Demo HTTP opening 200 and handler DOM harness are
+actual, but do not replace browser checks. No persistent production DB, remote service,
+credit spend cap, automatic fresh-session rollover or cross-host behavior proof is claimed.
+The queue/helper sees source-bound records, not semantic truth or human acceptance;
+cooperating locks do not fully guard direct external edit races.
 
-Raport Fazy 1, audyt workflow §10, kierunek produktu i wybrane pozycje backlogu
-przeczytano w poprzednim etapie; nie odnawiać całego researchu. Zewnętrzne kontrakty
-hosta odświeżyć w oficjalnych źródłach przy integracji od nich zależnej. Nie wyciągać
-wniosku o automatycznym discovery/routingu skilla z frontmatter bez obserwacji.
+## Exact next action on a later "dalej"
+
+Local implementation is complete; do not invent Phase 5, broaden scope, repeat successful
+checks without a new reason, or begin effectiveness research/publication. Reconcile the
+latest user intent. For correctness-validation continuation, inspect the missing live
+conditions and available authorized host/model/browser access, then perform actual
+observations that can run within that access. No new paid service/model/install or
+publication follows automatically from this handoff. Preserve unavailable results as
+unobserved with a concrete reason. Actual native installed helper checks are already done;
+do not substitute those/parser fixtures for the missing model /clear journey.
+
+If code changes or a real failing observation arrives, repair only the affected scope,
+run relevant checks and update report/ledger. The detailed plan and scenario inputs already
+exist; no need to repeat full research/intake. Suggested minimal reads: this handoff,
+Phase 4 report/ledger/scenarios, and only helpers/skills relevant to the observed case.
+
+## Constraints that persist
+
+No repo reset, staging, commits/tags/push/publication; preserve all previous changes and
+unrelated files. No reading/copying CV/personal material or home-directory sweep. Never
+fingerprint this entire workspace, which contains an unrelated personal untracked file;
+use explicit selected/synthetic sources and include ignored build/untracked helpers.
+No new dependencies/services, agents/models, silent spending, telemetry or benchmark.
+Latest owner scope/cadence wins. Effectiveness/cost/time/UX studies wait until all four
+phases are complete **and** the tool is available to users; availability/publication has
+not happened in this assignment. Phase 3 release milestone remains independent; its old
+dry-run/0.6.0 proposal is not a published or final combined-version decision.
+
+Final retained evidence: [runner locator](../research/2026-10-15-phase-4-run-reference.json),
+actual selected-snapshot record passing/exit 0 with equal before/after fingerprints,
+171 inputs. Snapshot first failed solely because assembling it omitted releasing.md;
+exact file added and rerun passed, both actual records retained. Locator/nav docs were
+updated afterwards and checked separately. No root staging or commit; only disposable
+snapshot index created for source coverage. Local implementation scope remains delivered.

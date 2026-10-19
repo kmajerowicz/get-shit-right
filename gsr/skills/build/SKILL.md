@@ -164,6 +164,17 @@ When the heuristic suggests a sketch, prepare it per the feature-sketch pattern 
 
 ---
 
+## Sequential change packages when appropriate
+
+For a substantial existing-product change or a requested correction sequence, load
+`${CLAUDE_PLUGIN_ROOT}/skills/autopilot/SKILL.md` and the current saved queue definition
+when present. Its helpers prepare current impact/context and administrative checkpoints;
+you still implement with available tools and verify through the existing gate. Reconcile
+source changes before advancing, keep all original constraints/cadence and bound repeats.
+Small clear work stays proportionate. No helper runs work from SessionStart or accepts
+requirements/authorization from STATE alone. Use actual before/after observations in
+the outcome; no automatic model switching or claimed savings.
+
 ## Step 3: Execution approach
 
 Choose internal creative/systematic techniques from the task. Do not present a mandatory mode selector. Requested per-chunk review wins regardless of UI/non-UI classification; otherwise continue authorized work. A request to plan only remains planning only.

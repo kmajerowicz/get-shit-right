@@ -9,9 +9,14 @@ const JSON_FILES = [
   'scripts/fixtures/phase-2/scenarios.json',
   'scripts/fixtures/corrections/status-scenarios.json',
   'scripts/fixtures/phase-3/scenarios.json',
+  'scripts/fixtures/phase-4/impact.json',
+  'scripts/fixtures/phase-4/scenarios.json',
+  'docs/internal/research/2026-10-15-phase-4-evaluation.json',
+  'docs/internal/research/2026-10-15-phase-4-run-reference.json',
   'scripts/fixtures/phase-3/cli/input.json',
   'docs/internal/research/2026-10-15-phase-3-baseline.json',
   'docs/internal/research/2026-10-15-phase-3-evaluation.json',
+  'docs/internal/research/2026-10-15-phase-4-baseline.json',
   ...['docs/internal/research/2026-10-11-phase-1-run-reference.json', 'docs/internal/research/2026-10-13-phase-2-evaluation.json', 'docs/internal/research/2026-10-13-phase-2-run-reference.json'].filter(file => fs.existsSync(file)),
 ];
 

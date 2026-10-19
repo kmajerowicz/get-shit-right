@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Navigation to actual final selected-source runner record; never portable current-workspace green status",
+  "snapshot": "/private/var/folders/7y/v1nn98k56wg67qng2fknd78h0000gn/T/gsr-phase4-verified-ildlkvp8",
+  "record": "/var/folders/7y/v1nn98k56wg67qng2fknd78h0000gn/T/gsr-v1/0ac7d10238e7dd8d27dd5fac4a554dc9851f2743e62e837f2459008de4a681ec/evidence/01792059995762933-57aac699-c618-41f2-ba65-b7a0d142eb16/record.json",
+  "firstFailedRecord": "/var/folders/7y/v1nn98k56wg67qng2fknd78h0000gn/T/gsr-v1/0ac7d10238e7dd8d27dd5fac4a554dc9851f2743e62e837f2459008de4a681ec/evidence/01792059934637204-3fe063de-9181-45d1-bbc0-cd98703eff9e/record.json",
+  "firstFailureReason": "Snapshot assembly omitted docs/internal/releasing.md; exact authorized file added before successful rerun",
+  "selection": [
+    "gsr",
+    "scripts",
+    "docs/internal/plans",
+    "docs/internal/research",
+    "docs/BACKLOG.md",
+    ".claude-plugin",
+    "package.json",
+    "package-lock.json",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    ".gitignore",
+    "cliff.toml",
+    "docs/internal/releasing.md"
+  ],
+  "selectedSourceFiles": 170,
+  "note": "No personal file or workspace .git copied; only temp snapshot index staged, no commits. Snapshot predates final locator/navigation doc updates. Missing temp storage means unavailable evidence."
+}
