@@ -29,6 +29,19 @@ Prepare missing routine context from actual code/supplied facts; preserve valid 
 Only new consequential choices/real capability or permission boundaries pause affected
 work. Installed skill loading, plan preparation and ordinary checks need no extra approval.
 
+## Product preview route
+
+For an explicit "show it before building" request or a concrete flow/visual/interaction/
+technical uncertainty, load `${CLAUDE_PLUGIN_ROOT}/skills/preview/SKILL.md` and follow
+`${CLAUDE_PLUGIN_ROOT}/docs/patterns/product-preview.md`. Choose one useful demonstration
+from actual uncertainty; skip clear corrections and ordinary work with established
+patterns unless requested. Goal and main action are enough to start a bounded preview
+before full PRD. A focused existing-product feature needs no whole-product PRD.
+Planning-only stays planning; diagram-only creates no application code; preview-only
+is not full implementation. Preserve show-and-wait across resets. Reuse settled inputs,
+record observations vs simulations and update only affected requirements from feedback.
+Do not introduce a public preview command/flag or make --sketch request a prototype.
+
 ## Status-only and focused work
 
 Explicit/current feature → reconciled Active Task → actual spec/remaining work precede
@@ -65,3 +78,11 @@ Official contracts checked 2026-10-13: [skills](https://code.claude.com/docs/en/
 and startup delivery tests do not establish model route choice or actual bare **dalej**
 behavior. Record live trial gaps separately; expose `/gsr:start continue` if needed.
 Codex migrated skills do not prove native Claude hook parity or the reverse.
+
+
+For status/progress questions, derive the small useful process fragment from the
+resolved task/spec/preview, Active Task and current evidence. Identify current stage,
+next action and actual open decisions; no stored graph or invented percentage.
+"Built; verification stale" preserves implementation progress. Omit a full pipeline
+for tiny tasks and do not print the map at every response. Product flow and GSR work
+map answer different questions; status remains read-only.

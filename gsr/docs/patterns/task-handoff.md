@@ -37,3 +37,15 @@ bounded contract plus file boundaries/checks. Use the existing plan for executio
 keep its headings/table so progress normalization remains valid. STATE holds one
 Active Task/navigation summary. Feature/research/plan requirements remain fingerprint
 inputs; do not hide them in excluded administrative STATE to keep green.
+
+
+## Preview and feedback in a focused feature
+
+Use `${CLAUDE_PLUGIN_ROOT}/docs/patterns/product-preview.md` only when a demonstration
+is requested/useful. A legacy spec without preview sections remains sufficient. Link the
+actual preview record and decision owner; without scope/PRD use feature Open Decisions.
+Retain IDs, source/date/history and requested waits. Behavioral feedback updates affected
+requirements at their owner and names consequences; the preview record links the change.
+On resume compare wording/decisions/artifacts, not IDs alone. Build records reuse/adapt/
+discard and actual checks for replacements of mocks. Narrowed authority wins; no preview
+approval, machine test or bare continuation implies full feature acceptance.

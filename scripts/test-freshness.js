@@ -183,3 +183,20 @@ test('equivalent docRoot spelling normalizes only exact plan progress, never tas
     assert.equal(observe(root).status, 'stale');
   }
 }));
+
+test('preview assumptions/artifacts remain freshness inputs when ignored; same requirement ID and missing artifact invalidate', () => fixture(root => {
+ write(root, '.gitignore', 'dist/\ndocs/previews/\n');
+ write(root, 'docs/features/booking.md', '# booking.T1\nConfirm inline without login');
+ write(root, 'docs/previews/booking/README.md', '# Question\nNo account; variant B, wait after showing');
+ write(root, 'docs/previews/booking/index.html', '<p>Variant B</p>');
+ assert.equal(run(root).status, 0);
+ write(root, 'docs/features/booking.md', '# booking.T1\nRequire login before confirmation');
+ assert.equal(observe(root).status, 'stale');
+ assert.equal(run(root).status, 0);
+ fs.unlinkSync(path.join(root, 'docs/previews/booking/index.html'));
+ assert.equal(observe(root).status, 'stale');
+ write(root, 'docs/previews/booking/index.html', '<p>Variant B</p>');
+ assert.equal(run(root).status, 0);
+ write(root, 'docs/previews/booking/README.md', '# Question\nAccount required; variant A');
+ assert.equal(observe(root).status, 'stale');
+}));

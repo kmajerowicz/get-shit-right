@@ -131,6 +131,19 @@ After resolving the requested target, read its sufficient feature contract and T
 
 ---
 
+## Step 2.4: Product demonstration when useful
+
+For a requested early view or concrete product uncertainty, load
+`${CLAUDE_PLUGIN_ROOT}/skills/preview/SKILL.md` within this build stage. Follow
+`${CLAUDE_PLUGIN_ROOT}/docs/patterns/product-preview.md`: smallest useful flow/screen/
+interaction/technical experiment, actual artifacts, observed vs simulated behavior.
+Skip clear corrections and established patterns unless a preview is explicitly wanted.
+Planning-only/preview-only does not authorize the full build. Honor show-and-wait.
+If a preview exists, compare current requirement wording/decisions/artifacts and record
+reuse/adapt/discard plus the reason and mocks/data to replace before production work.
+A changed requirement under the same ID or missing artifact requires reconciliation.
+An approved look is not verified storage, human acceptance of all Truths or deploy.
+
 ## Step 2.5: Design Sketch Preparation
 
 Read `${CLAUDE_PLUGIN_ROOT}/docs/patterns/feature-sketch.md` for full pattern doc.

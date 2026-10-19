@@ -61,6 +61,20 @@ checkpoint does not mark all tasks done or clear stale/failing observations. The
 context resumes the exact unfinished step; a checked increment still leaves the overall
 build in progress. Stage context boundaries and human review boundaries are separate.
 
+## Preview checkpoints within scope/build
+
+Keep Next step in the existing enum (usually scope/build); Stage/Next action describe
+the preview question or transition. Preserve current variant, original authority,
+show-and-wait/review cadence and later narrowing through authoritative spec/preview
+record references in the six-entry Read next budget. Requirements remain covered inputs,
+not only STATE. On resume read current requirement *wording* and decision owner, compare
+with the preview revision/assumptions and actual artifact existence/content. Same ID with
+changed meaning or a missing artifact requires reconciliation; do not present the old
+preview as current. Hashes alone do not establish UI fidelity. Before full build record
+reuse/adapt/discard with reason/mocks to replace. Neither dalej, a checked checkpoint,
+a successful test nor "looks good" accepts all feature Truths or confirms all D-pins.
+A later review-only instruction stops product edits even if the saved packet says build.
+
 ## Evidence limits
 
 `lib/stage-packet.js` inspects/render records; it never executes a stage or authorizes

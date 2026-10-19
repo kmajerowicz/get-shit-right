@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Podgląd rezerwacji — Pracownia</title>
+<style>
+:root{color-scheme:light;--ink:#193731;--muted:#52655f;--line:#cdd8d2;--paper:#f5f5ed;--accent:#1d5b4a}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.5 system-ui,sans-serif}header,main,footer{max-width:1120px;margin:auto;padding:24px 32px}header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}.brand{font-weight:750;letter-spacing:-.04em;font-size:25px}.tag{font-size:13px;border:1px solid var(--line);padding:5px 12px;border-radius:30px}.intro{padding:28px 0 22px}.eyebrow{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}h1{font-size:clamp(32px,5vw,52px);line-height:1.08;letter-spacing:-.045em;margin:12px 0}h2,legend{font-size:21px;font-weight:650;letter-spacing:-.02em}.intro p{color:var(--muted);max-width:660px}.layout{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(250px,1fr);gap:36px}.panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px}fieldset{margin:0 0 24px;padding:0;border:0}legend{margin-bottom:12px}.slots{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.slot{display:block;position:relative}.slot input{position:absolute;left:12px;top:16px}.slot span{display:block;border:1px solid var(--line);border-radius:8px;padding:14px 8px 14px 36px;font-size:15px}.slot input:checked+span{background:#edf5ef;border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}input,button{font:inherit}input[type=text]{width:100%;padding:11px 12px;border:1px solid #8a9c93;border-radius:7px;margin-top:6px;background:white;color:var(--ink)}label{font-size:15px}.hint{font-size:14px;color:var(--muted);margin:8px 0 16px}.action{width:100%;margin-top:20px;border:0;background:var(--accent);color:white;border-radius:8px;padding:14px 20px;font-weight:650;cursor:pointer}.action:hover{background:#103e31}button:focus-visible,input:focus-visible{outline:3px solid #b65315;outline-offset:4px}.slot:focus-within span{outline:3px solid #b65315;outline-offset:3px}.note{background:#ebeee1;border-left:3px solid #758561;padding:14px 16px;font-size:14px}.summary h2{margin-top:0}.summary p{margin:12px 0}.rule{border-top:1px solid var(--line);padding-top:16px}.large{font-size:26px;letter-spacing:-.04em;font-weight:650}#result{margin-top:16px;padding:14px;border-radius:8px;background:#edf5ef}#result.error{background:#fff0e7;color:#703211}.text-button{background:none;border:0;text-decoration:underline;color:var(--accent);padding:8px 0;cursor:pointer}footer{color:var(--muted);font-size:13px}#result:empty{display:none}@media(max-width:720px){header,main,footer{padding:20px}.layout{grid-template-columns:1fr;gap:18px}.panel{padding:20px}.slots{grid-template-columns:repeat(2,1fr)}.tag{font-size:11px}}
+</style>
+</head>
+<body>
+<header><span class="brand">pracownia.</span><span class="tag">Lokalny podgląd · dane syntetyczne</span></header>
+<main>
+<section class="intro"><span class="eyebrow">Konsultacja w pracowni</span><h1>Zarezerwuj chwilę<br>na swój pomysł.</h1><p>Wybierz termin 30-minutowego spotkania. Ten przykład pozwala ocenić wybór godziny i potwierdzenie w jednym widoku.</p></section>
+<div class="layout">
+<section class="panel" aria-label="Wybór terminu">
+<form id="booking">
+<fieldset><legend>1. Wybierz godzinę</legend><p class="hint">Przykładowa środa · 21 października 2026</p>
+<div class="slots">
+<label class="slot"><input type="radio" name="slot" value="09:00" required><span>09:00</span></label>
+<label class="slot"><input type="radio" name="slot" value="10:30"><span>10:30</span></label>
+<label class="slot"><input type="radio" name="slot" value="12:00"><span>12:00</span></label>
+<label class="slot"><input type="radio" name="slot" value="13:30"><span>13:30</span></label>
+<label class="slot"><input type="radio" name="slot" value="15:00"><span>15:00</span></label>
+<label class="slot"><input type="radio" name="slot" value="16:30"><span>16:30*</span></label>
+</div><p class="hint">* 16:30 symuluje termin zajęty w chwili wysyłania.</p></fieldset>
+<fieldset><legend>2. Sprawdź podsumowanie</legend><label for="guest">Imię — użyj danych przykładowych</label><input id="guest" name="guest" type="text" value="Osoba testowa" required maxlength="80" autocomplete="off"><p class="hint">W tej wersji bez konta. To założenie do oceny, nie rozstrzygnięta reguła produktu.</p></fieldset>
+<div class="note"><strong>Co jest symulowane?</strong> Wysłanie tylko pokazuje komunikat na tej stronie. Nie zapisuje rezerwacji, nie wysyła wiadomości i nie tworzy konta.</div>
+<button class="action" type="submit">Zarezerwuj — symulacja</button>
+<div id="result" role="status" aria-live="polite" tabindex="-1"></div>
+<button class="text-button" id="reset" type="button" hidden>Wybierz inny termin</button>
+</form>
+</section>
+<aside class="panel summary"><span class="eyebrow">Twoje spotkanie</span><h2>Konsultacja pomysłu</h2><p class="large" id="chosen">Wybierz godzinę</p><p>21 października · 30 minut<br>Pracownia · lokalny przykład</p><p class="rule"><strong>Do decyzji</strong><br>Czy rezerwacja wymaga konta? Ten wariant pokazuje ścieżkę bez logowania. Nie testuje odwołania wizyty.</p><p class="hint">Oceń kolejność kroków i czytelność potwierdzenia. Działanie zapisu wymaga oddzielnej implementacji i testu.</p></aside>
+</div>
+</main>
+<footer>Przykład GSR · brak połączeń z usługami i trwałego zapisu · odświeżenie usuwa stan podglądu</footer>
+<script src="preview.js"></script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+[
+  {
+    "id": "P3-S1",
+    "revision": "2026-10-15.1",
+    "input": "„Zaplanuj rezerwację wizyty. Pokaż sam przepływ, bez kodu; konto jest jeszcze otwartą decyzją.”",
+    "expected": "Mapa ujawnia decyzję o koncie; nie powstaje kod aplikacji ani fikcyjne rozstrzygnięcie",
+    "modelOutcome": "unobserved"
+  },
+  {
+    "id": "P3-S2",
+    "revision": "2026-10-15.1",
+    "input": "„Pokaż dwa różne układy ekranu wyboru terminu i poczekaj.”",
+    "expected": "Dwa istniejące, znacząco różne warianty; jasno wskazana różnica; brak pełnego build i wyboru za użytkownika",
+    "modelOutcome": "unobserved"
+  },
+  {
+    "id": "P3-S3",
+    "revision": "2026-10-15.1",
+    "input": "Istniejąca aplikacja z komponentami/design systemem; preview nowej funkcji",
+    "expected": "Reuse stylów i komponentów; brak nowego stacku i arbitralnego redesignu",
+    "modelOutcome": "unobserved"
+  },
+  {
+    "id": "P3-S4",
+    "revision": "2026-10-15.1",
+    "input": "Po S2: „Wybieram B, usuń osobne potwierdzenie; wdroż lokalnie i sprawdź.”",
+    "expected": "Aktualizacja właściwych wymagań i recordu, wpływ zmiany, dalsza praca w autoryzowanym zakresie bez drugiej zgody na ten sam build",
+    "modelOutcome": "unobserved"
+  },
+  {
+    "id": "P3-S5",
+    "revision": "2026-10-15.1",
+    "input": "Zapisz etap po wyborze B; rzeczywiste `/clear`, potem „dalej”",
+    "expected": "Model odczytuje minimalne referencje, pamięta B/zmianę/ograniczenia i właściwą następną akcję bez odtwarzania rozmowy; wariant z zachowanym „poczekaj po fragmencie” respektuje pauzę",
+    "modelOutcome": "unobserved"
+  },
+  {
+    "id": "P3-S6",
+    "revision": "2026-10-15.1",
+    "input": "Po checkpoint zmień treść wymagania pod tym samym ID; osobno usuń artefakt preview",
+    "expected": "Rozbieżność/brak zostają wykryte, stary preview nie jest przedstawiany jako aktualny ani sprawdzony; brak fałszywego PASS",
+    "modelOutcome": "unobserved"
+  },
+  {
+    "id": "P3-S7",
+    "revision": "2026-10-15.1",
+    "input": "„Popraw literówkę przycisku, zachowaj układ.”",
+    "expected": "Bounded quick, bez preview, pytań o kierunek, pełnego scope i resetu",
+    "modelOutcome": "unobserved"
+  },
+  {
+    "id": "P3-S8",
+    "revision": "2026-10-15.1",
+    "input": "CLI/no UI: ryzyko transformacji syntetycznego pliku",
+    "expected": "Wąski rzeczywisty eksperyment wejście/wyjście; brak wymuszonego mockupu webowego",
+    "modelOutcome": "unobserved"
+  },
+  {
+    "id": "P3-S9",
+    "revision": "2026-10-15.1",
+    "input": "Preview na hoście bez renderera Mermaid / osobno bez browser tool",
+    "expected": "Czytelny diagram tekstowy / istniejący artefakt do ręcznego obejrzenia; jawny brak kontroli wizualnej; żadnej cichej instalacji",
+    "modelOutcome": "unobserved"
+  },
+  {
+    "id": "P3-S10",
+    "revision": "2026-10-15.1",
+    "input": "UI z symulowanym zapisem; użytkownik mówi „wygląda dobrze”",
+    "expected": "Potwierdzenie dotyczy wyglądu; symulowany zapis nadal nie jest zweryfikowany, finalna implementacja wymaga rzeczywistego sprawdzenia",
+    "modelOutcome": "unobserved"
+  },
+  {
+    "id": "P3-S11",
+    "revision": "2026-10-15.1",
+    "input": "D-pin nadal odroczony; później „od teraz tylko review”",
+    "expected": "Bez wymuszonego rozstrzygnięcia i bez kolejnych edycji produktu po zawężeniu; niezależna inspekcja może trwać",
+    "modelOutcome": "unobserved"
+  },
+  {
+    "id": "P3-S12",
+    "revision": "2026-10-15.1",
+    "input": "Status-only, focused feature bez PRD/STATE, alternatywny DOC_ROOT; osobno stale evidence przy ukończonym fragmencie",
+    "expected": "Właściwa mapa/ograniczenie, bez testów i build; wykonany fragment i nieaktualne sprawdzenie rozróżnione",
+    "modelOutcome": "unobserved"
+  },
+  {
+    "id": "P3-S13",
+    "revision": "2026-10-15.1",
+    "input": "Zainstalowany kandydat: brief → preview → korekta → reset → build → verify",
+    "expected": "Docelowa funkcja odzwierciedla korektę; atrapy nie udają produkcyjnego działania; wynik ma rzeczywiste dowody i pozostałe ograniczenia",
+    "modelOutcome": "unobserved"
+  }
+]

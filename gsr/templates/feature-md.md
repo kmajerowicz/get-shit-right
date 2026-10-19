@@ -151,4 +151,17 @@ Omit or mark inapplicable with a reason for a new standalone feature.]
 ## Open Decisions
 
 [Only actual consequential unresolved choices or valid recorded deferrals with
-source/default/severity. Do not create mandatory questions for empty template fields.]
+source/default/severity/status/date and previous-value history. Without scope/PRD this
+section owns the ledger; otherwise link its single owner. Migrate IDs/history with a
+pointer, never two editable copies. No questions merely for empty template fields.]
+
+## Product Preview
+
+_Optional; omit when not useful. Legacy specs without this section remain valid._
+
+[Actual preview record reference, question/revision/current variant and affected IDs.
+Requirements stay here or in scope/PRD; the record links the single decision owner.
+Preserve material assumption wording, feedback/source/date and consequences.]
+
+**Build disposition:** [reuse / adapt / discard with reason and mocks to replace;
+record before production build, not automatic approval of all Truths.]

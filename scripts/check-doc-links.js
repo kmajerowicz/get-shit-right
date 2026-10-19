@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Checks shipped workflows/templates and all Phase 1/2 planning/implementation artifacts.
+// Checks shipped workflows/templates and all phase planning/implementation artifacts.
 const fs = require('fs');
 const path = require('path');
 
@@ -19,7 +19,7 @@ function walkMd(dir) {
 let broken = 0;
 
 const phaseArtifacts = ['docs/internal/plans', 'docs/internal/research'].flatMap(dir =>
-  fs.existsSync(dir) ? fs.readdirSync(dir).filter(name => /phase-[12].*\.md$/.test(name)).map(name => path.join(dir, name)) : []
+  fs.existsSync(dir) ? fs.readdirSync(dir).filter(name => /phase-\d+.*\.md$/.test(name)).map(name => path.join(dir, name)) : []
 );
 
 for (const file of [...walkMd(DOCS_ROOT), ...phaseArtifacts, 'docs/BACKLOG.md'].filter(f => fs.existsSync(f))) {

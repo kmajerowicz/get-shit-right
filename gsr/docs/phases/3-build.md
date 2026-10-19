@@ -4,6 +4,15 @@
 
 ---
 
+## Early product demonstration
+
+For an explicit early view or material product uncertainty use the internal preview
+skill within scope/build, per `${CLAUDE_PLUGIN_ROOT}/docs/patterns/product-preview.md`.
+Preserve diagram-only/preview-only and show-and-wait; no new public stage or flag.
+Before full build record reuse/adapt/discard and replace mocks. Clear corrections skip
+preview. Engineering --sketch remains independent. Preview approval is not verified
+backend behavior or acceptance of every requirement.
+
 ## Mode A: Creative Build (human-in-the-loop)
 
 **When:** UI components, screens, interactions, design-sensitive features — anything the user will see and judge.

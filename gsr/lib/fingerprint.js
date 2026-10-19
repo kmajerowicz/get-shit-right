@@ -67,7 +67,7 @@ function fingerprint(project) {
       if (!stat.isDirectory()) { files.add(path.relative(project.root, dir)); return; }
       for (const entry of fs.readdirSync(dir)) add(path.join(dir, entry));
     };
-    for (const name of ['PRD.md', 'prd.md', 'scope.md', 'techstack.md', 'BACKLOG.md', 'features', 'work', 'plans', 'research']) add(path.join(project.docs, name));
+    for (const name of ['PRD.md', 'prd.md', 'scope.md', 'techstack.md', 'BACKLOG.md', 'features', 'work', 'plans', 'research', 'previews']) add(path.join(project.docs, name));
     const state = path.join(project.docRoot, 'STATE.md').split(path.sep).join('/');
     const exclusions = [state];
     const normalization = [];
