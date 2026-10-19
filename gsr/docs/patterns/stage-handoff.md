@@ -83,3 +83,13 @@ reads heading-based context, preserving legacy STATE and diagnostics. Hook/packe
 establish parsing/path/bounding/evidence behavior; only actual host/model trials establish
 bare-message resume, cadence adherence and minimal reading. Missing host support uses
 `/gsr:start continue` fallback with an explicit gap; fallback does not prove **dalej**.
+
+
+## Sequential execution context
+
+For a selected autopilot queue, follow `${CLAUDE_PLUGIN_ROOT}/docs/patterns/autopilot.md`.
+Covered context.json owns the derived map/tasks/policy; STATE holds only administration
+and the current Active Task pointers. Preserve source/cadence/later narrowing, exact
+unfinished step and <=6 Read next references. Keep existing Next step enum. SessionStart
+never starts a queue. Interrupted running and changed source/check evidence require
+inspection; historical checked work never becomes unconditional skip or human acceptance.

@@ -159,6 +159,24 @@ open decisions and exact next action. A built feature with stale checks retains 
 facts. Status-only is read-only and also works with a focused feature without PRD/STATE.
 
 
+### Carry a bounded change through to verification
+
+Ask for the outcome and limits: "Booking should work without an account. Keep the
+appearance. Implement locally and check it." For a substantial existing-product change,
+GSR prepares current requirement → implementation → check links, then small task contexts
+and a sequential queue. Missing/stale links expand inspection; they do not reduce checks.
+Clear corrections stay quick.
+
+Checkpoints retain attempts and the exact unfinished step. Repeated unchanged results
+require another approach or a concrete blocker. Requested review boundaries and later
+review-only instructions still apply. At a context boundary, the user performs `/clear`
+and sends **dalej**; this version does not automatically start fresh model sessions.
+
+The result describes actual before → after behavior, current checks and remaining choices.
+Old checked work and stale evidence remain separate. Costs/credits without host measurements
+stay unknown; no measured savings or full autonomy is claimed. Native helper/process and
+installation checks are separate from still-unobserved model end-to-end behavior.
+
 ### Pins — Spec-to-Code Traceability
 
 Every must-have in a feature file gets a stable ID called a **pin**:

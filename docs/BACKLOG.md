@@ -223,3 +223,14 @@ resume checks, derived status map and a synthetic booking/CLI example are delive
 native install/upgrade/startup; browser/model trials and public readiness remain unverified.
 No broad backlog item is closed, publication or effectiveness claim. The current owner
 instruction also covers the detailed Phase 4 plan and implementation, after this local stage.
+
+### Phase 4 local mechanisms delivered — 2026-10-15
+
+The approved [execution plan](internal/plans/2026-10-15-phase-4.md) preceded code.
+All four selected slices are delivered: current change-impact links, bounded per-task
+context, persistent sequential queue/repeat limits and actual-artifact before/after
+reports. [Implementation evidence](internal/research/2026-10-15-phase-4-implementation.md):
+68 local tests, native install/upgrade/startup and an actual installed-helper product-edit
+scenario pass. Model natural-language/interactive-clear and Phase 3 browser outcomes
+remain unobserved; public readiness is not declared. No broad B07/B11/B13–B16/B18–B20
+item is closed, no measured effectiveness claim, publication or approved Phase 5 scope.

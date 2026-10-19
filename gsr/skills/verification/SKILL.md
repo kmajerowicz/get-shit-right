@@ -444,3 +444,13 @@ Red flags:
 | "The anti-pattern sweep found nothing, must be clean" | Did you add project-specific patterns from CLAUDE.md Learned Rules? |
 | "I'll ask the human to verify the build passes" | Run the configured check through the internal runner. Report if unavailable. |
 | "This should pass" / "Looks good" / "Probably works" | Red flag language. You haven't verified. Run the command, show the output, then claim. See `${CLAUDE_PLUGIN_ROOT}/skills/gate/SKILL.md`. |
+
+
+## Sequential queue results
+
+For a selected autopilot context, inspect its actual current map/queue/evidence through
+`${CLAUDE_PLUGIN_ROOT}/scripts/autopilot.js inspect`, then verify the requested scope.
+An old checked step is history; failed/stale/unavailable current evidence stays explicit.
+Default retains all required checks. Do not initialize/start a queue from a verify-only
+request. Report observed before/after and decision-owner gaps per
+`${CLAUDE_PLUGIN_ROOT}/templates/outcome-report-md.md`; human acceptance is separate.

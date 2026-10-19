@@ -7,6 +7,17 @@ The whole point: one disciplined input — the **commit message** — drives the
 changelog, release notes, version bump, and git tag together, so progress on GSR
 is always legible from the repo without manual bookkeeping.
 
+## Current combined release plan
+
+For the uncommitted Phases 1–4 candidate, follow the
+[deployment plan dated 2026-10-15](plans/2026-10-15-phase-1-4-deployment.md).
+It records missing live/browser validation, a clean allowlisted release checkout,
+version preparation, publication boundaries and post-release verification/recovery.
+The 2026-10-18 agreed direction uses separate functional PRs into `release/0.6.0`,
+followed by release preparation and a final integration PR into `main`. The version
+remains proposed; merging to `main` is part of rollout, not an intermediate review step.
+The generic commands below are not authorization to commit or publish.
+
 ## Commit messages decide what gets shown
 
 Every commit follows [Conventional Commits](https://www.conventionalcommits.org/):

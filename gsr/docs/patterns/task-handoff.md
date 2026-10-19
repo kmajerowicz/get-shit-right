@@ -49,3 +49,13 @@ requirements at their owner and names consequences; the preview record links the
 On resume compare wording/decisions/artifacts, not IDs alone. Build records reuse/adapt/
 discard and actual checks for replacements of mocks. Narrowed authority wins; no preview
 approval, machine test or bare continuation implies full feature acceptance.
+
+
+## Sequential execution context
+
+For a selected autopilot queue, follow `${CLAUDE_PLUGIN_ROOT}/docs/patterns/autopilot.md`.
+Covered context.json owns the derived map/tasks/policy; STATE holds only administration
+and the current Active Task pointers. Preserve source/cadence/later narrowing, exact
+unfinished step and <=6 Read next references. Keep existing Next step enum. SessionStart
+never starts a queue. Interrupted running and changed source/check evidence require
+inspection; historical checked work never becomes unconditional skip or human acceptance.

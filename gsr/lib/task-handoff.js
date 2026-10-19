@@ -23,9 +23,10 @@ function reference(project, value) {
 function headingKey(value) {
   return value.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-|-$/g, '');
 }
-function sections(text, allLevels = false, target = null) {
-  const blocks = new Map(); let current = null; let fence = null; let comment = false;
-  for (const line of text.split(/\r?\n/)) {
+function sections(text, allLevels = false, target = null, withRanges = false) {
+  const blocks = new Map(); const ranges = new Map(); let current = null; let fence = null; let comment = false; let offset = 0;
+  for (const rawLine of text.match(/[^\n]*\n|[^\n]+$/g) || []) {
+    const line = rawLine.replace(/\r?\n$/, ''); const start = offset; offset += rawLine.length;
     const marker = line.match(/^ {0,3}(`{3,}|~{3,})(.*)$/);
     if (fence) {
       if (marker && marker[1][0] === fence[0] && marker[1].length >= fence.length && !marker[2].trim()) fence = null;
@@ -38,15 +39,16 @@ function sections(text, allLevels = false, target = null) {
     if (closes && !opens) throw new Error('Unmatched HTML comment closer');
     if (marker) { fence = marker[1]; continue; }
     if (/<!--/.test(line)) { comment = !/-->/.test(line); continue; }
-    if (!allLevels && /^# /.test(line)) { current = null; continue; }
+    if (!allLevels && /^# /.test(line)) { if (current) ranges.get(current).end = start; current = null; continue; }
     const heading = line.match(allLevels ? /^#{1,6} ([^#].*?)\s*$/ : /^## ([^#].*?)\s*$/);
     if (heading) {
+      if (current) ranges.get(current).end = start;
       if (blocks.has(heading[1]) && (target === null || headingKey(heading[1]) === headingKey(target))) throw new Error(`Ambiguous duplicate section: ${heading[1]}`);
-      current = heading[1]; blocks.set(current, []);
+      current = heading[1]; blocks.set(current, []); ranges.set(current, { start, end: text.length });
     } else if (current) blocks.get(current).push(line);
   }
   if (fence || comment) throw new Error('Unclosed Markdown fence/comment');
-  return new Map([...blocks].map(([key, lines]) => [key, lines.join('\n').trim()]));
+  return new Map([...blocks].map(([key, lines]) => [key, withRanges ? { ...ranges.get(key), content: lines.join('\n').trim() } : lines.join('\n').trim()]));
 }
 function inspectFeature(project, value) {
   try {

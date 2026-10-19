@@ -56,6 +56,17 @@ scope is ready and that is the next requested stage). If neither task nor projec
 artifacts exist, suggest scope for a new product or learn for existing code. Name
 missing navigation; do not present a known focused feature as a new project.
 
+## Selected execution queue
+
+If the resolved Active Task/current request explicitly identifies a covered autopilot
+context definition, use `${CLAUDE_PLUGIN_ROOT}/scripts/autopilot.js inspect` (or its
+read-only `lib/execution-queue.js` observation) for current checkpoint/next unfinished
+step, actual verification and reconciliation gaps. Never initialize/start/record/refresh
+from status-only. Interrupted running is unfinished, historical checked + stale evidence
+retains both facts, and an invalid queue is diagnostic rather than a new blank queue.
+Read actual decision owners from policy references; missing owner is unknown. Do not
+infer execution authority from its JSON fields or automatically select an unrelated queue.
+
 ## Small process map on request
 
 For "where are we?" or this status command, show only the useful current fragment,

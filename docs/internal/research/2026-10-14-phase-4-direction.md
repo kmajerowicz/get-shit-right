@@ -1,6 +1,6 @@
 # Faza 4 — GSR Autopilot
 
-Data: **2026-10-14**. Status: **właściciel zaakceptował wszystkie cztery punkty i zlecił ich zapisanie w Fazie 4; implementacja nierozpoczęta**.
+Data: **2026-10-14**. Status: **szczegółowy plan zapisany przed kodem; cztery mechanizmy dostarczone lokalnie 2026-10-15; public readiness niesprawdzona**.
 
 Aktualizacja **2026-10-15**: [poprawki V1–V5 z przeglądu Faz 1–2](../plans/2026-10-15-phase-1-2-corrections.md) są warunkiem wejścia do Faz 3–4. Wykonujemy je przed Fazą 3; przed Fazą 4 potwierdzamy ich ukończenie. Badania efektywności przeprowadzamy dopiero po ukończeniu wszystkich czterech faz i udostępnieniu narzędzia użytkownikom. Testy poprawności i wykonalności integracji pozostają częścią developmentu.
 
@@ -10,7 +10,7 @@ Aktualizacja **2026-10-15**: [poprawki V1–V5 z przeglądu Faz 1–2](../plans/
 
 Właściciel zaakceptował cztery punkty opisane poniżej i poprosił o zaznaczenie przyszłego rozwoju punktu 3 przy ewentualnej Fazie 5. To aktualny kierunek Fazy 4. Wcześniejsza propozycja „od działającego projektu do pierwszego użycia” zostaje odłożona w backlogu B22–B25, bez przypisywania jej numeru kolejnej fazy.
 
-Deploy samego GSR nadal następuje po Fazie 3. Faza 4 nie jest jego zależnością. Niniejszy dokument zapisuje zakres produktowy; szczegółowy handoff wykonawczy i implementacja są kolejnymi krokami.
+Deploy samego GSR nadal następuje po Fazie 3. Faza 4 nie jest jego zależnością. Niniejszy dokument zapisuje zakres produktowy; szczegółowy [plan wykonawczy](../plans/2026-10-15-phase-4.md) jest zapisany przed implementacją; wyniki są w [raporcie implementacji](2026-10-15-phase-4-implementation.md). Próby live pozostają jawnie niezaobserwowane.
 
 Podstawa w [backlogu](../../BACKLOG.md): B11/B15 — koordynacja i konsekwencje decyzji; B13/B14 — wykorzystanie researchu i skilli; B07/B16 — powiązania wymagań, implementacji i dowodów; B18/B19/B20 — pomiar kosztu, dobór wykonania i proporcjonalna weryfikacja. Faza 2 już zawiera instrukcje reuse i minimalny read set. Nowy zakres dodaje mechanizm przygotowania i kontroli wykonania na podstawie aktualnego projektu, nie tylko kolejne instrukcje dla modelu. Pełne pozycje backlogu nie zostają przez to zamknięte.
 

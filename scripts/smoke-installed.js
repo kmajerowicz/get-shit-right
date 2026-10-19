@@ -38,7 +38,7 @@ try {
  const installed = JSON.parse(fs.readFileSync(path.join(config, 'plugins/installed_plugins.json')));
  const entry = installed.plugins['gsr@gsr'].find(p => p.version === '0.6.0-test.1');
  if (!entry) throw new Error('Updated installed package not observed');
- for (const name of ['skills/build/SKILL.md', 'skills/preview/SKILL.md', 'skills/coordinate/SKILL.md', 'lib/fingerprint.js', 'examples/product-preview/index.html']) {
+ for (const name of ['skills/build/SKILL.md', 'skills/preview/SKILL.md', 'skills/coordinate/SKILL.md', 'skills/autopilot/SKILL.md', 'lib/execution-queue.js', 'scripts/autopilot.js', 'lib/fingerprint.js', 'examples/product-preview/index.html']) {
   if (!fs.existsSync(path.join(entry.installPath, name))) throw new Error(`Candidate source absent from installed cache: ${name}`);
  }
  const debug = path.join(temp, 'startup.log');
@@ -48,7 +48,35 @@ try {
  if (JSON.stringify(final.statusLine) !== JSON.stringify(settings.statusLine)) throw new Error('Custom statusLine changed');
  const count = type => Number(log.match(new RegExp(`Loaded (\\d+) ${type} from plugin gsr`))?.[1] || 0);
  if (!count('skills') || !log.includes('SessionStart')) throw new Error('Installed package startup/discovery not observed');
- console.log(JSON.stringify({ status: 'observed-install-upgrade-startup', host: version.stdout.trim(), baseline: 'HEAD plugin 0.5.0', candidate: 'working tree with disposable 0.6.0-test.1 version', settingsPreserved: true, skillsLoaded: count('skills'), commandsLoaded: count('commands'), modelInvoked: false, operations: observations, limitations: ['No model trial or actual interactive /clear', 'No published package or cross-host validation'] }));
+ // Actual installed-copy helper path, synthetic product edit and configured verification.
+ const scenario = path.join(work, 'scenario'); fs.mkdirSync(path.join(scenario, 'docs/features'), { recursive: true }); fs.mkdirSync(path.join(scenario, 'src'));
+ execFileSync('git', ['-C', scenario, 'init', '-q']);
+ const fixture = name => fs.readFileSync(path.join(ROOT, 'scripts/fixtures/phase-4', name), 'utf8');
+ fs.writeFileSync(path.join(scenario, 'docs/features/booking.md'), fixture('booking.md'));
+ fs.writeFileSync(path.join(scenario, 'src/booking.js'), fixture('booking.js'));
+ fs.writeFileSync(path.join(scenario, 'test-booking.js'), "const assert=require('assert/strict');const rows=[];const {reserve}=require('./src/booking');reserve({name:'Synthetic',time:'09:00'},rows);assert.equal(rows.length,1);assert.throws(()=>reserve({name:'Synthetic',time:'bad'},rows));assert.equal(rows.length,1);");
+ fs.writeFileSync(path.join(scenario, '.gsr.json'), JSON.stringify({ schemaVersion: 1, checks: [{ id: 'booking', argv: [process.execPath, 'test-booking.js'], kind: 'test' }] }));
+ const directive = { operation: 'implement', source: 'Synthetic installed-copy correctness scenario, local only' };
+ const request = { id: 'guest-booking', current: directive, impact: JSON.parse(fixture('impact.json')), tasks: [{ id: 'guest', objective: 'Allow guest booking', doneWhen: 'Stored locally and invalid time rejected', requirements: ['booking.T1', 'booking.T2'], dependsOn: [], constraints: [], extraRefs: [] }], policy: { constraints: ['Preserve appearance'], exclusions: ['No publication'], authorization: { source: directive.source, date: '2026-10-15', scope: 'Synthetic local code/test only' }, reviewCadence: 'Continue within local scenario', reviewAfterEachTask: false, decisionRefs: [{ ref: 'features/booking.md#Open-Decisions' }], contextRefs: [], limits: { maxAttempts: 3, maxSteps: 3 } } };
+ const helper = (action, input) => {
+  const result = spawnSync(process.execPath, [path.join(entry.installPath, 'scripts/autopilot.js'), action, '--cwd', scenario, '--file', 'work/booking/context.json', ...(input ? ['--input', '-'] : [])], { input: input ? JSON.stringify(input) : undefined, encoding: 'utf8', timeout: 10000 });
+  if (result.status !== 0) throw new Error(`Installed helper ${action}: ${result.stdout.slice(0, 400)}`);
+  return JSON.parse(result.stdout);
+ };
+ const verify = () => {
+  const result = spawnSync(process.execPath, [path.join(entry.installPath, 'scripts/run-checks.js'), '--cwd', scenario], { encoding: 'utf8', timeout: 10000 });
+  if (result.status !== 0) throw new Error('Installed runner did not pass synthetic booking checks');
+ };
+ helper('prepare', request); helper('initialize', { current: directive });
+ const step = helper('start', { current: directive, approach: 'Remove account guard, preserve time validation and local repository write' });
+ fs.writeFileSync(path.join(scenario, 'src/booking.js'), fixture('booking.js').replace("  if (!input.account) throw new Error('Account required');\n", ''));
+ verify(); helper('record', { current: directive, attemptId: step.attemptId });
+ helper('refresh', { ...request, reason: 'Inspected source links after local guest booking change' }); verify();
+ helper('reconcile', { current: directive, reason: 'Reviewed actual guest write and invalid-time behavior with installed full default checks', reviewedTasks: ['guest'] });
+ const scenarioReport = helper('report');
+ if (scenarioReport.execution !== 'checked' || scenarioReport.verification.status !== 'passing') throw new Error('Installed end-to-end queue result not current checked/passing');
+ fs.rmSync(require('../gsr/lib/evidence').directory(require('../gsr/lib/project').discover(scenario)), { recursive: true, force: true });
+ console.log(JSON.stringify({ status: 'observed-install-upgrade-startup', host: version.stdout.trim(), baseline: 'HEAD plugin 0.5.0', candidate: 'working tree with disposable 0.6.0-test.1 version', settingsPreserved: true, installedHelperScenario: 'actual guest edit, configured checks, checkpoint, map refresh, reconciliation and report passed', skillsLoaded: count('skills'), commandsLoaded: count('commands'), modelInvoked: false, operations: observations, limitations: ['No model trial or actual interactive /clear', 'No published package or cross-host validation'] }));
 } catch (e) {
  console.log(JSON.stringify({ status: 'unvalidated', host: version.stdout.trim(), diagnostic: e.message, operations: observations, modelInvoked: false })); process.exitCode = 2;
 } finally { fs.rmSync(temp, { recursive: true, force: true }); }
