@@ -27,12 +27,16 @@ The runtime parser/context foundation belongs to PR 1 because SessionStart requi
 - Candidate `0.6.0` passed all 70 local tests on Node 26. Exact-version fresh install and upgrade from public `v0.5.0` passed with preserved settings, 11 commands, 12 skills and the installed-helper scenario. These observations use the local catalog, not a published release.
 - CI now installs existing locked development dependencies with `npm ci --ignore-scripts`, because release regression invokes the real git-cliff binary offline. No dependency resolution was changed.
 
+## Current review and validation update
+
+The owner explicitly authorized CR and ordered merges after successful checks. See the [code review report](../research/2026-10-19-release-code-review.md) for two reproduced findings, their corrections and actual Chrome observations. All 71 local tests and exact-version installation checks passed after the corrections. PRs #14 and #15 have merged into `release/0.6.0`; later integration and CI are in progress. Fixes for Phases 3/4 are included in PR #18, which must accompany those phases before any main rollout.
+
 ## Outstanding before rollout
 
-- Host/model ledgers S1–S8, C1–C12, P3-S1–S13 and P4-S1–S16 remain unobserved. A request to use the existing Claude subscription for isolated trials is pending; no paid API or additional purchase is authorized.
-- Browser visual/keyboard preview checks remain unobserved: computer-use permission was denied on 2026-10-19. DOM harness results do not replace these checks.
-- Final preparation CI and final integration checks must be recorded on their actual candidate revision.
-- PR review/merge, final tag, `main` rollout, GitHub Release and public installation/update verification remain pending.
+- Model scenarios S1–S8, C1–C12, P3-S1–S13 and P4-S1–S16 remain unobserved. An actual Claude trial failed on expired OAuth; the owner then stated no Claude account is currently available. Login was cancelled; no purchase or API fallback.
+- Browser inspection is now observed: actual Chrome desktop, 375 px and 400 px, keyboard selection/submit/reset and busy feedback; console empty after the fix. This supersedes the earlier permission-denied observation, not the model ledger.
+- Current integration checks and final preparation CI must pass after the review fixes.
+- Public main rollout, tag/Release and public install/update checks remain pending. Before rollout, obtain original model observations or an explicit owner revision of that release requirement.
 
 The 0.6.0 metadata can be prepared on the isolated candidate without publishing or tagging it. After resolving live checks and reviewing the final candidate, tag that existing checked commit; do not run a second bump. Keep release notes' candidate status until actual rollout.
 

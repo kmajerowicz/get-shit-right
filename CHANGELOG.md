@@ -19,8 +19,8 @@ generated from commit messages by `npm run release` (see [docs/internal/releasin
 ### Fixed
 
 - **release:** Synchronize lockfile versions and verify exact installs
-
-
+- **autopilot:** Preserve task constraints and context sources on refresh
+- **preview:** Avoid shadowing the native form reset method
 
 ## [0.5.0] — 2026-07-23
 
