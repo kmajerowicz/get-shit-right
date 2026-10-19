@@ -214,3 +214,12 @@ implemented with 45 passing local tests and an isolated Claude Code 2.1.274 star
 model outcomes remain unobserved. See the [correction results](internal/plans/2026-10-15-phase-1-2-corrections.md)
 and [next-step handoff](internal/plans/2026-10-15-development-handoff.md).
 Phase 3 implementation is next; no whole backlog ID is closed.
+
+### Phase 3 local implementation — 2026-10-15
+
+Bounded preview guidance/records, scope/build routing, feedback/decision ownership,
+resume checks, derived status map and a synthetic booking/CLI example are delivered.
+[Evidence](internal/research/2026-10-15-phase-3-implementation.md): 51 local tests,
+native install/upgrade/startup; browser/model trials and public readiness remain unverified.
+No broad backlog item is closed, publication or effectiveness claim. The current owner
+instruction also covers the detailed Phase 4 plan and implementation, after this local stage.

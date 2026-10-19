@@ -4,6 +4,14 @@
 
 ---
 
+## Product preview is a separate artifact
+
+This sketch is the engineering approach/file map/data/risk artifact. `--sketch` does
+not request a visual prototype or a new approval. For an early product demonstration
+or a concrete product uncertainty use `${CLAUDE_PLUGIN_ROOT}/skills/preview/SKILL.md`
+within scope/build, per `${CLAUDE_PLUGIN_ROOT}/docs/patterns/product-preview.md`.
+Do not generate a prototype for every engineering risk signal or clear correction.
+
 ## Overview
 
 A sketch is not a PRD and not a task list. It is a 15-25 line alignment artifact that answers: "Do we agree on what we're building and how?" It lives in the feature file, not in a separate doc.

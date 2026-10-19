@@ -51,7 +51,7 @@ Caller `|| true`, tool success and assistant prose cannot change recorded result
 
 Freshness hashes tracked and nonignored untracked files, paths, types, content,
 symlink targets, executable modes and deletions. Gitignored outputs are excluded.
-Configuration and applicable requirement documents (including project research records)
+Configuration and applicable requirement documents (including project research and preview records/artifacts)
 are included even when ignored. Only the
 administrative STATE summary is excluded; never put requirements/source there.
 Valid project-root `.gsr-session.json` objects normalize only `last_command` and

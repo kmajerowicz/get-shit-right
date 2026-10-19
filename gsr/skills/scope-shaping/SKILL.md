@@ -32,6 +32,19 @@ Use supplied constraints and actual code; retain valid deferrals and IDs. The op
 `${CLAUDE_PLUGIN_ROOT}/lib/task-handoff.js` provides structural observations only,
 never semantic readiness, authority, passing behavior or acceptance.
 
+## Product demonstration when useful
+
+For an explicit "show it before building" request or a concrete flow/visual/interaction/
+technical uncertainty, load `${CLAUDE_PLUGIN_ROOT}/skills/preview/SKILL.md` and follow
+`${CLAUDE_PLUGIN_ROOT}/docs/patterns/product-preview.md`. Choose one useful demonstration
+from actual uncertainty; skip clear corrections and ordinary work with established
+patterns unless requested. Goal and main action are enough to start a bounded preview
+before full PRD. A focused existing-product feature needs no whole-product PRD.
+Planning-only stays planning; diagram-only creates no application code; preview-only
+is not full implementation. Preserve show-and-wait across resets. Reuse settled inputs,
+record observations vs simulations and update only affected requirements from feedback.
+Do not introduce a public preview command/flag or make --sketch request a prototype.
+
 ## Collaboration contract
 
 Explicit task authorization and constraints override generic workflow defaults within host permissions. Read settled answers from the conversation and project files; never ask for them again. A planning-only request does not authorize implementation. Prepare plans, research material uncertainties, load installed skills, record state and run proportionate checks without separate approval. Weight controls rigor, not authority or review cadence. Honor explicitly requested per-chunk review and later instructions narrowing autonomy; otherwise continue reversible work in scope. Ask only for an unresolved consequential product choice or a real installation, spending, publishing, destructive-action or host permission boundary. Continue independent authorized work while a decision is pending. Completion reports give the outcome, brief verification and unresolved limits; detailed evidence stays accessible.
@@ -85,7 +98,8 @@ Weight-scaled behaviors below reference `${CLAUDE_PLUGIN_ROOT}/docs/patterns/wei
 3. Inspect direct integration points, dependencies, relevant states/edge cases, existing verification configuration and behavioral/regression needs. Mark inapplicable states with a reason; do not invent a full model/navigation architecture. Research only material uncertainty, with available installed guidance/tools and no implied installation or provisioning.
 4. Create/reconcile `DOC_ROOT/features/<slug>.md` using `${CLAUDE_PLUGIN_ROOT}/templates/feature-md.md` and `${CLAUDE_PLUGIN_ROOT}/docs/patterns/task-handoff.md`. Preserve useful content, IDs and decision provenance. Include the optional Task Context, affected existing functionality and out-of-scope work. Omit full-PRD references when absent. If requirements already suffice, reuse that document rather than duplicating scope into another file.
 5. Create/update only genuinely needed missing CLAUDE/techstack/STATE documentation at resolved DOC_ROOT; never overwrite useful content or create a second docs tree. Keep requirements in the spec, not administrative STATE. Readiness supports the next authorized step, not acceptance or passing evidence.
-6. Finish this preparation stage with the focused feature reference and exact next action: `/gsr:build features/<slug>.md` (optional direct control). For the broader authorized task, save the compact handoff/Active Task and recommend `/clear`, then **"dalej"** so the next bounded build stage reads the focused spec. Do not ask for execution reapproval. A planning-only request finishes with the spec and does not implement. Preserve later narrower instructions and explicit review boundaries; the agent never clears context itself.
+6. If preview was requested or resolves a material uncertainty, use the preview guidance above before full implementation; record its outcome and affected requirements. If the user requested a wait, preserve it.
+7. Finish this preparation stage with the focused feature reference and exact next action: `/gsr:build features/<slug>.md` (optional direct control). For the broader authorized task, save the compact handoff/Active Task and recommend `/clear`, then **"dalej"** so the next bounded build stage reads the focused spec. Do not ask for execution reapproval. A planning-only request finishes with the spec and does not implement. Preserve later narrower instructions and explicit review boundaries; the agent never clears context itself.
 
 This path ends here; do not fall through to full-product scope output or `/gsr:prd`.
 

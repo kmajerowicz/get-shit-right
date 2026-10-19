@@ -9,6 +9,17 @@ You are executing the `/gsr:verify` command. Your job is to verify a completed f
 
 ---
 
+## Preview coverage and decisions
+
+A preview or its visual approval is not proof of production behavior, all Truth pins or
+human acceptance. Read current affected requirements and their single decision owner
+(PRD/scope or focused feature Open Decisions). Compare preview assumptions/variant with
+current wording/artifacts, including changed content under the same ID and missing files.
+Use current evidence freshness and actual checks for integrated storage/transforms/etc.;
+report simulation, unavailable browser observations and acceptance separately. Tests never
+confirm D-pins. Later review-only/show-and-wait wins over recorded build scope. Follow
+`${CLAUDE_PLUGIN_ROOT}/docs/patterns/product-preview.md` for the bounded transition.
+
 ## Fresh-context stage handoff
 
 At a major stage or long-build increment, follow

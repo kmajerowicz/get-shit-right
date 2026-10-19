@@ -129,11 +129,35 @@ If you hit `/clear` mid-investigation: run `/gsr:debug` again — it lists activ
 
 ### When things are fuzzy (`/gsr:build --sketch`)
 
-Before mode selection, GSR can propose a short design sketch for the feature: approach, file map, data shape, what could break, out of scope. It fires automatically when a feature file has ambiguity markers (`TBD`, missing acceptance criteria, >3 cross-feature dependencies). For clean feature files, it's silent.
+A sketch records the engineering approach, file map, data shape, risk and exclusions.
+GSR prepares it when useful; `--sketch` explicitly requests it. It does not require a
+second start approval or automatically create a product prototype. Requested review
+cadence and consequential open choices remain respected.
 
-To force the gate regardless: `/gsr:build --sketch`. To skip it in one click: "Skip — I know what I'm building." Approved sketches are appended to the feature file as a dated section — no separate file.
+### See the product before a full build
 
-**Optional rigor:** gets heavier only when the feature warrants it.
+Ask naturally: "Show the booking flow first, no code" or "Show the screen and wait."
+GSR uses a flow, one representative screen, a narrow interaction or a synthetic
+technical experiment according to the question. Clear corrections skip preview;
+existing products reuse their components and styles. No new command or full PRD is
+required for a focused feature.
+
+Feedback updates the owning requirements/decisions, with its source and history.
+A saved handoff retains the chosen variant, limits and requested wait across context
+resets. Before the full build, GSR records reuse/adapt/discard and replaces mocks.
+A visual approval does not establish backend behavior or acceptance of every requirement.
+
+Try the [local booking example](gsr/examples/product-preview/README.md): map/text
+fallback, time selection, simulated confirmation and a busy-slot error. It has no
+external dependency or real booking storage. HTTP opening and handler tests were
+observed; visual/keyboard and model end-to-end trials remain unobserved. The internal
+preview skill loads through scope/build; native startup discovery is distinct from
+whether a model chooses it correctly.
+
+Ask "where are we?" or use `/gsr:status` for the useful current process fragment,
+open decisions and exact next action. A built feature with stale checks retains both
+facts. Status-only is read-only and also works with a focused feature without PRD/STATE.
+
 
 ### Pins — Spec-to-Code Traceability
 

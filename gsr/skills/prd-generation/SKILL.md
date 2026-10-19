@@ -61,6 +61,17 @@ Do not wait for a response. Proceed immediately to "Step 0: Detect Mode" below. 
 
 ---
 
+## Consume existing preview decisions
+
+If scope/feature references a preview, read its current record and affected requirements.
+Carry settled decisions, provenance and actual artifact refs forward; do not replay intake,
+regenerate alternatives or infer backend behavior from visual approval. Reconcile changed
+wording even under the same ID and missing artifacts. Migrate an existing scope/feature
+D-pin to its PRD owner with the same ID/history and leave a pointer; never maintain two
+editable ledgers. A preview is optional; absence does not block PRD or build. A sufficient
+focused feature without a full PRD still goes directly to its authorized build. Follow
+`${CLAUDE_PLUGIN_ROOT}/docs/patterns/product-preview.md` for feedback and limits.
+
 ## Step 0: Detect Mode
 
 Read `**Weight:**` from `docs/STATE.md` (default `standard` if absent).

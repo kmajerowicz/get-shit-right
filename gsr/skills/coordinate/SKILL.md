@@ -58,6 +58,19 @@ through another downloader. No silent spending, publication or model switching.
    spending, installation or acceptance. `dalej` starts the remaining authorized step;
    it does not resolve a material product choice or accept pins.
 
+## Product demonstration when useful
+
+For an explicit "show it before building" request or a concrete flow/visual/interaction/
+technical uncertainty, load `${CLAUDE_PLUGIN_ROOT}/skills/preview/SKILL.md` and follow
+`${CLAUDE_PLUGIN_ROOT}/docs/patterns/product-preview.md`. Choose one useful demonstration
+from actual uncertainty; skip clear corrections and ordinary work with established
+patterns unless requested. Goal and main action are enough to start a bounded preview
+before full PRD. A focused existing-product feature needs no whole-product PRD.
+Planning-only stays planning; diagram-only creates no application code; preview-only
+is not full implementation. Preserve show-and-wait across resets. Reuse settled inputs,
+record observations vs simulations and update only affected requirements from feedback.
+Do not introduce a public preview command/flag or make --sketch request a prototype.
+
 ## Execute the next bounded stage
 
 Load the existing applicable SKILL.md, rather than telling the user to coordinate
@@ -66,6 +79,7 @@ its components. Use this dispatch map (actual paths relative to the plugin):
 | Task | Guidance to load | Stage boundary |
 |---|---|---|
 | Planning/review/explanation only | Relevant inspection/scope guidance | Requested artifact/report, no product code edits |
+| Product preview request / material uncertainty | `skills/preview/SKILL.md` within current scope/build | Named question and bounded artifact; preserve show-and-wait and source of authority |
 | Clear small correction | `skills/quick/SKILL.md` | Correct and check proportionately; no new spec or forced reset |
 | Repair requested | `skills/debug/SKILL.md` | Bounded investigation/fix, actual verification or truthful partial checkpoint |
 | Existing product, feature missing/partial | `skills/learn/SKILL.md` for affected-area inspection, then `skills/scope-shaping/SKILL.md` focused feature path | Sufficient single-feature contract; no full-product PRD |
@@ -75,6 +89,15 @@ its components. Use this dispatch map (actual paths relative to the plugin):
 | Verify requested | `skills/verification/SKILL.md` | Actual checked subset; separate human acceptance |
 
 Use existing installed skills when applicable; selection does not authorize installation. For material research follow `${CLAUDE_PLUGIN_ROOT}/docs/patterns/research-reuse.md`: read relevant existing findings first, match current constraint wording/support/dates, reuse when applicable and refresh only the affected question when needed. Changed wording under the same requirement ID triggers targeted review; missing/conflicting support stays uncertain. No blanket catalog/web sweep for routine corrections. Default to inline bounded work; stop at sufficient evidence, a supplied budget or a human/experiment boundary and record the reason. Existing D-pins never mandate research or a question. Skill-selection guidance will be refined separately; do not invent missing paths. Weight controls rigor, not authority or requested waits. Routine technical choices inside scope need no extra approval.
+
+## Progress questions
+
+For "where are we?"/status read the resolved current task/spec/preview, Active Task and
+current evidence. Show only the useful fragment (e.g. goal → preview [now] → build →
+verify), open decision/owner and exact next action. Missing STATE is valid; unknown
+stage stays unknown. Built + stale checks retains both facts. No stored graph, invented
+percentages, tests or implementation from a status-only request. Keep this work map
+separate from the product flow; do not repeat it at every response or for a typo.
 
 ## Finish the stage, preserve the task
 

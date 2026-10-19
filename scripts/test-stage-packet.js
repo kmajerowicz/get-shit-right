@@ -90,3 +90,17 @@ test('reference ambiguity is scoped to requested heading; malformed Markdown sti
  write('.ai/features/csv.md', text + '\n```md\n## Task Context\n```\n');
  assert.equal(inspectPacket(discover(root), activeTask(pointed)).status, 'recorded-handoff');
 }));
+
+test('preview stays an ordinary build checkpoint with bounded refs, chosen variant and requested wait (parser/hook only)', () => fixture((root, write, hook) => {
+ write('.ai/previews/csv/README.md', '## Question\nVariant B: show and wait; transformation still simulated');
+ const current = packet.replace('**Stage:** focused feature scope', '**Stage:** preview variant B, awaiting requested review')
+  .replace('**Next action:** implement filtered CSV and verify header/invalid-input behavior', '**Next action:** wait after showing B; no implementation before the requested review')
+  .replace('`@project/src/orders.py`', '`previews/csv/README.md#Question`');
+ write('.ai/STATE.md', current);
+ const info = inspectPacket(discover(root), activeTask(current));
+ assert.equal(info.status, 'recorded-handoff'); assert.equal(info.nextStep, 'build'); assert.equal(info.references.length, 2);
+ const out = hook(); assert.match(out, /variant B/); assert.match(out, /wait after showing B/); assert.match(out, /wait after each chunk/);
+ assert.match(out, /latest user instructions/);
+ fs.unlinkSync(path.join(root, '.ai/previews/csv/README.md'));
+ assert.equal(inspectPacket(discover(root), activeTask(current)).status, 'diagnostic');
+}));

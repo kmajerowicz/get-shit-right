@@ -1,6 +1,6 @@
 # Faza 3 — zobacz i sprawdź pomysł przed pełną implementacją
 
-Data: **2026-10-14**. Status: **kierunek zaakceptowany; dokument wykonawczy przygotowany; implementacja nierozpoczęta**.
+Data: **2026-10-14**. Status: **implementacja lokalna dostarczona 2026-10-15; gotowość publicznego wydania niesprawdzona**.
 
 Aktualizacja **2026-10-15**: przed P3-T1 wykonać [blok poprawek V1–V5](../plans/2026-10-15-phase-1-2-corrections.md). Badania efektywności, kosztu i UX przeniesiono na okres po ukończeniu Faz 1–4 i udostępnieniu narzędzia użytkownikom. Regresje i scenariusze poprawności pozostają w realizacji; pomiar korzyści nie blokuje wejścia do Fazy 3 ani jej odbioru.
 
@@ -117,7 +117,7 @@ Status-only pozostaje read-only, nie uruchamia testów ani implementacji. Brak S
 
 ## 6. Kolejność implementacji dla Sola
 
-Wszystkie zadania: **pending**. Najpierw zakończ [blok poprawek V1–V5](../plans/2026-10-15-phase-1-2-corrections.md), następnie wykonuj P3-T1–P3-T8 po kolei. Po każdym zapisz w wewnętrznym planie pliki, sprawdzenia, rzeczywisty wynik i ograniczenia; nie traktuj zadania jako nowej bramki zgody. Przy dużym etapie korzystaj z istniejącego handoffu i zalecenia `/clear` → „dalej”. Nie wprowadzaj osobnego workflow zależnego od konkretnego modelu.
+Aktualne wyniki: [plan wykonania](../plans/2026-10-14-phase-3.md) i [raport implementacji](2026-10-15-phase-3-implementation.md); braki live pozostają jawne. Pierwotna lista zadań poniżej jest kontraktem zakresu. Najpierw zakończ [blok poprawek V1–V5](../plans/2026-10-15-phase-1-2-corrections.md), następnie wykonuj P3-T1–P3-T8 po kolei. Po każdym zapisz w wewnętrznym planie pliki, sprawdzenia, rzeczywisty wynik i ograniczenia; nie traktuj zadania jako nowej bramki zgody. Przy dużym etapie korzystaj z istniejącego handoffu i zalecenia `/clear` → „dalej”. Nie wprowadzaj osobnego workflow zależnego od konkretnego modelu.
 
 ### P3-T1 — baseline i scenariusze
 

@@ -56,6 +56,26 @@ scope is ready and that is the next requested stage). If neither task nor projec
 artifacts exist, suggest scope for a new product or learn for existing code. Name
 missing navigation; do not present a known focused feature as a new project.
 
+## Small process map on request
+
+For "where are we?" or this status command, show only the useful current fragment,
+derived from the resolved task/spec, Active Task Stage/Next action and actual evidence.
+Example when those files really establish it:
+
+```text
+Goal established → Preview [now] → Build → Verify
+Open decision: account or no account? (reference its actual owner)
+Next action: show the no-login variant, then wait as requested.
+```
+
+This is GSR work progress, distinct from the product flow diagram. No separate stored
+graph, dashboard, background monitor or fictional percentages. Do not print a whole
+pipeline for a typo or at every reply. Without STATE, use the explicitly resolved feature
+and actual preview record; name absent navigation/unknown stage instead of guessing.
+A completed implementation with stale checks says "built; verification stale"; never
+move it back to scope. Record open choices from the actual owner and distinguish the
+requested wait from a missing authorization. Status stays read-only, with no tests/build.
+
 Report project, actual progress, next action and any limitation concisely. Detailed tables below are available on request; no compulsory full report:
 
 ---
