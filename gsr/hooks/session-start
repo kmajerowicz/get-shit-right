@@ -11,14 +11,16 @@ const path = require('path');
 const os = require('os');
 
 let input = '';
-const stdinTimeout = setTimeout(() => main({}), 2000);
+let handled = false;
+function once(data) { if (handled) return; handled = true; main(data); }
+const stdinTimeout = setTimeout(() => once({}), 2000);
 process.stdin.setEncoding('utf8');
 process.stdin.on('data', c => (input += c));
 process.stdin.on('end', () => {
   clearTimeout(stdinTimeout);
   let data = {};
   try { data = JSON.parse(input); } catch (e) { /* fall through */ }
-  main(data);
+  once(data);
 });
 
 function main(data) {
@@ -29,9 +31,10 @@ function main(data) {
   const statuslineDst = path.join(claudeDir, 'hooks', 'gsr-statusline.js');
   let installedVersion = null;
   if (fs.existsSync(statuslineDst)) {
-    const firstLine = fs.readFileSync(statuslineDst, 'utf8').split('\n', 1)[0];
-    const m = firstLine.match(/^\/\/ gsr-hook-version: (.+)$/);
-    installedVersion = m ? m[1] : null;
+    const installed = fs.readFileSync(statuslineDst, 'utf8');
+    const markerLine = installed.split('\n').slice(0, 2).find(line => line.startsWith('// gsr-hook-version:')) || '';
+    const m = markerLine.match(/^\/\/ gsr-hook-version: (.+)$/);
+    installedVersion = installed.startsWith('#!') && m ? m[1] : null;
   }
   let currentVersion = null;
   try {
@@ -46,112 +49,44 @@ function main(data) {
     } catch (e) { /* best-effort */ }
   }
 
-  // Check if this is a GSR project
-  const stateFile = path.join(cwd, 'docs', 'STATE.md');
-  const claudeFile = path.join(cwd, 'CLAUDE.md');
-  const isGsrProject = fs.existsSync(stateFile) || (
-    fs.existsSync(claudeFile) &&
-    fs.readFileSync(claudeFile, 'utf8').includes('GSR')
-  );
+  let project;
+  try { project = require('../lib/project').discover(cwd); }
+  catch (e) { console.log(`<gsr-context>GSR: ${e.message}. Verification is unverified.</gsr-context>`); return; }
+  const stateFile = path.join(project.docs, 'STATE.md');
+  const isGsrProject = project.initialized;
 
-  if (isGsrProject) {
-    // Read current state
-    let stateSnippet = '';
-    if (fs.existsSync(stateFile)) {
-      const state = fs.readFileSync(stateFile, 'utf8');
-      // Extract just the first 20 lines (current focus + phase progress)
-      stateSnippet = state.split('\n').slice(0, 20).join('\n');
-    }
-
-    // Detect active (in-progress) plan files
-    const STALE_DAYS = 7;
-    const plansDir = path.join(cwd, 'docs', 'plans');
-    let activePlansBlock = '';
-
-    if (fs.existsSync(plansDir)) {
-      const planFiles = fs.readdirSync(plansDir).filter(f => f.endsWith('.md'));
-      const activeLines = [];
-
-      for (const file of planFiles) {
-        try {
-          const content = fs.readFileSync(path.join(plansDir, file), 'utf8');
-          const lines = content.split('\n');
-
-          // Parse frontmatter (between first two --- lines)
-          if (lines[0] !== '---') continue;
-          const fmEnd = lines.indexOf('---', 1);
-          if (fmEnd === -1) continue;
-          const fm = lines.slice(1, fmEnd).join('\n');
-
-          const statusMatch = fm.match(/^status:\s*(.+)$/m);
-          if (!statusMatch || statusMatch[1].trim() !== 'in_progress') continue;
-
-          const featureMatch = fm.match(/^feature:\s*(.+)$/m);
-          const updatedMatch = fm.match(/^updated:\s*(.+)$/m);
-          const feature = featureMatch ? featureMatch[1].trim() : file.replace('.md', '');
-          const updated = updatedMatch ? updatedMatch[1].trim() : null;
-
-          // Check staleness
-          let isStale = false;
-          if (updated) {
-            const updatedMs = Date.parse(updated);
-            if (!isNaN(updatedMs)) {
-              const daysDiff = (Date.now() - updatedMs) / (1000 * 60 * 60 * 24);
-              isStale = daysDiff > STALE_DAYS;
-            }
-          }
-
-          // Count done vs total tasks from the task table
-          const taskRows = lines.filter(l => /^\|\s*\d+\s*\|/.test(l));
-          const total = taskRows.length;
-          const done = taskRows.filter(l => /\|\s*done\s*\|/i.test(l)).length;
-
-          // Find first non-done task description
-          const nextRow = taskRows.find(l => !/\|\s*done\s*\|/i.test(l));
-          let nextTask = '';
-          if (nextRow) {
-            const cols = nextRow.split('|').map(c => c.trim());
-            // cols: ['', ID, Description, Done When, Files, Status, Evidence, '']
-            if (cols.length >= 3) nextTask = `Task ${cols[1]} — ${cols[2]}`;
-          }
-
-          const label = isStale ? '⚠️  Stale plan (possibly abandoned)' : 'Active plan — resume available';
-          const updatedLabel = updated ? `, last updated ${updated}` : '';
-          activeLines.push(
-            `${label}:\n` +
-            `  Feature: ${feature}${updatedLabel}\n` +
-            `  File: docs/plans/${file}\n` +
-            `  Progress: ${done}/${total} tasks done` +
-            (nextTask ? `\n  Next task: ${nextTask}` : '')
-          );
-        } catch (e) { /* skip malformed plan files */ }
-      }
-
-      if (activeLines.length > 0) {
-        activePlansBlock = '\n' + activeLines.join('\n\n') + '\n\nRun /gsr:build to resume.';
-      }
-    }
-
-    console.log(`
-<gsr-context>
-This is a GSR (Get Shit Right) project. Available commands:
-- /gsr:scope  — shape idea into structured scope
-- /gsr:prd    — generate PRD + feature files + project init
-- /gsr:build  — build a specific feature (pick from feature files)
-- /gsr:verify — verify feature or phase against PRD criteria
-- /gsr:learn  — (re)index codebase, refresh CLAUDE.md
-
-${stateSnippet ? `Current project state:\n${stateSnippet}` : ''}${activePlansBlock}
-</gsr-context>
-`);
-  } else {
-    // Not a GSR project — remind user GSR is available
-    console.log(`
-<gsr-context>
-GSR (Get Shit Right) is available. To start:
-- New project: run /gsr:scope
-- Existing project: run /gsr:learn
-</gsr-context>
-`);
+  if (!isGsrProject) {
+    console.log('<gsr-context>\nGSR (Get Shit Right) is available. To start:\n- New project: run /gsr:scope\n- Existing project: run /gsr:learn\n</gsr-context>');
+    return;
   }
+  let state = '';
+  try { if (fs.existsSync(stateFile)) state = fs.readFileSync(stateFile, 'utf8'); }
+  catch (e) { console.log(`<gsr-context>GSR state unavailable: ${e.message}</gsr-context>`); return; }
+  const snippet = state.split('\n').slice(0, 20).join('\n').slice(0, 1400);
+  const taskBlock = require('../lib/task-context').taskContext(project, state);
+  const plansDir = path.join(project.docs, 'plans');
+  const plans = [];
+  if (fs.existsSync(plansDir)) {
+    for (const file of fs.readdirSync(plansDir).filter(f => f.endsWith('.md')).sort()) {
+      if (plans.length >= 5) break;
+      try {
+        const safe = require('../lib/project').resolveWithin(project.root, path.join(project.docRoot, 'plans', file), 'plan');
+        const content = fs.readFileSync(safe, 'utf8');
+        const fm = content.match(/^---\n([\s\S]*?)\n---/); if (!fm || !/^status:\s*in_progress\s*$/m.test(fm[1])) continue;
+        const rows = content.split('\n').filter(l => /^\|\s*\d+\s*\|/.test(l));
+        const done = rows.filter(l => /\|\s*done\s*\|/i.test(l)).length;
+        const next = rows.find(l => !/\|\s*done\s*\|/i.test(l));
+        const updated = fm[1].match(/^updated:\s*(.+)$/m)?.[1]?.trim();
+        const old = updated && Date.now() - Date.parse(updated) > 7 * 86400000;
+        plans.push(`Plan: ${project.docRoot}/plans/${file}; recorded progress ${done}/${rows.length}${old ? '; older than 7 days, inspect current files' : ''}${next ? `; next recorded task: ${next.split('|')[2]?.trim().slice(0, 250)}` : ''}. Reconcile recorded progress with actual files.`);
+      } catch (e) { plans.push(`Plan ${file}: ${e.message}`); }
+    }
+  }
+  console.log(`<gsr-context>
+This is a GSR (Get Shit Right) project. Project: ${project.root}; DOC_ROOT: ${project.docRoot}.
+${snippet ? `Current project state:\n${snippet}` : 'No STATE summary yet; inspect configured project files.'}
+${taskBlock}
+${plans.join('\n').slice(0, 1800)}
+For an unambiguous saved task, after the user writes "dalej"/continue, load the internal coordinate skill and resume the indicated bounded step within original scope/cadence. Read only the listed relevant references first; reconcile actual files/evidence. This hook does not initiate work, clear context or grant authority. Later instructions win. Do not infer human acceptance from automated evidence.
+</gsr-context>`);
 }

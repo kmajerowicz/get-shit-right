@@ -1,17 +1,22 @@
 {
   "name": "get-shit-right",
   "version": "0.5.0",
-  "description": "GSR — PRD-first, human-in-the-loop workflow for building production apps with Claude Code",
+  "description": "GSR \u2014 PRD-first, human-in-the-loop workflow for building production apps with Claude Code",
   "scripts": {
-    "check": "npm run check:js && npm run check:json && npm run check:docs && npm run check:version && npm run check:hooks",
-    "check:js": "node --check gsr/hooks/install.js && node --check gsr/hooks/gsr-statusline.js && node --check gsr/hooks/gsr-context-monitor.js && node --check gsr/hooks/session-start && node --check gsr/hooks/gsr-gate-tracker.js && node --check gsr/hooks/gsr-gate-guard.js && node --check gsr/hooks/gsr-redflag-guard.js",
+    "check": "npm run check:js && npm run check:json && npm run check:docs && npm run check:version && npm run check:hooks && npm run check:install && npm run check:project && npm run check:runner && npm run check:freshness && npm run check:resume",
+    "check:js": "node scripts/check-js.js",
     "check:json": "node scripts/check-json.js",
     "check:docs": "node scripts/check-doc-links.js",
     "check:version": "node scripts/check-version-sync.js",
     "check:hooks": "node scripts/test-hooks.js",
     "changelog": "git-cliff --unreleased",
     "release": "node scripts/release.js",
-    "hooks:install": "node scripts/install-git-hooks.js"
+    "hooks:install": "node scripts/install-git-hooks.js",
+    "check:install": "node scripts/test-install.js",
+    "check:project": "node scripts/test-project.js",
+    "check:runner": "node scripts/test-runner.js",
+    "check:freshness": "node scripts/test-freshness.js",
+    "check:resume": "node scripts/test-resume.js"
   },
   "devDependencies": {
     "git-cliff": "^2.13.1"
