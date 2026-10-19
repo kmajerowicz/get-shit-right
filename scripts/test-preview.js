@@ -34,7 +34,11 @@ test('actual preview handlers update selected time, surface busy error, clear ob
   reportValidity: () => valid,
   reset: () => { selected = null; }
  };
- const nodes = { '#booking': form, '#result': result, '#reset': reset, '#chosen': chosen };
+ const html = fs.readFileSync(path.join(demo, 'index.html'), 'utf8');
+ const resetId = html.match(/<button\b[^>]*\bid="([^"]+)"/)[1];
+ // Browsers expose named form controls as properties, including collisions with reset().
+ form[resetId] = reset;
+ const nodes = { '#booking': form, '#result': result, ['#' + resetId]: reset, '#chosen': chosen };
  vm.runInNewContext(fs.readFileSync(path.join(demo, 'preview.js'), 'utf8'), { document: { querySelector: selector => { assert.ok(nodes[selector]); return nodes[selector]; } } });
  let prevented = 0; const submit = () => handlers.submit({ preventDefault: () => { prevented++; } });
  submit(); assert.equal(result.textContent, '');
