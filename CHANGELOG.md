@@ -7,6 +7,21 @@ generated from commit messages by `npm run release` (see [docs/internal/releasin
 
 <!-- GSR:RELEASES — new versions are inserted directly below this line by `npm run release`. Do not hand-edit generated sections; fix the commit message and regenerate. Entries below 0.2.9 are hand-curated history. -->
 
+## [0.6.0] — 2026-10-19
+
+### Added
+
+- **reliability:** Add source-bound checks and repair installed hooks
+- **coordination:** Add focused task routing and context handoffs
+- **preview:** Add decision previews feedback and resumable progress
+- **autopilot:** Add impact mapping durable task queues and outcome reports
+
+### Fixed
+
+- **release:** Synchronize lockfile versions and verify exact installs
+
+
+
 ## [0.5.0] — 2026-07-23
 
 ### Added

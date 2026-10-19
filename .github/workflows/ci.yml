@@ -17,7 +17,10 @@ jobs:
         with:
           node-version: 22
 
-      - name: Static checks (js, json, docs, version sync)
+      - name: Install locked release-tool dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Static checks and runtime regressions
         run: npm run check
 
       - name: Lint commit messages

@@ -1,7 +1,7 @@
 {
   "name": "get-shit-right",
-  "version": "0.5.0",
-  "description": "GSR \u2014 PRD-first, human-in-the-loop workflow for building production apps with Claude Code",
+  "version": "0.6.0",
+  "description": "GSR — PRD-first, human-in-the-loop workflow for building production apps with Claude Code",
   "scripts": {
     "check": "npm run check:js && npm run check:json && npm run check:docs && npm run check:version && npm run check:hooks && npm run check:install && npm run check:project && npm run check:runner && npm run check:freshness && npm run check:resume && npm run check:handoff && npm run check:coordination && npm run check:packet && npm run check:preview && npm run check:autopilot && npm run check:release",
     "check:js": "node scripts/check-js.js",

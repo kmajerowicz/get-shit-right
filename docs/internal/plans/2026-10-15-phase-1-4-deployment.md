@@ -2,6 +2,10 @@
 
 Data: 2026-10-15. **Status: plan przygotowany; wykonanie deployu nierozpoczęte.**
 Aktualizacja 2026-10-18: właściciel zaakceptował kierunek podziału na PR-y opisany poniżej.
+Aktualizacja 2026-10-19: właściciel zlecił wykonanie releasu. Przygotowanie trwa;
+aktualny podział, wyniki i braki zapisuje [raport przygotowania](2026-10-19-release-progress.md).
+Historyczne ograniczenie do samego planowania poniżej nie jest ponownym wymogiem zgody
+na rutynowe kroki objęte tym zleceniem. Wymagania poprawności przed rolloutem pozostają.
 Zakres: wydanie pluginu GSR przez repozytorium/marketplace GitHub i sprawdzenie
 instalacji/aktualizacji u odbiorcy. Nie jest to deploy aplikacji budowanych przez GSR.
 
