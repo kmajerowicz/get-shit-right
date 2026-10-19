@@ -267,3 +267,28 @@ test('cooperating operations honor a live lock and recover a dead helper lock wi
  fs.writeFileSync(lock, dead); q.start(project(), definition, current(), 'Recovered after dead owner');
  assert.equal(fs.existsSync(lock), false); assert.equal(q.storage(project()).state.starts, 1);
 }));
+
+test('refresh cannot silently drop task constraints or decision/context sources', () => fixture(({ root, write, def }) => {
+ write('docs/research/boundary.md', 'Preserve existing booking records.');
+ const request = { id: 'guest-booking', current: current(), impact: def(), tasks: [task()], policy: policy() };
+ request.policy.contextRefs = [{ ref: 'research/boundary.md' }];
+ const invoke = (action, input) => spawnSync(process.execPath, [path.join(ROOT, 'gsr/scripts/autopilot.js'), action, '--cwd', root, '--file', 'work/booking/context.json', '--input', '-'], { input: JSON.stringify(input), encoding: 'utf8' });
+ assert.equal(invoke('prepare', request).status, 0);
+ const file = path.join(root, 'docs/work/booking/context.json');
+ const before = fs.readFileSync(file, 'utf8');
+ for (const weaken of [
+  value => { value.tasks[0].constraints = []; },
+  value => { value.policy.decisionRefs = []; },
+  value => { value.policy.contextRefs = []; },
+ ]) {
+  const changed = copy(request); changed.reason = 'Refresh source mapping'; weaken(changed);
+  const result = invoke('refresh', changed);
+  assert.equal(result.status, 2, result.stdout);
+  assert.match(result.stdout, /policy-change source/);
+  assert.equal(fs.readFileSync(file, 'utf8'), before);
+ }
+ const accepted = copy(request); accepted.reason = 'Apply explicit owner change'; accepted.tasks[0].constraints = [];
+ accepted.policyChangeSource = 'Synthetic owner instruction explicitly replaces the per-task validation constraint';
+ assert.equal(invoke('refresh', accepted).status, 0);
+ assert.equal(JSON.parse(fs.readFileSync(file)).policy.changeHistory.at(-1).source, accepted.policyChangeSource);
+}));

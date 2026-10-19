@@ -1,7 +1,7 @@
 'use strict';
 const form = document.querySelector('#booking');
 const result = document.querySelector('#result');
-const reset = document.querySelector('#reset');
+const reset = document.querySelector('#reset-booking');
 const chosen = document.querySelector('#chosen');
 form.addEventListener('change', () => {
   const selected = form.querySelector('input[name="slot"]:checked');
