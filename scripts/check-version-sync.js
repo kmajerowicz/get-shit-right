@@ -6,6 +6,7 @@
  *
  * Hard sources of truth (must all match):
  *   - package.json                       .version
+ *   - package-lock.json                  .version and .packages[""].version
  *   - gsr/.claude-plugin/plugin.json     .version
  *   - .claude-plugin/marketplace.json    .plugins[0].version
  *   - CHANGELOG.md                       latest "## [x.y.z]" entry
@@ -36,6 +37,8 @@ function getChangelogVersion() {
 
 const sources = {
   'package.json': readJSON('package.json').version,
+  'package-lock.json': readJSON('package-lock.json').version,
+  'package-lock.json (root package)': readJSON('package-lock.json').packages?.['']?.version,
   'gsr/.claude-plugin/plugin.json': readJSON('gsr/.claude-plugin/plugin.json').version,
   '.claude-plugin/marketplace.json': readJSON('.claude-plugin/marketplace.json').plugins[0].version,
   'CHANGELOG.md (latest entry)': getChangelogVersion(),

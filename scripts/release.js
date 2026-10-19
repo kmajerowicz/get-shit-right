@@ -12,10 +12,10 @@
  *   --dry-run    show what would happen, change nothing
  *   --publish    after the local commit+tag, push and create a GitHub Release
  *
- * What it does, atomically:
+ * What it does (written files are retained if checks fail):
  *   1. refuse to run on a dirty tree
  *   2. decide the next version
- *   3. write it to package.json, plugin.json, marketplace.json, README highlight
+ *   3. write it to package.json, plugin.json, marketplace.json and lockfile roots
  *   4. generate the new CHANGELOG section with git-cliff and splice it in
  *   5. run `npm run check` to self-verify (incl. version-sync)
  *   6. commit `chore(release): vX.Y.Z` and create annotated tag vX.Y.Z
@@ -25,6 +25,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
+const { versionEdits } = require('./lib/release-versions');
 
 const ROOT = path.resolve(__dirname, '..');
 // Matches the whole marker comment regardless of any descriptive text inside it.
@@ -88,6 +89,10 @@ const current = readJSON('package.json').version;
 const next = decideVersion(current);
 const tag = `v${next}`;
 const today = new Date().toISOString().slice(0, 10);
+let tagExists = false;
+try { sh(`git rev-parse --verify refs/tags/${tag}`); tagExists = true; } catch (_) { /* absent */ }
+if (tagExists) die(`Tag ${tag} already exists. Publish the existing candidate; do not bump it again.`);
+const edits = versionEdits(ROOT, next);
 
 log(`\nRelease: ${current} → ${next}  (tag ${tag}, ${today})`);
 if (DRY) log('--dry-run: no files will change.\n');
@@ -108,14 +113,14 @@ log(section);
 log('-----------------------------\n');
 
 if (DRY) {
-  log('Would update: package.json, plugin.json, marketplace.json, CHANGELOG.md');
+  log(`Would update: ${edits.map(edit => edit.file).join(', ')}, CHANGELOG.md`);
   log(`Would commit: chore(release): ${tag}`);
   log(`Would tag:    ${tag}`);
   if (PUBLISH) log('Would push and create a GitHub Release.');
   process.exit(0);
 }
 
-// --- write version into the three sources -----------------------------------
+// --- write version into all sources -----------------------------------------
 function editFile(rel, fn) {
   const p = path.join(ROOT, rel);
   const before = fs.readFileSync(p, 'utf8');
@@ -123,9 +128,7 @@ function editFile(rel, fn) {
   fs.writeFileSync(p, after);
 }
 
-editFile('package.json', (s) => s.replace(/("version":\s*")[^"]+(")/, `$1${next}$2`));
-editFile('gsr/.claude-plugin/plugin.json', (s) => s.replace(/("version":\s*")[^"]+(")/, `$1${next}$2`));
-editFile('.claude-plugin/marketplace.json', (s) => s.replace(/("version":\s*")[^"]+(")/, `$1${next}$2`));
+for (const edit of edits) fs.writeFileSync(path.join(ROOT, edit.file), edit.after);
 
 // --- splice the section into CHANGELOG.md after the marker ------------------
 editFile('CHANGELOG.md', (s) => {
@@ -144,7 +147,7 @@ try {
 }
 
 // --- commit + tag -----------------------------------------------------------
-sh('git add -A');
+sh('git add -- package.json package-lock.json gsr/.claude-plugin/plugin.json .claude-plugin/marketplace.json CHANGELOG.md');
 sh(`git commit -m "chore(release): ${tag}"`);
 sh(`git tag -a ${tag} -m "${tag}"`);
 log(`\n✓ Committed and tagged ${tag}.`);
@@ -172,7 +175,7 @@ if (PUBLISH) {
   }
   log(`\n✓ Published GitHub Release ${tag}.`);
 } else {
-  log('\nNext steps (or re-run with --publish to do both automatically):');
+  log('\nNext steps: publish this existing tag after candidate validation; do not re-run release.');
   log(`  git push origin ${branch} && git push origin ${tag}`);
   log(`  gh release create ${tag} --title ${tag} --notes-file <(npx git-cliff --latest --strip header)`);
 }
