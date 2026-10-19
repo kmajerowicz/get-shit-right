@@ -9,6 +9,47 @@ You are executing the `/gsr:debug` command. Your job is to run a persistent, sys
 
 ---
 
+## Fresh-context stage handoff
+
+At a major stage or long-build increment, follow
+`${CLAUDE_PLUGIN_ROOT}/docs/patterns/stage-handoff.md`. Save objective/constraints,
+original authorization/latest cadence, actual completed/remaining work, open choices,
+current evidence/run limits, stage/checkpoint, exact next step/action and minimal read
+references in the existing Active Task. Keep requirements in covered source documents.
+Recommend `/clear` then **dalej** after saving. The next context loads coordinate and
+the selected current guidance/refs only after the user's continuation; no automatic
+hook execution, context reset or new session. Direct commands remain scoped optional
+controls. A completed task or tiny correction needs no new-stage/reset instruction.
+Planning-only completion records no authorized implementation next step. Partial/checked
+build increments preserve actual overall in-progress state, limits and requested review.
+
+## Collaboration contract
+
+Explicit task authorization and constraints override generic workflow defaults within host permissions. Read settled answers from the conversation and project files; never ask for them again. A planning-only request does not authorize implementation. Prepare plans, research material uncertainties, load installed skills, record state and run proportionate checks without separate approval. Weight controls rigor, not authority or review cadence. Honor explicitly requested per-chunk review and later instructions narrowing autonomy; otherwise continue reversible work in scope. Ask only for an unresolved consequential product choice or a real installation, spending, publishing, destructive-action or host permission boundary. Continue independent authorized work while a decision is pending. Completion reports give the outcome, brief verification and unresolved limits; detailed evidence stays accessible.
+
+Discover the canonical project and DOC_ROOT using `${CLAUDE_PLUGIN_ROOT}/lib/project.js` and validated `.gsr.json`; below, `docs/` means that resolved DOC_ROOT, not an assumed folder. Invalid discovery/configuration is a diagnostic to reconcile, never permission to silently switch projects.
+
+### Task continuation and completion
+
+When authorized work updates STATE, add/update one optional `## Active Task` section
+without rewriting unrelated sections. Record objective, constraints, authorized scope,
+source/date of authorization in prose, explicit review cadence, current plan/task relative
+to DOC_ROOT, last verified run reference and next action. The template is
+`${CLAUDE_PLUGIN_ROOT}/templates/state-md.md`; legacy files remain valid.
+
+On resume read this section by heading (not the first 20 lines), read the referenced
+current task/plan, inspect actual repository state and observe current evidence freshness.
+Reconcile missing references and conflicting recorded progress with files; a done box is
+not proof and stale tests do not reset implemented work. Resume remaining authorized work
+without re-asking settled decisions. Preserve explicitly requested review boundaries;
+later instructions narrowing autonomy override STATE. No session record expands authority.
+
+At completion recheck evidence freshness. Report outcome, brief actual verification/run
+reference and unresolved limitations or necessary decision. Keep detailed gate output in
+records, not duplicate STATE assertions. Browser/manual observations and unavailable
+coverage remain explicit; machine checks never establish human acceptance. Do not demand
+user acceptance for each successful automated check.
+
 ## Iron Laws
 
 1. **One hypothesis at a time.** Current Focus holds exactly one falsifiable hypothesis. Never two. If a hypothesis branches into a sub-investigation, create a sibling file referencing the parent — don't cram two hypotheses into one section.
@@ -20,14 +61,14 @@ You are executing the `/gsr:debug` command. Your job is to run a persistent, sys
 
 ## Entry: No active session
 
-1. Ask the user: "What's the symptom? Describe what you observe — exact error message, unexpected behavior, or failing test."
+1. Read the supplied symptom/error and current failing evidence first. Ask only for missing reproduction information that cannot be obtained from files or observation.
 2. Derive a slug from the symptom (kebab-case, max 5 words). Example: `auth-token-undefined-on-reload`.
 3. Create `docs/debug/<YYYY-MM-DD>-<slug>.md` from `${CLAUDE_PLUGIN_ROOT}/templates/debug-md.md`. Fill in:
    - `status: active`
    - `feature`: the feature currently being built, or "general" if unknown
    - `created` and `updated`: today's date
    - **Symptom** section: user's description, cleaned up to one paragraph
-   - **Reproduction** section: ask for steps if not provided; do not guess
+   - **Reproduction** section: derive steps from available evidence; ask only for inaccessible missing context
    - **Next Step**: "Enter OBSERVE phase — gather facts before forming any hypothesis."
    - **Timeline**: `[<date>] Session created — OBSERVE`
 4. Tell the user: "Here's your debug session file: `docs/debug/<slug>.md` — it'll survive a `/clear` or session crash. Starting OBSERVE phase."
@@ -38,7 +79,7 @@ You are executing the `/gsr:debug` command. Your job is to run a persistent, sys
 
 1. Read `docs/debug/<slug>.md`.
 2. Announce current state: "Picking up `docs/debug/<slug>.md`. Current Focus: `<hypothesis>`. Next Step: `<next step>`."
-3. Continue from the recorded Next Step. Do not re-run phases already completed unless the user asks.
+3. Reconcile the recorded Next Step with actual files and fresh evidence, then resume remaining authorized work. Reobserve invalidated facts without erasing established progress; preserve explicit review cadence.
 
 ---
 
@@ -116,10 +157,7 @@ Evaluate the test result. Fix the root cause.
 
 Write the file.
 
-Then ask the user:
-> "Bug resolved. Root cause: `<one line>`. Should I add this to CLAUDE.md Learned Rules? (Yes / No)"
-
-If yes: append to CLAUDE.md under a `## Learned Rules` section with today's date.
+Report the root cause, verified fix and remaining limits. Record relevant Learned Rules within authorized work without a confirmation pause.
 
 Then: return to build flow. The controller (Mode A or Mode B) resumes from where it left off.
 

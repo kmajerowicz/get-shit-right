@@ -6,7 +6,7 @@
 
 ## Overview
 
-Plans are created when a build task touches more than 2 files (per Phase 3 build spec). Instead of jumping straight into code, the system produces a structured plan with a file map and task breakdown. The user approves the file map before any code is written. Execution proceeds task-by-task with checkpoints after each one.
+Plans are created when a build task touches more than 2 files (per Phase 3 build spec). Instead of jumping straight into code, the system produces a structured plan with a file map and task breakdown. Existing execution authorization covers plan preparation and execution; a planning-only request never authorizes code. Pause only at requested plan/chunk review boundaries or consequential unresolved choices. Execution proceeds task-by-task with checkpoints after each one.
 
 ---
 
@@ -48,8 +48,8 @@ Why the file map matters:
 
 After each task:
 
-1. Run gate function (build passes, 0 TS errors, no lint errors)
-2. If gate passes → atomic commit → status update → next task
+1. Run applicable configured checks per the gate skill; reuse evidence only after freshness reconciliation.
+2. If checks pass → record evidence → status update → next task; commit only when separately authorized
 3. If gate fails → diagnose (use systematic debugging if needed) → fix → re-run gate
 4. STATE.md auto-updates with task count
 
@@ -63,7 +63,7 @@ Checkpoint status format (spoken to user):
 
 When a task breaks the build and quick fix isn't obvious:
 
-1. **Revert to last checkpoint:** `git revert` or `git reset` to last passing commit
+1. **Inspect the failed change:** preserve unrelated work. Revert only the task's own reversible experiment; destructive resets need explicit authorization.
 2. **Re-analyze:** why did it break? What assumption was wrong?
 3. **Re-approach:** try a different implementation path
 4. **If same task fails twice** → escalate to user with: what was tried, why it failed, what options remain
@@ -74,5 +74,5 @@ When a task breaks the build and quick fix isn't obvious:
 
 - **"Let me just fix this one thing before committing"** and it cascades into 5 fixes → STOP. Commit what works, fix separately.
 - **Plan has no file map** → STOP. Create the file map first.
-- **Task touches files not in the file map** → STOP. Update the map and get user approval.
-- **Skipping checkpoint because "the next task is small"** → STOP. Always checkpoint.
+- **Task touches files not in the file map** → STOP. Update the map within authorized scope; ask only for scope expansion or a consequential product decision.
+- **Skipping checkpoint because "the next task is small"** → STOP. Record checkpoints without introducing a user approval gate.

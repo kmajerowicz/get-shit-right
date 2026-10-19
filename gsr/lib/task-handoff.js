@@ -20,7 +20,10 @@ function reference(project, value) {
   if (file === project.root || (fs.existsSync(file) && !fs.statSync(file).isFile())) throw new Error('Task reference must name a file');
   return { file, relative: path.relative(project.root, file), section: parts[1] || null };
 }
-function sections(text, allLevels = false) {
+function headingKey(value) {
+  return value.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-|-$/g, '');
+}
+function sections(text, allLevels = false, target = null) {
   const blocks = new Map(); let current = null; let fence = null; let comment = false;
   for (const line of text.split(/\r?\n/)) {
     const marker = line.match(/^ {0,3}(`{3,}|~{3,})(.*)$/);
@@ -38,7 +41,7 @@ function sections(text, allLevels = false) {
     if (!allLevels && /^# /.test(line)) { current = null; continue; }
     const heading = line.match(allLevels ? /^#{1,6} ([^#].*?)\s*$/ : /^## ([^#].*?)\s*$/);
     if (heading) {
-      if (blocks.has(heading[1])) throw new Error(`Ambiguous duplicate section: ${heading[1]}`);
+      if (blocks.has(heading[1]) && (target === null || headingKey(heading[1]) === headingKey(target))) throw new Error(`Ambiguous duplicate section: ${heading[1]}`);
       current = heading[1]; blocks.set(current, []);
     } else if (current) blocks.get(current).push(line);
   }
@@ -54,4 +57,4 @@ function inspectFeature(project, value) {
     return { status: missing.length ? 'incomplete-context' : 'context-present', reference: resolved.relative, missing, sections: [...blocks.keys()], needsAgentReview: true, diagnostic: 'Structural presence is not semantic readiness, passing behavior, authorization or human acceptance. Read constraints, states and consequential choices.' };
   } catch (e) { return { status: 'diagnostic', diagnostic: e.message, needsAgentReview: true }; }
 }
-module.exports = { reference, sections, inspectFeature };
+module.exports = { headingKey, reference, sections, inspectFeature };

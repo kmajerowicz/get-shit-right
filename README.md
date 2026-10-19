@@ -43,11 +43,12 @@ claude plugin install gsr
 
 | Command | What it does |
 |---------|-------------|
+| `/gsr:start [outcome / continue]` | Identify the next bounded stage or resume a saved task; preserve fresh-context handoffs |
 | `/gsr:scope` | Shape an idea or existing materials into a structured scope document |
 | `/gsr:prd` | Turn scope into PRD + feature files + project infrastructure |
-| `/gsr:build` | Build a specific feature — creative (you review every diff) or systematic (agent-driven) |
-| `/gsr:build --sketch` | Force a design sketch before mode selection — useful for conceptually risky features |
-| `/gsr:quick <task>` | One bounded task with GSR guarantees (gate function, evidence, atomic commit) — no scope/PRD ceremony |
+| `/gsr:build` | Build a requested feature/phase with configured checks and explicitly requested review cadence |
+| `/gsr:build --sketch` | Prepare a design sketch when requested — useful for conceptually risky features |
+| `/gsr:quick <task>` | One bounded task with configured checks and evidence; commits only when authorized — no scope/PRD ceremony |
 | `/gsr:debug` | Start or resume a persistent debug session that survives `/clear` |
 | `/gsr:verify` | Verify a feature or phase with evidence — build passes, grep results, human checks |
 | `/gsr:learn` | Index an existing codebase, populate CLAUDE.md, and get told what to do next |
@@ -55,7 +56,12 @@ claude plugin install gsr
 | `/gsr:status` | Show current phase, feature progress, next action, active debug sessions, and in-progress plans |
 | `/gsr:update` | Update GSR to the latest version and reinstall hooks |
 
-Each command tells you what to run next. Context clears between commands — state lives in files.
+Major stages save a compact handoff: `/clear`, then **dalej**. GSR uses the saved
+next action and relevant references; direct commands remain available. `/gsr:start`
+is an optional entry for a new outcome or explicit continuation. Large builds use
+bounded checkpoints; a full task need not fit one conversation. Bare-message routing
+is model/host behavior and must be validated; `/gsr:start continue` is the explicit
+fallback. No hook clears sessions or starts work automatically.
 
 ---
 
@@ -73,7 +79,7 @@ Each command tells you what to run next. Context clears between commands — sta
 
 ### Start C: You have a running product, want to add a feature
 ```
-/gsr:learn → /gsr:build → /gsr:verify
+/gsr:start <feature request> → focused feature spec → /clear + dalej → build/verify
 ```
 
 ---
@@ -101,17 +107,17 @@ Turns scope into:
 Also runs a "don't hand-roll" sweep per feature. Skills are matched at build time (Step 3.5) — not stored in feature files.
 
 ### Build (`/gsr:build`)
-Pick a feature, pick a mode:
+Use the requested feature or saved task. Execution techniques follow the work; explicit review cadence wins:
 
-**Creative mode** (UI, design-sensitive work): You review every diff. Every correction gets asked "add to CLAUDE.md Learned Rules?" — so it never repeats. Corrections compound across sessions.
+**Creative technique** (UI, design-sensitive work): implement in reviewable chunks. Pause for each diff only when the user requests it; retain relevant corrections and explicit cadence across sessions.
 
-**Systematic mode** (testing, i18n, accessibility, hardening): Claude generates a task list with pass/fail criteria. You approve. Agents execute. Atomic commits with evidence. The plan is saved to `docs/plans/` — if you hit `/clear` mid-build, running `/gsr:build` again surfaces active plans and offers resume.
+**Systematic technique** (testing, i18n, accessibility, hardening): prepare bounded tasks and checks under existing authorization. Save the plan, execute within scope and preserve checkpoints. After `/clear`, reconcile actual files/evidence and continue with **dalej** or an explicit build target. Commit only when authorized.
 
-Both modes enforce the gate function before every completion claim: build passes, TS clean, lint passes. Never "should work."
+Both techniques use configured project checks and current evidence. Missing runtime/browser coverage remains explicit; there are no universal npm/TypeScript requirements.
 
-**Model-aware dispatch:** GSR selects the right Claude tier per agent role automatically — heavier models for reasoning-heavy phases, lighter models for bounded tasks.
+**Bounded delegation:** use independent agents when useful and available within the task/budget. Static role defaults are not measured model routing; automatic model switching is outside this increment.
 
-**Batch build:** say "build all" / "build everything" and GSR builds every feature in the phase sequentially, stopping only for blocking errors or product decisions. In batch mode GSR can push a notification to your phone when it needs a product decision or finishes — start the batch and walk away.
+**Batch build:** say "build all" / "build everything" and GSR builds every feature in the phase sequentially, stopping only for blocking errors or product decisions. Major stage/long-build checkpoints preserve fresh context and recorded cadence. External notifications require explicit authorization.
 
 ### When things break (`/gsr:debug`)
 
