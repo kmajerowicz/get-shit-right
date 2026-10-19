@@ -33,14 +33,17 @@ try {
    assert(!queue.storage(project).state?.tasks.some(t => t.status === 'running'), 'Record the interrupted/running attempt before refresh');
    assert(JSON.stringify(request.tasks.map(t => t.id)) === JSON.stringify(previous.tasks.map(t => t.id)), 'Refresh keeps task identities/order and attempt history');
    const retained = (oldValues, nextValues) => Array.isArray(nextValues) && oldValues.every(value => nextValues.includes(value));
+   const retainedRefs = (oldValues, nextValues) => Array.isArray(nextValues) && oldValues.every(value => nextValues.some(next => digest(next) === digest(value)));
    const old = previous.policy, next = request.policy;
    const weakened = !next || !retained(old.constraints, next.constraints) || !retained(old.exclusions, next.exclusions) || !retained(previous.map.definition.exclusions, request.impact.exclusions) ||
+    previous.tasks.some((task, index) => !retained(task.constraints, request.tasks[index].constraints)) ||
+    !retainedRefs(old.decisionRefs, next.decisionRefs) || !retainedRefs(old.contextRefs, next.contextRefs) ||
     next.limits?.maxAttempts > old.limits.maxAttempts || next.limits?.maxSteps > old.limits.maxSteps ||
     (old.reviewAfterEachTask && !next.reviewAfterEachTask) || next.reviewCadence !== old.reviewCadence || digest(next.authorization) !== digest(old.authorization);
    if (request.policy && old.changeHistory) request.policy.changeHistory = old.changeHistory;
    if (weakened) {
     text(request.policyChangeSource, 'Explicit latest user policy-change source required to alter retained boundaries; do not fabricate or ask again for existing authority');
-    request.policy = { ...request.policy, changeHistory: [...(old.changeHistory || []), { previousPolicyDigest: digest(old), source: request.policyChangeSource }] };
+    request.policy = { ...request.policy, changeHistory: [...(old.changeHistory || []), { previousPolicyDigest: digest(old), previousDefinitionDigest: digest(previous), source: request.policyChangeSource }] };
    }
 
   }
