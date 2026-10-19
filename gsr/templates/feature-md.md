@@ -124,3 +124,44 @@ _Only included if relevant — common mistakes for this type of feature._
 ## Related Features
 
 - [Feature name] (`docs/features/[name].md`) — [how they interact]
+
+
+---
+
+## Task Context
+
+_Optional for a focused existing-product feature. No full PRD required. These summaries
+never authorize work or override the latest user instruction._
+
+**Objective:** [bounded change; reuse the supplied request]
+**Constraints / out of scope:** [user constraints and affected scope limits]
+**Authorized scope:** [planning/build/local checks as actually requested]
+**Authorization source/date:** [user instruction in prose]
+**Review cadence:** [explicit boundaries; otherwise continue within the bounded stage]
+**Current step / next action:** [concrete step]
+**Dependencies:** [existing features/services or none with reason]
+**Verification needs:** [configured checks and behavioral observations needed]
+**Research / skill references:** [relevant existing guidance, not invented assets]
+
+## Integration Points
+
+[Existing entry/data/filter/auth flows affected; compatibility and regression needs.
+Omit or mark inapplicable with a reason for a new standalone feature.]
+
+## Open Decisions
+
+[Only actual consequential unresolved choices or valid recorded deferrals with
+source/default/severity/status/date and previous-value history. Without scope/PRD this
+section owns the ledger; otherwise link its single owner. Migrate IDs/history with a
+pointer, never two editable copies. No questions merely for empty template fields.]
+
+## Product Preview
+
+_Optional; omit when not useful. Legacy specs without this section remain valid._
+
+[Actual preview record reference, question/revision/current variant and affected IDs.
+Requirements stay here or in scope/PRD; the record links the single decision owner.
+Preserve material assumption wording, feedback/source/date and consequences.]
+
+**Build disposition:** [reuse / adapt / discard with reason and mocks to replace;
+record before production build, not automatic approval of all Truths.]

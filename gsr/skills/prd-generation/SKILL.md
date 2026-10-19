@@ -11,6 +11,38 @@ This skill runs Phase 1 (PRD generation) + Phase 2 (project init) in one flow.
 
 ---
 
+## Fresh-context stage handoff
+
+At a major stage or long-build increment, follow
+`${CLAUDE_PLUGIN_ROOT}/docs/patterns/stage-handoff.md`. Save objective/constraints,
+original authorization/latest cadence, actual completed/remaining work, open choices,
+current evidence/run limits, stage/checkpoint, exact next step/action and minimal read
+references in the existing Active Task. Keep requirements in covered source documents.
+Recommend `/clear` then **dalej** after saving. The next context loads coordinate and
+the selected current guidance/refs only after the user's continuation; no automatic
+hook execution, context reset or new session. Direct commands remain scoped optional
+controls. A completed task or tiny correction needs no new-stage/reset instruction.
+Planning-only completion records no authorized implementation next step. Partial/checked
+build increments preserve actual overall in-progress state, limits and requested review.
+
+## Relevant installed skills
+
+Read `${CLAUDE_PLUGIN_ROOT}/docs/patterns/skill-selection.md` when selecting or
+resuming guidance. Use the host's current catalog and actual task/output, load the
+applicable SKILL.md, and reuse current guidance without redundant marketplace searches.
+A saved skill name or a keyword match is not proof of use. Record only useful source/
+provider/applicability/version-or-identity/loaded-use observations in existing feature/
+plan sections; unknown identity stays unknown. Check availability/current content at
+resume. Optional missing guidance permits authorized work; an essential missing capability
+requires only its actual access/install boundary. Denied installation is not retried
+through another downloader. No silent spending, publication or model switching.
+
+## Collaboration contract
+
+Explicit task authorization and constraints override generic workflow defaults within host permissions. Read settled answers from the conversation and project files; never ask for them again. A planning-only request does not authorize implementation. Prepare plans, research material uncertainties, load installed skills, record state and run proportionate checks without separate approval. Weight controls rigor, not authority or review cadence. Honor explicitly requested per-chunk review and later instructions narrowing autonomy; otherwise continue reversible work in scope. Ask only for an unresolved consequential product choice or a real installation, spending, publishing, destructive-action or host permission boundary. Continue independent authorized work while a decision is pending. Completion reports give the outcome, brief verification and unresolved limits; detailed evidence stays accessible.
+
+Discover the canonical project and DOC_ROOT using `${CLAUDE_PLUGIN_ROOT}/lib/project.js` and validated `.gsr.json`; below, `docs/` means that resolved DOC_ROOT, not an assumed folder. Invalid discovery/configuration is a diagnostic to reconcile, never permission to silently switch projects.
+
 ## Iron Laws
 
 1. **PRD is purely product.** No tech stack, no schemas, no routes, no design tokens. Those live in code and CLAUDE.md. If you catch yourself writing a column name or route path in PRD.md — stop. Move it to code. _[invariant]_
@@ -29,6 +61,17 @@ Do not wait for a response. Proceed immediately to "Step 0: Detect Mode" below. 
 
 ---
 
+## Consume existing preview decisions
+
+If scope/feature references a preview, read its current record and affected requirements.
+Carry settled decisions, provenance and actual artifact refs forward; do not replay intake,
+regenerate alternatives or infer backend behavior from visual approval. Reconcile changed
+wording even under the same ID and missing artifacts. Migrate an existing scope/feature
+D-pin to its PRD owner with the same ID/history and leave a pointer; never maintain two
+editable ledgers. A preview is optional; absence does not block PRD or build. A sufficient
+focused feature without a full PRD still goes directly to its authorized build. Follow
+`${CLAUDE_PLUGIN_ROOT}/docs/patterns/product-preview.md` for feedback and limits.
+
 ## Step 0: Detect Mode
 
 Read `**Weight:**` from `docs/STATE.md` (default `standard` if absent).
@@ -38,14 +81,14 @@ Before doing anything, check if `docs/PRD.md` already exists.
 
 **If PRD.md exists → Update mode:**
 - Read `docs/PRD.md` and `docs/scope.md`
-- Do NOT re-run research. Research was already done for the existing PRD.
+- Follow `${CLAUDE_PLUGIN_ROOT}/docs/patterns/research-reuse.md`: reuse applicable supported findings, review changed constraint wording even under unchanged IDs, and refresh only affected material questions. No age-only TTL or blanket rerun.
 - Identify what changed: compare scope with what's reflected in the PRD. List the deltas.
 - Update only the sections that need to change. Leave the rest untouched.
 - Skip straight to the self-verification pass (Step 1), then present changes to user.
 
 **If PRD.md does not exist → Full generation mode:**
 - Read `docs/scope.md` and any design references the user mentions
-- Resolve research areas from scope.md marked "blocking PRD" before writing — dispatch researcher agents in parallel for independent research questions. Dispatch via the Agent tool with `subagent_type: "gsr:researcher"` — model and role come from the agent definition.
+- Review relevant existing findings for material "blocking PRD" questions before new research, per `${CLAUDE_PLUGIN_ROOT}/docs/patterns/research-reuse.md`. Reuse supported applicable claims; refresh only concrete constraint/source/temporal gaps. Default to inline bounded work; delegate independent questions only when useful and within task/budget. Missing/conflicting support stays uncertain; preserve valid deferred choices.
 - Proceed through Step 1 in full
 
 ---
@@ -90,7 +133,7 @@ List every conflict found. For each: either move the dependency earlier, swap ph
 - Out-of-scope list — does anything in "explicitly out" contradict something that's required by an in-scope feature?
 
 **3. Open decision check**
-Scan for any decision that is ambiguous, assumed, or marked ⚠️. List them — these become challenge questions for the user.
+Scan ambiguous, assumed or ⚠️ items and reconcile them with supplied decisions and the Assumptions Ledger first. Record remaining uncertainty without turning every item into a question. Preserve recently deferred D-pins; revisit only when new evidence makes a consequential choice actionable, following the deferred-decisions pattern.
 
 **4. Completeness check**
 For every feature referenced in the feature index:
@@ -98,7 +141,7 @@ For every feature referenced in the feature index:
 - Does it have at least one observable truth that can be verified at build time?
 - Are there any undefined terms — names, concepts, or entities used in one feature but never defined in the PRD or data model?
 
-Flag any feature that fails these checks. Fix what you can, surface the rest as questions.
+Flag any feature that fails these checks. Fix gaps from supplied decisions and available evidence; ask only for consequential unresolved product choices that are actionable now, respecting existing deferrals.
 
 **5. Edge case and gap sweep**
 Re-read the PRD as if you are a developer about to implement Phase 1 tomorrow:
@@ -110,7 +153,7 @@ Don't add every edge case to the PRD — but if a missing edge case would cause 
 
 After self-verification: fix all issues you found, then present PRD.md with a summary of what you caught and fixed. If you fixed nothing, say so — "Self-review passed clean" is a valid outcome.
 
-For each open decision or ambiguous assumption found: use the decision gate pattern (`${CLAUDE_PLUGIN_ROOT}/docs/patterns/decision-gate.md`) — present options via AskUserQuestion with the recommendation first. One decision at a time.
+After reconciling supplied decisions and the Assumptions Ledger, use the decision-gate pattern (`${CLAUDE_PLUGIN_ROOT}/docs/patterns/decision-gate.md`) only for consequential unresolved product choices that are actionable now. Do not re-ask settled answers or recently deferred D-pins. New evidence may justify revisiting a deferred choice; explain that evidence and follow the deferred-decisions pattern. Routine technical choices remain internal.
 
 **Final step — always, regardless of how many decisions were resolved:**
 Present a concise summary instead of sending the user to read a long document:
@@ -123,12 +166,12 @@ PRD ready. Key decisions baked in:
 
 Build phases: [N] phases, starting with [Phase 1 demo sentence].
 
-Anything to adjust, or proceed to feature files?
+Continuing to authorized feature files; unresolved product decisions are listed separately.
 ```
 
 The full PRD is available in `docs/PRD.md` if the user wants to read it, but don't require it. The summary should surface the top 3-5 decisions that are most likely to be wrong or surprising. If the user says "looks good" based on the summary — that's sufficient to proceed.
 
-Do not proceed to feature files until the user explicitly confirms.
+Proceed to feature files when already authorized; pause only at requested review boundaries or unresolved consequential product choices.
 
 ---
 
@@ -136,13 +179,13 @@ Do not proceed to feature files until the user explicitly confirms.
 
 For each feature in the feature index, generate `docs/features/<name>.md` using `${CLAUDE_PLUGIN_ROOT}/templates/feature-md.md`.
 
-**No skills matching here.** Skills are matched to tasks at build time, not at feature file generation time. Do not add a Skills section to feature files.
+**No mandatory marketplace matching here.** Load installed guidance when it materially helps current planning. Build refines task-level matches. Useful actual guidance references may live in the existing Task Context; no invented Skills table or routine selection gate.
 
-Run Step 2a in **parallel for each feature** (use researcher agents). Dispatch via the Agent tool with `subagent_type: "gsr:researcher"` — model and role come from the agent definition:
+Run Step 2a only for material technical uncertainty after reading applicable existing findings. Follow the research-reuse pattern; default to inline work and delegate only bounded independent questions when useful/supported/within budget. Link the finding to its feature/decision, recording provenance, dates, support, counterevidence, uncertainty and reuse/refresh reason. Stop when sufficient for the question, the supplied budget is reached or human judgment/experiment remains; report partial uncertainty accurately. No mandatory research from a D-pin alone or broad sweep for a routine correction.
 
 ### Step 2a: Don't Hand-Roll Sweep
 
-For each technical capability the feature needs (auth, payments, email, file upload, real-time, geo, etc.):
+For each materially unresolved capability question (auth, payments, email, file upload, real-time, geo, etc.), reuse applicable findings before a targeted refresh:
 - Check if a proven library/service already solves it
 - Add a **Don't Hand-Roll** table if relevant
 
@@ -187,7 +230,7 @@ For each feature, define must-haves at product level (no file paths):
 
 ### Generate the Feature File
 
-Fill in `${CLAUDE_PLUGIN_ROOT}/templates/feature-md.md` with everything found above. No Skills section.
+Fill in `${CLAUDE_PLUGIN_ROOT}/templates/feature-md.md` with everything found above. Record useful actually loaded guidance in Task Context; no mandatory skill table.
 
 ### Feature File Self-Review (before presenting to user)
 
@@ -225,7 +268,7 @@ Use `${CLAUDE_PLUGIN_ROOT}/templates/backlog-md.md`. Fill in:
 Use `${CLAUDE_PLUGIN_ROOT}/templates/techstack-md.md`. Fill in:
 - Tech stack from scope.md
 - Project-wide skills (responsive-design, etc. — based on what was identified as project-wide)
-- **Gate section** — replace the npm defaults with this project's actual build/type-check/lint commands, inferred from the detected stack (e.g. `pytest` + `mypy` for Python, `cargo build` + `cargo test` for Rust, `go build` + `go test` for Go). Only keep the npm defaults if the stack is genuinely Node/npm-based.
+- **Gate section** — document actual commands from project configuration and create/reconcile `.gsr.json` checks per the gate skill. Preserve legacy prose; never invent stack defaults. Use the internal runner for machine evidence.
 
 ---
 
@@ -247,7 +290,7 @@ The user reviews PRD.md and feature files. Common revision patterns:
 - **New edge case discovered** → add to relevant feature file's Business Rules + Must-Haves
 - **Don't Hand-Roll suggestion rejected** → remove from feature file, don't argue
 
-When the user approves: "Looks good" / "Let's proceed" → move to next step.
+Continue the already authorized sequence; user feedback adjusts it. Wait only at explicitly requested review boundaries.
 
 ---
 
@@ -259,6 +302,6 @@ Red flags:
 |---------|---------|
 | "I'll put the schema in PRD.md for reference" | No. PRD is product-only. Schema lives in code. |
 | "This phase is a bit abstract but I'll demo sentence it anyway" | No. If you can't demo it, restructure the phase. |
-| "I'll add a Skills section to the feature file" | No. Skills are matched to tasks at build time in gsr:build. |
-| "I'll create the infrastructure before the user reviews PRD" | No. Review first. Infrastructure can be regenerated. |
+| "A saved Skills table proves use" | Load actual relevant guidance; record observations in existing Task Context/plan sections, not invented usage. |
+| "I'll create the infrastructure before the user reviews PRD" | Self-review first; user review pauses only when requested or a consequential product decision remains. |
 | "The must-haves are too obvious to write" | Write them. They're the verification contract. |

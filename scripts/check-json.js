@@ -6,6 +6,18 @@ const JSON_FILES = [
   'gsr/.claude-plugin/plugin.json',
   '.claude-plugin/marketplace.json',
   'gsr/hooks/hooks.json',
+  'scripts/fixtures/phase-2/scenarios.json',
+  'scripts/fixtures/corrections/status-scenarios.json',
+  'scripts/fixtures/phase-3/scenarios.json',
+  'scripts/fixtures/phase-4/impact.json',
+  'scripts/fixtures/phase-4/scenarios.json',
+  'docs/internal/research/2026-10-15-phase-4-evaluation.json',
+  'docs/internal/research/2026-10-15-phase-4-run-reference.json',
+  'scripts/fixtures/phase-3/cli/input.json',
+  'docs/internal/research/2026-10-15-phase-3-baseline.json',
+  'docs/internal/research/2026-10-15-phase-3-evaluation.json',
+  'docs/internal/research/2026-10-15-phase-4-baseline.json',
+  ...['docs/internal/research/2026-10-11-phase-1-run-reference.json', 'docs/internal/research/2026-10-13-phase-2-evaluation.json', 'docs/internal/research/2026-10-13-phase-2-run-reference.json'].filter(file => fs.existsSync(file)),
 ];
 
 let failed = false;
@@ -34,3 +46,16 @@ if (!failed) {
 }
 
 if (failed) process.exit(1);
+
+// Validate the shipped project configuration example, not just plugin manifests.
+const exampleFile = 'gsr/docs/patterns/verification-contract.md';
+try {
+  const source = fs.readFileSync(exampleFile, 'utf8');
+  const example = source.match(/```json\n([\s\S]*?)\n```/);
+  if (!example) throw new Error('Missing machine configuration example');
+  require('../gsr/lib/config').validate(JSON.parse(example[1]), fs.realpathSync('.'));
+  console.log('✓ Project configuration example validates');
+} catch (e) {
+  console.error(`✗ ${exampleFile}: ${e.message}`);
+  process.exit(1);
+}

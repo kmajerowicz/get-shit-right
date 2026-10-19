@@ -1,6 +1,6 @@
 ---
 name: gsr-build
-description: Build a feature from a GSR feature file — creative or systematic mode. Use when implementing features in a project with docs/PRD.md.
+description: Build the requested feature from a sufficient bounded spec, including existing products without a full PRD or STATE. Honor task constraints, configured checks and requested review cadence.
 ---
 
 # /gsr:build — Build Skill
@@ -9,11 +9,75 @@ You are executing the `/gsr:build` command. Your job is to build a specific feat
 
 ---
 
+## Fresh-context stage handoff
+
+At a major stage or long-build increment, follow
+`${CLAUDE_PLUGIN_ROOT}/docs/patterns/stage-handoff.md`. Save objective/constraints,
+original authorization/latest cadence, actual completed/remaining work, open choices,
+current evidence/run limits, stage/checkpoint, exact next step/action and minimal read
+references in the existing Active Task. Keep requirements in covered source documents.
+Recommend `/clear` then **dalej** after saving. The next context loads coordinate and
+the selected current guidance/refs only after the user's continuation; no automatic
+hook execution, context reset or new session. Direct commands remain scoped optional
+controls. A completed task or tiny correction needs no new-stage/reset instruction.
+Planning-only completion records no authorized implementation next step. Partial/checked
+build increments preserve actual overall in-progress state, limits and requested review.
+
+## Relevant installed skills
+
+Read `${CLAUDE_PLUGIN_ROOT}/docs/patterns/skill-selection.md` when selecting or
+resuming guidance. Use the host's current catalog and actual task/output, load the
+applicable SKILL.md, and reuse current guidance without redundant marketplace searches.
+A saved skill name or a keyword match is not proof of use. Record only useful source/
+provider/applicability/version-or-identity/loaded-use observations in existing feature/
+plan sections; unknown identity stays unknown. Check availability/current content at
+resume. Optional missing guidance permits authorized work; an essential missing capability
+requires only its actual access/install boundary. Denied installation is not retried
+through another downloader. No silent spending, publication or model switching.
+
+## Focused task contract
+
+Read `${CLAUDE_PLUGIN_ROOT}/docs/patterns/task-handoff.md` when preparing/consuming a
+nontrivial existing-product feature. A sufficient feature spec is the build contract;
+missing whole-product PRD is not a blocker. Quick/read-only tasks need no scaffolding.
+Use supplied constraints and actual code; retain valid deferrals and IDs. The optional
+`${CLAUDE_PLUGIN_ROOT}/lib/task-handoff.js` provides structural observations only,
+never semantic readiness, authority, passing behavior or acceptance.
+
+## Collaboration contract
+
+Explicit task authorization and constraints override generic workflow defaults within host permissions. Read settled answers from the conversation and project files; never ask for them again. A planning-only request does not authorize implementation. Prepare plans, research material uncertainties, load installed skills, record state and run proportionate checks without separate approval. Weight controls rigor, not authority or review cadence. Honor explicitly requested per-chunk review and later instructions narrowing autonomy; otherwise continue reversible work in scope. Ask only for an unresolved consequential product choice or a real installation, spending, publishing, destructive-action or host permission boundary. Continue independent authorized work while a decision is pending. Completion reports give the outcome, brief verification and unresolved limits; detailed evidence stays accessible.
+
+Discover the canonical project and DOC_ROOT using `${CLAUDE_PLUGIN_ROOT}/lib/project.js` and validated `.gsr.json`; below, `docs/` means that resolved DOC_ROOT, not an assumed folder. Invalid discovery/configuration is a diagnostic to reconcile, never permission to silently switch projects.
+
+### Task continuation and completion
+
+At a major stage boundary, save a compact next-stage handoff and recommend `/clear` followed by **"dalej"**; existing commands are optional direct controls. Continue authorized work within the stage, honoring review cadence. For a long build, use checked partial checkpoints, preserve in-progress status/remaining action and hand off to "dalej" without pretending the entire build is done. The user performs resets; do not clear/start sessions automatically. Explicit practical same-session continuation remains possible without overriding tighter review boundaries.
+
+When authorized work updates STATE, add/update one optional `## Active Task` section
+without rewriting unrelated sections. Record objective, constraints, authorized scope,
+source/date of authorization in prose, explicit review cadence, current plan/task relative
+to DOC_ROOT, last verified run reference and next action. The template is
+`${CLAUDE_PLUGIN_ROOT}/templates/state-md.md`; legacy files remain valid.
+
+On resume read this section by heading (not the first 20 lines), read the referenced
+current task/plan, inspect actual repository state and observe current evidence freshness.
+Reconcile missing references and conflicting recorded progress with files; a done box is
+not proof and stale tests do not reset implemented work. Resume remaining authorized work
+without re-asking settled decisions. Preserve explicitly requested review boundaries;
+later instructions narrowing autonomy override STATE. No session record expands authority.
+
+At completion recheck evidence freshness. Report outcome, brief actual verification/run
+reference and unresolved limitations or necessary decision. Keep detailed gate output in
+records, not duplicate STATE assertions. Browser/manual observations and unavailable
+coverage remain explicit; machine checks never establish human acceptance. Do not demand
+user acceptance for each successful automated check.
+
 ## Iron Laws
 
-1. **Never claim done without evidence.** Run the gate function before every completion claim. Evidence format: "build passes (0 errors), TS clean." Never "should work." _[invariant]_
-2. **Corrections compound.** Every correction the user makes → ask "Should I add this to CLAUDE.md Learned Rules?" If yes, append it with today's date. _[invariant]_
-3. **Skills matching always runs; how hard it gates scales with weight.** Skills are matched to tasks in Step 3.5. Do not skip the verification gate. Do not start implementing before skills are confirmed. _[weight-scaled]_
+1. **Never claim done without evidence.** Run the gate function before every completion claim. Use configured check evidence with freshness and behavioral limits. Never "should work." _[invariant]_
+2. **Corrections compound.** Record relevant corrections in CLAUDE.md Learned Rules within authorized work, with today's date; do not add a routine approval. _[invariant]_
+3. **Match and load relevant installed skills.** Scale selection detail to weight; selection/loading needs no approval. Installation remains a separate permission boundary. _[weight-scaled]_
 4. **Never reference assets that don't exist.** No placeholder image URLs, no `src="/images/..."` pointing to nonexistent files, no icon references without the icon being present. If UI needs a graphic, use inline SVG, CSS shapes, unicode characters, or descriptive text. Hallucinated images break user trust instantly. _[invariant]_
 5. **Tests match what's built.** Only give testing instructions for features that are actually implemented and functional. Never list test scenarios for placeholder/coming-soon screens. If a feature depends on an unbuilt feature, say so explicitly: "Upload works, but full flow needs Configure built next." _[invariant]_
 
@@ -21,65 +85,30 @@ You are executing the `/gsr:build` command. Your job is to build a specific feat
 
 ## Step 0: Setup
 
-Read these files before doing anything else:
-1. `CLAUDE.md` — conventions, references, learned rules
-2. `docs/STATE.md` — current phase and feature status
-3. `docs/techstack.md` — project-wide skills
+Discover canonical project/DOC_ROOT first. Read CLAUDE.md, STATE.md and techstack.md **if present and relevant**, plus the selected feature and actual affected source/tests. Missing CLAUDE, PRD or STATE never blocks a sufficient feature contract. Create only needed missing task documentation within authorized work; preserve existing content.
 
-Read `**Weight:**` from `docs/STATE.md` (default `standard` if absent).
-Weight-scaled behaviors below reference `${CLAUDE_PLUGIN_ROOT}/docs/patterns/weight.md`.
+Use recorded weight or infer from task stakes without confirmation. Missing check configuration is handled per the gate skill: reconcile known actual commands, never invent npm/TypeScript defaults. Unavailable required verification remains explicit.
 
 ### Infrastructure Pre-Check
 
-**Weight:** spike → skip this check. standard → ask once, proceed on any
-answer. production → gate as written below.
-
-After reading `docs/techstack.md`, scan for external services that require provisioning before code can run (Supabase, Firebase, PlanetScale, Neon, Stripe, Clerk, etc.).
-
-For each external service found, check if it's already confirmed as live:
-- Look for a `.env` or `.env.local` file with the relevant credentials/URLs
-- If credentials are present → assume provisioned, proceed silently
-- If credentials are missing or no `.env` exists → ask the user before proceeding:
-
-```
-Before we build: your stack uses [Service]. Is it set up?
-
-1. Yes — project created, credentials in .env
-2. Not yet — I'll set it up now
-
-(Setting it up now means no migration step at verify time.)
-```
-
-Wait for confirmation. Do not start feature selection until the user confirms infrastructure is ready or explicitly chooses to proceed without it.
-
-**Why this matters:** Building against an unprovisioned service means code that can't run during verification. Setting up first means tables/schema are created fresh — no migration needed later.
+Inspect existing service configuration without displaying secrets. Missing credentials are not proof that implementation must stop. Continue independent authorized code work and mark unavailable runtime checks. Ask only for necessary inaccessible information, provisioning/spending permission or an unresolved product choice; do not demand a setup confirmation for every service.
 
 ---
 
 ## Step 1: Feature Selection
 
-Show the user available features with their current status:
+Resolve the feature target in this order: explicit command target from `$ARGUMENTS` (excluding `--sketch`), latest user request, then an unambiguous current Active Task/spec/plan reference. A slug resolves to `DOC_ROOT/features/<slug>.md`; a DOC_ROOT-relative file such as `features/csv-export.md` is consumed directly. Use `${CLAUDE_PLUGIN_ROOT}/lib/task-handoff.js` reference validation for explicit references; reject absolute/traversal/escaping paths rather than switching projects. Structural presence still needs agent review of actual requirements/code.
 
-```
-Available features — Phase 1: [Phase Name]
-
-1. [Feature name] — not started
-2. [Feature name] — not started
-3. [Feature name] — in progress
-
-Which feature do you want to build? (or "all" to build entire phase)
-```
-
-Read feature statuses from `docs/STATE.md`.
+Use supplied targets without asking which feature again. If no sufficient spec exists for an authorized nontrivial feature, prepare only that missing focused contract through scope Start C; no full PRD requirement. Finish preparation with the saved fresh-context build handoff. Ask one target question only if current intent/references remain genuinely ambiguous. Phase/batch selection uses actual PRD/STATE when present; do not invent a phase structure for a standalone feature.
 
 **Batch build:** If the user says "all", "build everything", "whole phase", or similar — switch to batch mode:
 1. Build features sequentially in dependency order
-2. Use Creative mode for UI features, Systematic for non-UI (auto-classify using the Task Classification Heuristic)
+2. Choose internal techniques from the task heuristic; explicit review cadence overrides classification.
 3. Run mini-verification after each feature, but don't stop to ask "which feature next?" — proceed automatically
-4. After each feature: give a one-line status update ("Upload done ✓ — moving to Configure") instead of full test instructions
+4. After each feature: give a brief actual status/limits update instead of full test instructions
 5. Give full test instructions only at the end, covering all built features together
 6. If you hit a blocking error or ambiguity requiring a product decision, stop and ask — then resume batch after the answer
-7. **Notifications (optional):** if a push/notification tool is available in
+7. **Notifications (optional, only when explicitly authorized):** if a push/notification tool is available in
    this session (e.g. PushNotification — check the available tools; NEVER fail
    or pause because it's absent), send a short push whenever batch pauses for a
    decision ("GSR: decision needed — <topic>") and once when the batch finishes
@@ -92,95 +121,67 @@ The user can also interrupt batch mode at any time to switch to feature-by-featu
 
 ## Step 2: Load Feature Context
 
-Once the user picks a feature, read:
-1. `docs/STATE.md` — check that all prerequisite features for this feature are done
-2. `docs/features/<name>.md` — the complete product spec
-3. `docs/techstack.md` — project-wide skills
-4. PRD.md Assumptions Ledger — note any D-pins listed under the feature's "Assumptions touched".
+After resolving the requested target, read its sufficient feature contract and Task Context, affected existing code/tests and integration points. Read STATE/techstack and an applicable PRD Assumptions Ledger only if present; without PRD use the feature's recorded decisions/deferrals. Do not invent nonexistent PRD references. Inspect actual prerequisite implementation rather than treating missing STATE as missing dependencies.
 
-**Prerequisite check:** Before loading anything else, scan the feature file for dependencies on other features. Cross-reference with STATE.md. If any prerequisite feature is `not started`, `in progress`, or `blocked`: use the decision gate pattern (`${CLAUDE_PLUGIN_ROOT}/docs/patterns/decision-gate.md`). Present via AskUserQuestion:
+**Prerequisite check:** Read dependencies and reconcile STATE status with actual files. Build prerequisites already within the authorized task in dependency order. Ask only if a dependency would expand scope or leaves a consequential unresolved product choice; present the concrete choice via the decision-gate pattern. Do not show a routine prerequisite selector.
 
-**Option 1 — Build [prerequisite] first**
-Safe path. Avoids integration failures mid-build.
+**Load relevant installed project-wide skills now.** Use applicable techstack references if present and the current installed catalog; absence of techstack is not an installation blocker. Skills matched to specific tasks happen after the task list is generated — see Step 3.5.
 
-**Option 2 — Proceed anyway**
-You accept the risk of hitting integration gaps. Can be unblocked later.
-
-**Recommendation: Option 1** — building on an incomplete dependency typically means rework.
-
-Wait for user to click. Do not proceed silently.
-
-**Load project-wide skills now.** Read each skill's SKILL.md from `docs/techstack.md`. Skills matched to specific tasks happen after the task list is generated — see Step 3.5.
-
-**Resume check (Mode B only):** After loading the feature file, scan `docs/plans/` for a plan file where the `feature` frontmatter matches the current feature slug and `status: in_progress`. If one exists, present:
-
-> Found an in-progress plan for `<feature>` at `docs/plans/<slug>.md`. Last updated: <date>.
-> 1. Resume — continue from last incomplete task
-> 2. Start fresh — discard and rebuild the task list
-
-Wait for user choice before proceeding to Step 3. On Resume: skip to the execution loop in Mode B, starting from the first task with `status: pending` or `status: in-progress`.
+**Resume:** Read the existing matching plan and reconcile task status with actual files and current evidence freshness. Resume remaining authorized work automatically, preserving requested review cadence and later constraints. Stale tests do not erase implemented progress; rerun relevant checks. Missing references or conflicting status require reconciliation and a brief report, not a compulsory resume/start-fresh selector.
 
 ---
 
-## Step 2.5: Design Sketch Gate
+## Step 2.4: Product demonstration when useful
+
+For a requested early view or concrete product uncertainty, load
+`${CLAUDE_PLUGIN_ROOT}/skills/preview/SKILL.md` within this build stage. Follow
+`${CLAUDE_PLUGIN_ROOT}/docs/patterns/product-preview.md`: smallest useful flow/screen/
+interaction/technical experiment, actual artifacts, observed vs simulated behavior.
+Skip clear corrections and established patterns unless a preview is explicitly wanted.
+Planning-only/preview-only does not authorize the full build. Honor show-and-wait.
+If a preview exists, compare current requirement wording/decisions/artifacts and record
+reuse/adapt/discard plus the reason and mocks/data to replace before production work.
+A changed requirement under the same ID or missing artifact requires reconciliation.
+An approved look is not verified storage, human acceptance of all Truths or deploy.
+
+## Step 2.5: Design Sketch Preparation
 
 Read `${CLAUDE_PLUGIN_ROOT}/docs/patterns/feature-sketch.md` for full pattern doc.
 
 **Skip this step entirely if** `FORCE_SKETCH` is not set AND none of the heuristic conditions below trigger.
 
-**Weight:** spike → heuristic off, `--sketch` flag only. production → fire if
-ANY single condition below is true.
+**Weight:** scale sketch detail to stakes. Inspect material risks at any weight; no heuristic creates a review gate.
 
-**Heuristic — fire the gate if any of these are true in the feature file:**
+**Heuristic — inspect these risk signals in the feature file:**
 1. Fewer than 3 concrete states (empty / loading / error / success / offline / partial) mentioned
 2. No acceptance criteria or done-when language in the must-haves section
 3. Explicit `TBD`, `?`, or `decide during build` markers anywhere in the file
 4. Feature declares dependencies on >3 other features
 
-If `FORCE_SKETCH=true` (user passed `--sketch`): fire regardless of heuristic.
+If `FORCE_SKETCH=true` (user passed `--sketch`): prepare the artifact regardless of heuristic.
 
-**When the gate fires**, propose the sketch inline:
-
-> **Design sketch for `<feature>`**
-> **Approach:** <one paragraph>
-> **File map:** <what to add / change>
-> **Data shape:** <if feature handles data; omit if purely presentational>
-> **What could break:** <one line>
-> **Out of scope:** <explicit list>
->
-> 1. Approve — append sketch to feature file and proceed
-> 2. Edit — tell me what to change, I'll revise
-> 3. Skip — I know what I'm building
-
-On **Approve**: append to `docs/features/<name>.md` as a new section:
-```markdown
-## Build Sketch — <YYYY-MM-DD>
-<sketch content>
-```
-Then proceed to Step 3.
-
-On **Edit**: revise the sketch and re-present. Loop until Approve or Skip.
-
-On **Skip**: proceed to Step 3 silently. No file written.
+When the heuristic suggests a sketch, prepare it per the feature-sketch pattern and record the approach/file map/limits internally. Heuristics are prompts to inspect, not automatic user gates. Ask only if a consequential product choice remains unresolved, or the user explicitly requested sketch review. `--sketch` requests the artifact, not a second execution approval.
 
 ---
 
-## Step 3: Mode Selection
+## Sequential change packages when appropriate
 
-Use the decision gate pattern (`${CLAUDE_PLUGIN_ROOT}/docs/patterns/decision-gate.md`). Present via AskUserQuestion with two options:
+For a substantial existing-product change or a requested correction sequence, load
+`${CLAUDE_PLUGIN_ROOT}/skills/autopilot/SKILL.md` and the current saved queue definition
+when present. Its helpers prepare current impact/context and administrative checkpoints;
+you still implement with available tools and verify through the existing gate. Reconcile
+source changes before advancing, keep all original constraints/cadence and bound repeats.
+Small clear work stays proportionate. No helper runs work from SessionStart or accepts
+requirements/authorization from STATE alone. Use actual before/after observations in
+the outcome; no automatic model switching or claimed savings.
 
-- **Creative** — you review every diff as it's written. Best for UI, screens, design-sensitive work.
-- **Systematic** — Claude generates a task list, you approve it, then Claude executes. Best for testing, i18n, accessibility, security, refactoring.
+## Step 3: Execution approach
 
-Put Creative first labeled "(Recommended)" if the feature has any UI; otherwise put Systematic first labeled "(Recommended)". Each option's description states the tradeoff above.
-
----
+Choose internal creative/systematic techniques from the task. Do not present a mandatory mode selector. Requested per-chunk review wins regardless of UI/non-UI classification; otherwise continue authorized work. A request to plan only remains planning only.
 
 ## Step 3.5: Skills Matching + Verification
 
-**Weight:** spike → auto-match, list results in one line, do NOT stop for
-confirmation. standard → show the table, proceed without a hard stop unless a
-skill needs installation. production → full verification gate as written below.
+Infer needed skills, select installed ones and load them without routine approval. Weight changes selection depth, never permission.
 
 Run this step regardless of mode, after the task list (Mode B) or file map (Mode A) is drafted — before anything executes.
 
@@ -188,23 +189,11 @@ Run this step regardless of mode, after the task list (Mode B) or file map (Mode
 
 Before matching skills to individual tasks, check the **output type** of the overall deliverable. If the output will be seen by human eyes — UI screens, slides, landing pages, HTML files, PDFs, email templates, presentations — then a design/frontend-design skill is required regardless of framework or technology used.
 
-Search for a design skill explicitly:
-```bash
-npx skills find frontend-design
-npx skills find design
-```
-
-"Just HTML", "no React", "single file", or "no build step" do not exempt this. The skill exists to inject aesthetic quality criteria (layout, typography, spacing, visual hierarchy) — those apply to any visual output, not just component frameworks.
-
-If no design skill is found or installed: surface this explicitly as a warning before proceeding. Do not silently continue without it for visual deliverables.
+Prefer available installed design skills for visual outputs. Missing skills are a reported limitation, not a mandatory installation blocker. Use official documentation/current tools when needed; marketplace commands that fetch tooling require installation authorization.
 
 ### Match skills to tasks
 
-For each task (or file group in Mode A), identify what technical capabilities it needs. Search the skills.sh marketplace for matching skills:
-
-```bash
-npx skills find <topic>   # e.g. npx skills find supabase, npx skills find mapbox, npx skills find testing
-```
+For each task/file group identify relevant capabilities and match available installed skills. Search outside the installed catalog only when useful and allowed; selecting a skill never authorizes installing its tools.
 
 Build a verification table:
 
@@ -219,22 +208,9 @@ Build a verification table:
 
 If a skill covers multiple tasks, list it once and note which tasks it applies to.
 
-### Verification gate
+### Load selected skills
 
-Present the table to the user. Use the decision gate pattern (`${CLAUDE_PLUGIN_ROOT}/docs/patterns/decision-gate.md`) for any skill where there are multiple options.
-
-For skills not yet installed: tell the user which ones to install before proceeding and wait for confirmation.
-
-```
-Skills ready to load: [list]
-Skills to install first: [list with install commands]
-
-Install missing skills, then confirm to proceed.
-```
-
-**Do not start implementing until the user confirms skills are in order.**
-
-Once confirmed: load each installed skill's SKILL.md before writing any code.
+Load installed SKILL.md files before implementation; summarize selection only when useful. Do not ask to approve routine selection. If a missing skill/tool is essential, request installation permission with the concrete reason and continue independent work. Optional missing skills do not block the task.
 
 ---
 
@@ -244,12 +220,12 @@ Once confirmed: load each installed skill's SKILL.md before writing any code.
 
 1. Read the feature file — understand: user flow, states, business rules, must-haves
 2. Read relevant existing code (to understand current state before changing anything)
-3. Draft file map if >2 files, run Step 3.5 (skills matching), then: "Skills confirmed + file map approved — proceeding."
+3. Draft file map if >2 files, run Step 3.5 and proceed within existing execution authorization.
 4. Implement in small chunks that the user can review
-5. After each chunk: "done, test it — build passes (0 errors), TS clean"
-6. User tests in browser, gives feedback
-7. On correction: implement correction → ask "Add to CLAUDE.md Learned Rules?"
-8. Atomic commit on approval: `git commit -m "feat: [feature] — [what was built]"`
+5. Give a concise chunk update with actual checks and limits; pause only at requested review boundaries.
+6. Run relevant available behavioral checks; user judgment/feedback is separate from command evidence.
+7. Implement corrections and record relevant Learned Rules without routine confirmation.
+8. Create atomic commits only if the user authorized commits; task completion alone is not authorization.
 9. Update STATE.md: increment task count for this feature
 
 ### Communication Rules (both modes)
@@ -260,19 +236,13 @@ Once confirmed: load each installed skill's SKILL.md before writing any code.
 
 ### Rules — Mode A
 
-Run the gate per `${CLAUDE_PLUGIN_ROOT}/skills/gate/SKILL.md` (single source of truth — gate steps, banned completion phrases, evidence format) before every "done, test it." Then claim done using the evidence format:
-```
-done, test it:
-✅ npm run build → Exit 0, 0 errors → "Build passes"
-✅ npx tsc --noEmit → Exit 0 → "TypeScript clean"
-✅ [critical path test] → [output] → "[what it proves]"
-```
+Run the gate per `${CLAUDE_PLUGIN_ROOT}/skills/gate/SKILL.md` (single source of truth for configured checks and evidence) before verification claims. Report the actual outcome, configured check/profile/run reference and missing behavioral coverage. Detailed commands live in evidence; no mandatory emoji syntax.
 
 **When stuck or something breaks:**
 Check `docs/debug/` for an active debug session for this feature (`status: active` in frontmatter, `feature` matches current feature name). If one exists, invoke `/gsr:debug resume <slug>` to continue it. If none exists, invoke `/gsr:debug` to start a new session. Return to build flow after the session reaches `status: resolved`.
 
 **When the user makes a correction:**
-After implementing: "This is now the expected behavior. Should I add this to CLAUDE.md Learned Rules so it applies to future work?"
+After implementing, record relevant Learned Rules and summarize the changed behavior.
 
 ---
 
@@ -294,15 +264,9 @@ Parallelizable: tasks [1, 2] can run simultaneously (no file overlap)
 Sequential: task [3] depends on [1]
 ```
 
-3. **Run Step 3.5 (skills matching).** Match skills to tasks, present verification table, wait for user to confirm skills before proceeding.
+3. **Run Step 3.5 (skills matching).** Load relevant installed skills without a confirmation pause.
 
-4. **Write plan file before the approval gate.** Create `docs/plans/<YYYY-MM-DD>-<feature-slug>.md` from `${CLAUDE_PLUGIN_ROOT}/templates/plan-md.md`. Fill in: feature slug, skills confirmed list, and the full task table with Status `pending` for all rows and parallelization map.
-
-   Then present the approval gate:
-   > Task list saved to `docs/plans/<slug>.md` — it'll stay there across `/clear`. Approve to execute?
-   > (Task list shown above for review.)
-
-   This gate is non-negotiable. Do not start executing until the user approves.
+4. **Write the plan before execution.** Create `docs/plans/<YYYY-MM-DD>-<feature-slug>.md` from the plan template, with loaded skills, bounded tasks, criteria and dependency order. Existing implementation authorization covers preparation and execution; present the plan briefly without reapproval. If planning-only, finish with the plan and do not execute. Honor explicit plan/chunk review boundaries.
 
 5. Execute tasks — parallelizable ones via subagent implementers:
    - Read `${CLAUDE_PLUGIN_ROOT}/agents/implementer.md` for the implementer agent role
@@ -312,22 +276,22 @@ Sequential: task [3] depends on [1]
      1. **Stage 1 — Spec:** read `${CLAUDE_PLUGIN_ROOT}/agents/reviewer-spec.md`. Dispatch via the Agent tool with `subagent_type: "gsr:reviewer-spec"` — model and role come from the agent definition.
         - SPEC_PASS → proceed to Stage 2
         - SPEC_FAIL → fail task back to implementer (or escalate to user if it's a product decision). Do not run Stage 2.
-        - NEEDS_INFO → surface question to user, await answer, re-run Stage 1
+        - NEEDS_INFO → inspect conversation/files first; ask only for inaccessible context or an unresolved consequential product choice, then re-run Stage 1
      2. **Stage 2 — Quality:** read `${CLAUDE_PLUGIN_ROOT}/agents/reviewer-quality.md`. Dispatch via the Agent tool with `subagent_type: "gsr:reviewer-quality"` — model and role come from the agent definition.
         - APPROVED or APPROVED_WITH_CONCERNS → task done, update plan file
         - CHANGES_REQUESTED → fail task back to implementer
-   - After each implementer+reviewer cycle: update the task's row in `docs/plans/<slug>.md` — set Status to `done` (or `failed`), write the commit SHA and gate output in the Evidence column. Update `updated` in frontmatter.
+   - After each implementer+reviewer cycle: update the task's row in `docs/plans/<slug>.md` — set Status to `done` (or `failed`), write the evidence run/artifact reference (commit SHA only if authorized) in the Evidence column. Update `updated` in frontmatter.
 
 6. For ≥3 agents or ≥10 files: use worktree isolation (Decision 25)
    - Each agent in its own git worktree
    - Sequential merge after all complete
    - Single wiring pass (shared files, consistency check) after merge
 
-7. Atomic commit per task with evidence: `git commit -m "feat: [task] — build passes, 0 TS errors, 12/12 tests pass"`
+7. Atomic commit per task only when commits are authorized, referencing actual check evidence.
 
-8. Mini-verification after each task: run the gate per `${CLAUDE_PLUGIN_ROOT}/skills/gate/SKILL.md`. Fix before committing. Never commit a broken build.
+8. Verify changed behavior proportionately per the gate skill; reuse evidence only after freshness reconciliation. Fix required failures within scope or report limits.
 
-9. Set `status: complete` in `docs/plans/<slug>.md` frontmatter. Update `updated`. Then update STATE.md.
+9. Set plan `status: complete` only when all its authorized tasks are implemented and their actual checks/limits recorded. A partial checkpoint remains `in_progress`. Update `updated`, then the optional/minimal STATE summary without inventing full-product phases.
 
 ### Parallelization Heuristic
 
@@ -340,30 +304,27 @@ Parallelize when: task → file mapping has no file appearing twice.
 
 ## Step 4: STATE.md Update
 
-After feature is complete (user approved or all systematic tasks done):
+After authorized implementation tasks complete and their actual verification is recorded (human acceptance remains separate):
 
-Update `docs/STATE.md`:
+If task tracking is needed, create/update `DOC_ROOT/STATE.md` minimally, preserving existing content; an absent full-product phase table is valid. For a standalone feature record its spec/plan, actual implementation progress and next action without inventing PRD phases.
 - Feature status: `in progress` → `done`
 - Last updated: today's date
 
-**Assumption revisit checkpoint:** After updating STATE.md, check the PRD
-Assumptions Ledger for rows with Status `assumed` whose area this feature
-touches. If any: present up to 3 (oldest first) via one AskUserQuestion —
-"You've now seen this working. <assumption>: confirm / revise / keep
-deferred." Update the ledger and the Open Assumptions count in STATE.md.
-Follow `${CLAUDE_PLUGIN_ROOT}/docs/patterns/deferred-decisions.md`.
+**Assumption revisit checkpoint:** List touched open assumptions without a routine completion pause. Revisit only when new evidence makes a consequential product choice actionable, respecting deferral and review cadence. Machine results never confirm a D-pin; follow the deferred-decisions pattern.
 
-**Phase completion check:** After updating, check if this was the last feature in the current phase (all features in the phase are now `done`).
+**Standalone feature:** Save the exact feature spec and next verification action when its build stage completes; recommend `/clear`, then "dalej". Do not infer a PRD phase or ask which feature to verify.
+
+**Phase completion check:** Only if an actual phase exists, check whether its authorized features are complete. At completed build stage save verification as the next bounded action, with `/clear` then "dalej"; do not imply full verification or human acceptance from implementation progress alone.
 
 - **If yes — last feature in phase:**
   ```
   ✓ All features in [Phase N] are done.
-  Next: run `/gsr:verify` to verify the full phase before moving to Phase [N+1].
+  Next saved stage: verify this phase; use `/clear`, then "dalej". `/gsr:verify` remains optional direct control.
   ```
   Set `Next action` in STATE.md to: "Run `/gsr:verify` — all Phase [N] features done"
 
 - **If no — more features remain:**
-  Set `Next action` in STATE.md to: "Run `/gsr:build` → pick next feature from Phase [N]"
+  Set `Next action` to the exact remaining authorized feature/task reference; never ask to pick again when the task already identifies it.
 
 ---
 
@@ -374,9 +335,9 @@ Red flags — if you're thinking any of these, stop:
 | Thought | Reality |
 |---------|---------|
 | "The build probably passes, I'll skip checking" | Run the gate function. No shortcuts. |
-| "This correction is obvious, I don't need to ask about CLAUDE.md" | Ask. The user decides what goes in Learned Rules. |
+| "This correction is obvious, I don't need to ask about CLAUDE.md" | Record relevant corrections within scope without routine reapproval. |
 | "I'll skip skills matching for this simple feature" | Run Step 3.5. Always. Skills prevent the most expensive mistakes. |
-| "The user hasn't responded to my completion message, must mean it's fine" | Wait for explicit approval before committing. |
+| "The user hasn't responded to my completion message, must mean it's fine" | Silence is not acceptance or commit authorization. Honor existing explicit authorization and review cadence. |
 | "I'll combine a few small fixes into one commit" | Atomic commits. One per task. Reviewable, bisectable. |
 | "I'll use a placeholder image URL for now" | No. Use inline SVG, CSS, unicode, or text. Never reference nonexistent assets. (Iron Law #4) |
 | "The user can test Configure even though it's not built yet" | Only test what's built. Never give test tasks for placeholders. (Iron Law #5) |

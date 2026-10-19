@@ -6,7 +6,7 @@ A Claude Code plugin — an enforced instruction package with protocols and acti
 
 **One sentence:** The human makes all product decisions. The system tracks progress and enforces quality.
 
-**What's new:** Deferred decisions — GSR now takes "I don't know yet" as a full answer. Defer any product question and GSR records it as a tracked assumption (a **D-pin**) instead of blocking, then brings it back once you have a prototype to judge it against. Paired with a project **weight** dial (spike/standard/production), `/gsr:quick` for bounded tasks with zero pipeline ceremony, and a visual verification tier that walks your feature's user flow in a real browser. Full history in the [changelog](CHANGELOG.md) and [releases](https://github.com/kmajerowicz/get-shit-right/releases).
+**What's new in 0.6.0:** Source-bound verification, focused task coordination, previews before implementation and durable Autopilot task queues. Includes corrections V1–V5 from verification of Phases 1–2. See the [release notes](docs/releases/0.6.0.md) for installation and details.
 
 ---
 
@@ -43,11 +43,12 @@ claude plugin install gsr
 
 | Command | What it does |
 |---------|-------------|
+| `/gsr:start [outcome / continue]` | Identify the next bounded stage or resume a saved task; preserve fresh-context handoffs |
 | `/gsr:scope` | Shape an idea or existing materials into a structured scope document |
 | `/gsr:prd` | Turn scope into PRD + feature files + project infrastructure |
-| `/gsr:build` | Build a specific feature — creative (you review every diff) or systematic (agent-driven) |
-| `/gsr:build --sketch` | Force a design sketch before mode selection — useful for conceptually risky features |
-| `/gsr:quick <task>` | One bounded task with GSR guarantees (gate function, evidence, atomic commit) — no scope/PRD ceremony |
+| `/gsr:build` | Build a requested feature/phase with configured checks and explicitly requested review cadence |
+| `/gsr:build --sketch` | Prepare a design sketch when requested — useful for conceptually risky features |
+| `/gsr:quick <task>` | One bounded task with configured checks and evidence; commits only when authorized — no scope/PRD ceremony |
 | `/gsr:debug` | Start or resume a persistent debug session that survives `/clear` |
 | `/gsr:verify` | Verify a feature or phase with evidence — build passes, grep results, human checks |
 | `/gsr:learn` | Index an existing codebase, populate CLAUDE.md, and get told what to do next |
@@ -55,7 +56,12 @@ claude plugin install gsr
 | `/gsr:status` | Show current phase, feature progress, next action, active debug sessions, and in-progress plans |
 | `/gsr:update` | Update GSR to the latest version and reinstall hooks |
 
-Each command tells you what to run next. Context clears between commands — state lives in files.
+Major stages save a compact handoff: `/clear`, then **dalej**. GSR uses the saved
+next action and relevant references; direct commands remain available. `/gsr:start`
+is an optional entry for a new outcome or explicit continuation. Large builds use
+bounded checkpoints; a full task need not fit one conversation. Bare-message routing
+is model/host behavior and must be validated; `/gsr:start continue` is the explicit
+fallback. No hook clears sessions or starts work automatically.
 
 ---
 
@@ -73,7 +79,7 @@ Each command tells you what to run next. Context clears between commands — sta
 
 ### Start C: You have a running product, want to add a feature
 ```
-/gsr:learn → /gsr:build → /gsr:verify
+/gsr:start <feature request> → focused feature spec → /clear + dalej → build/verify
 ```
 
 ---
@@ -101,17 +107,17 @@ Turns scope into:
 Also runs a "don't hand-roll" sweep per feature. Skills are matched at build time (Step 3.5) — not stored in feature files.
 
 ### Build (`/gsr:build`)
-Pick a feature, pick a mode:
+Use the requested feature or saved task. Execution techniques follow the work; explicit review cadence wins:
 
-**Creative mode** (UI, design-sensitive work): You review every diff. Every correction gets asked "add to CLAUDE.md Learned Rules?" — so it never repeats. Corrections compound across sessions.
+**Creative technique** (UI, design-sensitive work): implement in reviewable chunks. Pause for each diff only when the user requests it; retain relevant corrections and explicit cadence across sessions.
 
-**Systematic mode** (testing, i18n, accessibility, hardening): Claude generates a task list with pass/fail criteria. You approve. Agents execute. Atomic commits with evidence. The plan is saved to `docs/plans/` — if you hit `/clear` mid-build, running `/gsr:build` again surfaces active plans and offers resume.
+**Systematic technique** (testing, i18n, accessibility, hardening): prepare bounded tasks and checks under existing authorization. Save the plan, execute within scope and preserve checkpoints. After `/clear`, reconcile actual files/evidence and continue with **dalej** or an explicit build target. Commit only when authorized.
 
-Both modes enforce the gate function before every completion claim: build passes, TS clean, lint passes. Never "should work."
+Both techniques use configured project checks and current evidence. Missing runtime/browser coverage remains explicit; there are no universal npm/TypeScript requirements.
 
-**Model-aware dispatch:** GSR selects the right Claude tier per agent role automatically — heavier models for reasoning-heavy phases, lighter models for bounded tasks.
+**Bounded delegation:** use independent agents when useful and available within the task/budget. Static role defaults are not measured model routing; automatic model switching is outside this increment.
 
-**Batch build:** say "build all" / "build everything" and GSR builds every feature in the phase sequentially, stopping only for blocking errors or product decisions. In batch mode GSR can push a notification to your phone when it needs a product decision or finishes — start the batch and walk away.
+**Batch build:** say "build all" / "build everything" and GSR builds every feature in the phase sequentially, stopping only for blocking errors or product decisions. Major stage/long-build checkpoints preserve fresh context and recorded cadence. External notifications require explicit authorization.
 
 ### When things break (`/gsr:debug`)
 
@@ -123,11 +129,53 @@ If you hit `/clear` mid-investigation: run `/gsr:debug` again — it lists activ
 
 ### When things are fuzzy (`/gsr:build --sketch`)
 
-Before mode selection, GSR can propose a short design sketch for the feature: approach, file map, data shape, what could break, out of scope. It fires automatically when a feature file has ambiguity markers (`TBD`, missing acceptance criteria, >3 cross-feature dependencies). For clean feature files, it's silent.
+A sketch records the engineering approach, file map, data shape, risk and exclusions.
+GSR prepares it when useful; `--sketch` explicitly requests it. It does not require a
+second start approval or automatically create a product prototype. Requested review
+cadence and consequential open choices remain respected.
 
-To force the gate regardless: `/gsr:build --sketch`. To skip it in one click: "Skip — I know what I'm building." Approved sketches are appended to the feature file as a dated section — no separate file.
+### See the product before a full build
 
-**Optional rigor:** gets heavier only when the feature warrants it.
+Ask naturally: "Show the booking flow first, no code" or "Show the screen and wait."
+GSR uses a flow, one representative screen, a narrow interaction or a synthetic
+technical experiment according to the question. Clear corrections skip preview;
+existing products reuse their components and styles. No new command or full PRD is
+required for a focused feature.
+
+Feedback updates the owning requirements/decisions, with its source and history.
+A saved handoff retains the chosen variant, limits and requested wait across context
+resets. Before the full build, GSR records reuse/adapt/discard and replaces mocks.
+A visual approval does not establish backend behavior or acceptance of every requirement.
+
+Try the [local booking example](gsr/examples/product-preview/README.md): map/text
+fallback, time selection, simulated confirmation and a busy-slot error. It has no
+external dependency or real booking storage. HTTP opening and handler tests were
+observed; visual/keyboard and model end-to-end trials remain unobserved. The internal
+preview skill loads through scope/build; native startup discovery is distinct from
+whether a model chooses it correctly.
+
+Ask "where are we?" or use `/gsr:status` for the useful current process fragment,
+open decisions and exact next action. A built feature with stale checks retains both
+facts. Status-only is read-only and also works with a focused feature without PRD/STATE.
+
+
+### Carry a bounded change through to verification
+
+Ask for the outcome and limits: "Booking should work without an account. Keep the
+appearance. Implement locally and check it." For a substantial existing-product change,
+GSR prepares current requirement → implementation → check links, then small task contexts
+and a sequential queue. Missing/stale links expand inspection; they do not reduce checks.
+Clear corrections stay quick.
+
+Checkpoints retain attempts and the exact unfinished step. Repeated unchanged results
+require another approach or a concrete blocker. Requested review boundaries and later
+review-only instructions still apply. At a context boundary, the user performs `/clear`
+and sends **dalej**; this version does not automatically start fresh model sessions.
+
+The result describes actual before → after behavior, current checks and remaining choices.
+Old checked work and stale evidence remain separate. Costs/credits without host measurements
+stay unknown; no measured savings or full autonomy is claimed. Native helper/process and
+installation checks are separate from still-unobserved model end-to-end behavior.
 
 ### Pins — Spec-to-Code Traceability
 

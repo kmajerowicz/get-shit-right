@@ -1,0 +1,114 @@
+[
+  {
+    "id": "P4-S1",
+    "revision": "2026-10-15.1",
+    "input": "Guest booking change",
+    "expected": "Requirement, booking entry/storage and configured checks linked from inspected sources",
+    "modelOutcome": "unobserved"
+  },
+  {
+    "id": "P4-S2",
+    "revision": "2026-10-15.1",
+    "input": "Partial/unknown mapping",
+    "expected": "Explicit gaps and wider inspection/default checks; no absent-link inference",
+    "modelOutcome": "unobserved"
+  },
+  {
+    "id": "P4-S3",
+    "revision": "2026-10-15.1",
+    "input": "Same ID wording/source deletion or external code edit",
+    "expected": "Stale map; actual progress and current evidence reconciled separately",
+    "modelOutcome": "unobserved"
+  },
+  {
+    "id": "P4-S4",
+    "revision": "2026-10-15.1",
+    "input": "Unsafe/ambiguous references, invalid IDs or unknown checks",
+    "expected": "Diagnostic; no unsafe source read or passing map",
+    "modelOutcome": "unobserved"
+  },
+  {
+    "id": "P4-S5",
+    "revision": "2026-10-15.1",
+    "input": "Bounded package with global restrictions, decisions and source of authorization",
+    "expected": "All inherited limits/cadence and relevant excerpts retained; unrelated inputs absent",
+    "modelOutcome": "unobserved"
+  },
+  {
+    "id": "P4-S6",
+    "revision": "2026-10-15.1",
+    "input": "Missing context, large read set, source drift",
+    "expected": "Diagnostic or explicit bounded expansion plan; no silent truncation/readiness",
+    "modelOutcome": "unobserved"
+  },
+  {
+    "id": "P4-S7",
+    "revision": "2026-10-15.1",
+    "input": "Existing applicable research with changed constraints",
+    "expected": "Current relevant source reused; gaps/changed meaning reopened by model inspection",
+    "modelOutcome": "unobserved"
+  },
+  {
+    "id": "P4-S8",
+    "revision": "2026-10-15.1",
+    "input": "Sequential queue interrupted and loaded by new process/session",
+    "expected": "Saved running/partial work retained; no reset or automatic checked",
+    "modelOutcome": "unobserved"
+  },
+  {
+    "id": "P4-S9",
+    "revision": "2026-10-15.1",
+    "input": "External edit after checked",
+    "expected": "Reconciliation required; historical work and stale verification remain distinct",
+    "modelOutcome": "unobserved"
+  },
+  {
+    "id": "P4-S10",
+    "revision": "2026-10-15.1",
+    "input": "Failed/unavailable/masked runner result",
+    "expected": "Current actual record cannot become checked from caller success",
+    "modelOutcome": "unobserved"
+  },
+  {
+    "id": "P4-S11",
+    "revision": "2026-10-15.1",
+    "input": "Repeated unchanged source/result with new run IDs",
+    "expected": "Same approach blocks after second identical unproductive outcome; change within bounds or report blocker",
+    "modelOutcome": "unobserved"
+  },
+  {
+    "id": "P4-S12",
+    "revision": "2026-10-15.1",
+    "input": "Later review-only and requested per-task review",
+    "expected": "No new execution writes; saved scope never overrides narrowing",
+    "modelOutcome": "unobserved"
+  },
+  {
+    "id": "P4-S13",
+    "revision": "2026-10-15.1",
+    "input": "Malformed/duplicated checkpoint or missing refs",
+    "expected": "Diagnostic, never a reset to a blank passing queue",
+    "modelOutcome": "unobserved"
+  },
+  {
+    "id": "P4-S14",
+    "revision": "2026-10-15.1",
+    "input": "Attempt/step budgets and unavailable credit measurements",
+    "expected": "Persistent counters and limits, actual cost unknown",
+    "modelOutcome": "unobserved"
+  },
+  {
+    "id": "P4-S15",
+    "revision": "2026-10-15.1",
+    "input": "Actual CLI before/after output artifacts and partial coverage",
+    "expected": "Report actual artifacts/observations with current evidence; missing coverage unobserved",
+    "modelOutcome": "unobserved"
+  },
+  {
+    "id": "P4-S16",
+    "revision": "2026-10-15.1",
+    "input": "Historical checked step plus stale evidence/open human decision",
+    "expected": "No full PASS or acceptance inferred; decision owner and gaps visible",
+    "modelOutcome": "unobserved"
+  }
+]

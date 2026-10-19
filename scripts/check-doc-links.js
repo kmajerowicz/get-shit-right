@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-// Checks local markdown links in gsr/docs/ — flags links that point to non-existent files.
+// Checks shipped workflows/templates and all phase planning/implementation artifacts.
 const fs = require('fs');
 const path = require('path');
 
-const DOCS_ROOT = 'gsr/docs';
+const DOCS_ROOT = 'gsr';
 const LINK_RE = /\[([^\]]*)\]\(([^)]+)\)/g;
 
 function walkMd(dir) {
@@ -18,8 +18,15 @@ function walkMd(dir) {
 
 let broken = 0;
 
-for (const file of walkMd(DOCS_ROOT)) {
+const phaseArtifacts = ['docs/internal/plans', 'docs/internal/research'].flatMap(dir =>
+  fs.existsSync(dir) ? fs.readdirSync(dir).filter(name => /phase-\d+.*\.md$/.test(name)).map(name => path.join(dir, name)) : []
+);
+
+for (const file of [...walkMd(DOCS_ROOT), ...phaseArtifacts, 'docs/BACKLOG.md'].filter(f => fs.existsSync(f))) {
   const content = fs.readFileSync(file, 'utf8');
+  for (const match of content.matchAll(/\$\{CLAUDE_PLUGIN_ROOT\}\/([a-zA-Z0-9_./-]+)/g)) {
+    if (!fs.existsSync(path.join('gsr', match[1]))) { console.error(`✗ ${file}: missing plugin reference → ${match[1]}`); broken++; }
+  }
   for (const [, , href] of content.matchAll(LINK_RE)) {
     if (href.startsWith('http') || href.startsWith('#') || href.startsWith('mailto:')) continue;
 

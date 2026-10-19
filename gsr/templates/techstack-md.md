@@ -54,3 +54,25 @@ _Resolved when you get to the relevant feature._
 | Area | Status | Notes |
 |------|--------|-------|
 | | | |
+
+## Machine verification configuration
+
+During authorized work, record the exact project checks in project-root `.gsr.json`
+(schemaVersion 1). Preserve the legacy Gate prose; reconcile it against real scripts.
+Each check has `id`, `argv` (argument array, shell disabled), `kind` (`static`,
+`test`, `runtime`), optional project-relative `cwd`, `required` and `timeoutMs`.
+No universal npm/TypeScript defaults. Named `profiles` select check IDs; default
+selects all required checks plus explicitly listed default optional checks. An explicit
+`profiles.default` cannot reduce required coverage; other profiles stay explicit subsets. A docs-only profile needs documented bounded
+`profileApplicability`; uncertainty selects default. See the plugin's
+`docs/patterns/verification-contract.md` for the internal runner and evidence limits.
+
+
+## Installed guidance references
+
+_Record only genuinely project-wide choices from the actual host catalog: skill/provider,
+source, applicable task/output, available version or identity (unknown if unavailable),
+and actual load/use observation or limit. Reconcile availability/current content on resume.
+These references grant no installation/publishing/spending permission and prove no skill
+use by themselves. Task-only guidance belongs in the existing feature Task Context or
+plan Skills Confirmed bullets, preserving plan headings/table._

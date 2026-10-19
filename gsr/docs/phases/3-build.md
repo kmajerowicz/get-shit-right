@@ -1,8 +1,17 @@
 # Phase 3: Build
 
-**Two modes, selected by prompt within `/gsr:build`. User picks a feature to build, then chooses the mode. Features are grouped into build phases defined in the PRD.**
+**Creative/systematic techniques are selected internally; no compulsory mode prompt. Use the requested feature/phase and honor explicit review cadence. Features are grouped into PRD build phases.**
 
 ---
+
+## Early product demonstration
+
+For an explicit early view or material product uncertainty use the internal preview
+skill within scope/build, per `${CLAUDE_PLUGIN_ROOT}/docs/patterns/product-preview.md`.
+Preserve diagram-only/preview-only and show-and-wait; no new public stage or flag.
+Before full build record reuse/adapt/discard and replace mocks. Clear corrections skip
+preview. Engineering --sketch remains independent. Preview approval is not verified
+backend behavior or acceptance of every requirement.
 
 ## Mode A: Creative Build (human-in-the-loop)
 
@@ -13,25 +22,20 @@
 2. System reads the feature file → loads project-wide skills from `techstack.md` → feature-specific skills matched dynamically in Step 3.5
 3. Claude reads CLAUDE.md (conventions, references, learned rules)
 4. Plan mode if >2 files, direct implementation otherwise
-   - Plans follow the structured format in `docs/patterns/plan-execution.md` — file map first, then task breakdown with checkpoints. User approves the file map before execution begins.
-5. User reviews every diff, tests in browser
-6. User corrects → Claude asks "Add this to CLAUDE.md Learned Rules?"
-7. Atomic commit after user approves
+   - Plans follow the structured format in `docs/patterns/plan-execution.md` — file map first, then task breakdown with checkpoints. Existing execution authorization covers the plan; pause only for explicitly requested review or unresolved consequential choices.
+5. Honor explicitly requested chunk/diff review; otherwise continue reversible work and perform relevant available behavioral checks
+6. Record relevant corrections in Learned Rules within authorized work without routine confirmation
+7. Atomic commit only if commits are authorized
 8. STATE.md auto-updates (task count incremented)
 
 ### Rules
 - Claude always says "done, test it" or "still need X" — never "should work"
-- Before saying done: code compiles, no TS errors, build passes
+- Before verification claims: applicable configured checks pass with fresh evidence; separately report behavioral coverage and human acceptance
 - Skills are enforced by the workflow (loaded from feature file), not by Claude remembering a rule
 - Before committing, Claude highlights key review points from the code review checklist (`docs/patterns/code-review.md`) — focusing on integration safety and what the user should manually verify
 
 ### Mini-verification per task
-Before telling the user "done, test it," Claude runs the gate function (see Phase 4) at minimum Tier 1:
-1. `npm run build` (or equivalent) — must pass with 0 errors
-2. `npx tsc --noEmit` — must report 0 TypeScript errors
-3. Lint if configured — must pass
-
-If any check fails, Claude fixes the issue before claiming done. The claim must reference the output: "done, test it — build passes (0 errors), TS clean." Never "done, should work."
+Run applicable checks through `node "${CLAUDE_PLUGIN_ROOT}/scripts/run-checks.js" --cwd "<canonical-project-root>"`, optionally using a documented configured `--profile`. Discover the project/DOC_ROOT and read validated `.gsr.json` per the gate skill. No npm/tsc defaults. Record actual result/freshness and relevant runtime/browser observations. Repair failures in scope or report unavailable coverage. Reuse prior evidence only after freshness reconciliation; unrelated docs edits do not universally require full application checks.
 
 ### Debugging
 When a bug or unexpected behavior occurs during build, switch to the systematic debugging process (see `docs/patterns/systematic-debugging.md`). Resume normal build flow after the fix is verified.
@@ -46,11 +50,11 @@ When a bug or unexpected behavior occurs during build, switch to the systematic 
 1. User describes the systematic task
 2. Claude generates task list with pass/fail criteria
    - Task lists follow the plan execution protocol in `docs/patterns/plan-execution.md` — including file map and checkpoint after each task.
-3. User approves the list (gate — nothing executes without approval)
+3. Prepare the task list and proceed under existing execution authorization; planning-only remains planning-only
 4. Claude executes tasks (parallelizable where independent)
-5. Atomic commit per task
+5. Atomic commit per task only when authorized
 6. Verification report with grep-based evidence
-7. User spot-checks results
+7. User acceptance remains separate; pause at requested review boundaries
 
 ### Rules
 - Agent reads CLAUDE.md and all accumulated corrections before starting
@@ -59,12 +63,7 @@ When a bug or unexpected behavior occurs during build, switch to the systematic 
 - Subagents follow the role separation and status protocol defined in `docs/patterns/subagent-patterns.md`. Each task dispatched to an implementer subagent includes full context handoff. In systematic mode, a reviewer subagent checks each implementer's output before the commit using the code review checklist (`docs/patterns/code-review.md`) covering spec compliance, integration safety, convention adherence, and regression risk.
 
 ### Mini-verification per task
-As part of each atomic commit cycle, before committing, the agent runs the gate function (see Phase 4) at minimum Tier 1:
-1. `npm run build` — must pass with 0 errors
-2. `npx tsc --noEmit` — must report 0 TypeScript errors
-3. Lint if configured — must pass
-
-If any check fails, the agent fixes before committing. Commit messages include evidence: "feat: add i18n for dashboard — build passes, 0 TS errors, 12/12 tests pass."
+Run applicable checks through `node "${CLAUDE_PLUGIN_ROOT}/scripts/run-checks.js" --cwd "<canonical-project-root>"`, optionally using a documented configured `--profile`. Discover the project/DOC_ROOT and read validated `.gsr.json` per the gate skill. No npm/tsc defaults. Record actual result/freshness and relevant runtime/browser observations. Repair failures in scope or report unavailable coverage. Reuse prior evidence only after freshness reconciliation; unrelated docs edits do not universally require full application checks.
 
 ### Debugging
 When a bug or unexpected behavior occurs during build, switch to the systematic debugging process (see `docs/patterns/systematic-debugging.md`). Resume normal build flow after the fix is verified.
@@ -86,7 +85,7 @@ If it has clear pass/fail criteria and no design judgment → systematic (Mode B
 | i18n | Systematic | Mechanical extraction |
 | Accessibility | Systematic | Checklist-based |
 | Security hardening | Systematic | Checklist-based |
-| Refactoring | Systematic + human review | Pattern-based but verify nothing broke |
+| Refactoring | Systematic; honor requested review | Pattern-based with meaningful regression checks |
 
 ---
 

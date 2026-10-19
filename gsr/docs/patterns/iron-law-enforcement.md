@@ -6,7 +6,7 @@ A reference for skill authors writing GSR skills. This pattern prevents Claude f
 
 ## Why This Exists
 
-GSR has good rules. "User reviews every diff." "Never say should work." "Corrections go to Learned Rules." But rules alone aren't enough — Claude can rationalize skipping any rule when under pressure (long context, complex task, user seems impatient).
+GSR has good rules. "Honor requested review cadence." "Never say should work." "Corrections go to Learned Rules." But rules alone aren't enough — Claude can rationalize skipping any rule when under pressure (long context, complex task, user seems impatient).
 
 The superpowers plugin proved that **explicit rationalization tables** dramatically reduce rule violations. When Claude encounters a thought like "this is too simple to need review," having a table that maps that exact thought to "STOP — this is a red flag" is far more effective than a general instruction to "always follow the rules."
 
@@ -40,10 +40,10 @@ A skill with 10 rules might have enforcement blocks for 3-4 of them. Over-enforc
 
 ## Concrete Examples
 
-### Example 1: "User reviews every diff" (build creative mode)
+### Example 1: "Honor explicitly requested per-chunk review"
 
 ```
-IRON LAW: User reviews every diff before proceeding.
+IRON LAW: When the user explicitly requests each chunk/diff review, wait at those boundaries and preserve the cadence after resume. Otherwise continue reversible work within existing authorization without inventing review gates.
 
 RED FLAGS — if you think any of these, STOP:
 | Thought                                    | What it means              |
@@ -57,8 +57,8 @@ COMMON RATIONALIZATIONS:
 | Excuse                                     | Reality                                  |
 |--------------------------------------------|------------------------------------------|
 | "It's only a one-line change"              | One-line changes have caused production outages. Show it. |
-| "I already showed something similar"       | Similar is not identical. Show it.       |
-| "The user approved the plan, this follows it" | Plans and diffs are different. Show the diff. |
+| "I already showed something similar"       | Under requested per-diff review, similar is not identical. Show it.       |
+| "The user approved the plan, this follows it" | Plans and diffs differ; show each diff only when that review cadence was requested. |
 ```
 
 ### Example 2: "Never say 'should work'" (build both modes)
@@ -109,14 +109,14 @@ IRON LAW: Every verification claim must cite specific evidence — file path, li
 RED FLAGS — if you think any of these, STOP:
 | Thought                                    | What it means              |
 |--------------------------------------------|----------------------------|
-| "I checked this earlier"                   | Earlier is not now. Re-verify. |
+| "I checked this earlier"                   | Reconcile freshness before reuse; rerun if stale. |
 | "The code clearly handles this case"       | Show the code, don't describe it. |
 | "All tests pass so this must be correct"   | Tests can miss the thing you're verifying. |
 
 COMMON RATIONALIZATIONS:
 | Excuse                                     | Reality                                  |
 |--------------------------------------------|------------------------------------------|
-| "Citing evidence for every claim is tedious" | Tedious for you, essential for the user. |
+| "Citing evidence for every claim is tedious" | Retain detailed evidence references; concise summaries need no per-edit report. |
 | "The user can see the code themselves"     | Verification that requires the user to re-check is not verification. |
 | "I'm confident this works based on the implementation" | Confidence is not evidence. Show output. |
 ```

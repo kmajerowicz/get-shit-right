@@ -12,6 +12,7 @@ const claudeDir = process.env.CLAUDE_CONFIG_DIR || path.join(os.homedir(), '.cla
 const hooksDir = path.join(claudeDir, 'hooks');
 const settingsPath = path.join(claudeDir, 'settings.json');
 const srcDir = __dirname;
+const { execFileSync } = require('child_process');
 const FORCE = process.argv.includes('--force');
 
 function readPluginVersion() {
@@ -29,20 +30,22 @@ function ok(msg) { console.log(`  \x1b[32m✓\x1b[0m ${msg}`); }
 function warn(msg) { console.log(`  \x1b[33m!\x1b[0m ${msg}`); }
 function err(msg) { console.log(`  \x1b[31m✗\x1b[0m ${msg}`); }
 
-// ── Ensure directories ────────────────────────────────────────────────────
-
-console.log('\n\x1b[1mGSR Hooks Installer\x1b[0m\n');
-
+// Validate settings before touching installed artifacts.
+let settings = {};
+if (fs.existsSync(settingsPath)) {
+  try {
+    settings = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
+    if (!settings || Array.isArray(settings) || typeof settings !== 'object') throw new Error('expected an object');
+  } catch (e) {
+    err(`Invalid settings: ${e.message}`);
+    process.exit(1);
+  }
+}
 if (!fs.existsSync(claudeDir)) {
   err(`Claude config directory not found: ${claudeDir}`);
-  err('Is Claude Code installed?');
   process.exit(1);
 }
-
-if (!fs.existsSync(hooksDir)) {
-  fs.mkdirSync(hooksDir, { recursive: true });
-  ok(`Created ${hooksDir}`);
-}
+fs.mkdirSync(hooksDir, { recursive: true });
 
 // ── Copy the statusline ──────────────────────────────────────────────────
 
@@ -62,21 +65,25 @@ if (fs.existsSync(path.join(hooksDir, gsdEquiv))) {
 }
 
 const version = readPluginVersion();
-const stamped = `// gsr-hook-version: ${version}\n${fs.readFileSync(src, 'utf8')}`;
-fs.writeFileSync(dst, stamped);
+const source = fs.readFileSync(src, 'utf8');
+const newline = source.indexOf('\n');
+const stamped = source.startsWith('#!')
+  ? source.slice(0, newline + 1) + `// gsr-hook-version: ${version}\n` + source.slice(newline + 1)
+  : `// gsr-hook-version: ${version}\n${source}`;
+const temporary = `${dst}.${process.pid}.tmp.js`;
+try {
+  fs.writeFileSync(temporary, stamped);
+  execFileSync(process.execPath, ['--check', temporary], { stdio: 'pipe' });
+  execFileSync(process.execPath, [temporary], { input: '{}', stdio: ['pipe', 'pipe', 'pipe'] });
+  fs.renameSync(temporary, dst);
+} catch (e) {
+  fs.rmSync(temporary, { force: true });
+  err('Installed statusline validation failed');
+  process.exit(1);
+}
 ok(`Copied ${file} → ${dst}`);
 
 // ── Update settings.json ──────────────────────────────────────────────────
-
-let settings = {};
-if (fs.existsSync(settingsPath)) {
-  try {
-    settings = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
-  } catch (e) {
-    err(`Failed to parse ${settingsPath}: ${e.message}`);
-    process.exit(1);
-  }
-}
 
 // Statusline
 const statuslineCmd = `node "${path.join(hooksDir, 'gsr-statusline.js')}"`;

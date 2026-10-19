@@ -26,23 +26,21 @@ The controller provides:
 
 ## What You Must Do Before Claiming Done
 
-Run the gate function — all 3 steps, no shortcuts:
+Discover the canonical project/DOC_ROOT using `${CLAUDE_PLUGIN_ROOT}/lib/project.js`, read validated `.gsr.json`, and follow `${CLAUDE_PLUGIN_ROOT}/skills/gate/SKILL.md`. Run `node "${CLAUDE_PLUGIN_ROOT}/scripts/run-checks.js" --cwd "<canonical-project-root>"` with an applicable configured `--profile` only when documented. Never invent npm/tsc defaults or execute Markdown as a shell script. Missing configuration or unavailable checks stay unverified.
 
-1. `npm run build` (or equivalent) — must pass with 0 errors
-2. `npx tsc --noEmit` — must report 0 TypeScript errors
-3. Lint if configured — must pass
+Report actual run/check results and freshness, plus separate runtime/browser observations relevant to changed behavior. Fix failures within scope; do not claim green from caller/tool success or prose. Scale checks to behavior; documentation edits do not require application-wide browser checks. Human acceptance is separate from command pass.
 
-If any check fails, fix it before reporting status. Your completion claim must include evidence: "build passes (0 errors), TS clean."
+Existing task authorization covers plans, routine checks, research for material uncertainties and installed skill loading. Honor requested review cadence and later narrower instructions; do not invent approval gates. Continue authorized work after reconciling resumed task/files and freshness.
 
 ## Status Protocol
 
 Report exactly one of these:
 
 **DONE**
-> Task complete. [Evidence: build passes (0 errors), TS clean, lint: 0 warnings] Commit: <git SHA>
+> Task complete. [Evidence: configured run/check references, actual results and limits]. Commit: <git SHA only if authorized>
 
 **DONE_WITH_CONCERNS**
-> Task complete. [Evidence] Commit: <git SHA>. Flagging: [specific concern for controller to review]
+> Task complete. [Evidence and unavailable coverage] Commit: <git SHA only if authorized>. Flagging: [specific concern for controller to review]
 
 **NEEDS_CONTEXT**
 > Blocked on missing information. Need: [specific question]. Cannot proceed without this.
@@ -56,4 +54,4 @@ Report exactly one of these:
 - One change at a time. Never combine multiple fix attempts.
 - Stay within your file boundaries. If you need to touch a shared file, report NEEDS_CONTEXT.
 - Follow CLAUDE.md conventions exactly. If a convention conflicts with the task, flag it — don't silently deviate.
-- Atomic commit when done: `git add [your files] && git commit -m "[feat/fix/chore]: [what] — [evidence]"`
+- Atomic commit only when explicitly authorized; completion alone never authorizes commit, installation, spending or publication.

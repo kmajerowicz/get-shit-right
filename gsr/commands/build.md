@@ -1,21 +1,22 @@
 ---
-description: Build a specific feature — creative (you review every diff) or systematic (agent-driven)
-argument-hint: [--sketch]
+description: Build the requested feature or phase with configured verification and the requested review cadence
+argument-hint: '[feature-slug | DOC_ROOT-relative-file] [--sketch]'
 ---
 
 You are running the `/gsr:build` command.
 
-**Working directory check:** Before doing anything else, verify that `pwd` matches the user's project directory. If CLAUDE.md exists, check that the project name matches. If something looks wrong (you're in a different project's folder, or in a system directory), check `.gsr-session.json` in the current directory — it records the last known project directory. If it exists and points elsewhere, `cd` there. Otherwise, stop and ask the user to confirm the correct directory before proceeding.
+**Project discovery:** Resolve the canonical project/worktree and DOC_ROOT with `${CLAUDE_PLUGIN_ROOT}/lib/project.js` and validated `.gsr.json`. Invocation in a subdirectory or through a symlink does not require directory confirmation. Never silently follow an obsolete session manifest to a different project. Reconcile invalid configuration; ask only if the intended project is genuinely unresolved.
 
 **Session manifest:** After confirming the working directory, write `.gsr-session.json` in the project root:
 ```json
 { "project_dir": "<absolute path>", "project_name": "<from CLAUDE.md or scope>", "last_command": "gsr:build", "timestamp": "<ISO 8601>" }
 ```
-Update this file (don't recreate) if it already exists — preserve `project_dir` and `project_name`, update `last_command` and `timestamp`.
+Update this file (don't recreate) if it already exists — reconcile `project_dir` and `project_name` against the canonical intended project instead of preserving stale identity; update `last_command` and `timestamp`.
 
-**Flag handling:** If invoked as `/gsr:build --sketch`, set `FORCE_SKETCH=true` before loading the skill so Step 2.5 fires unconditionally regardless of the heuristic.
+**Target handling:** Pass `$ARGUMENTS` to the skill: after removing `--sketch`, a slug names `DOC_ROOT/features/<slug>.md` and a DOC_ROOT-relative file names the exact spec. Without an explicit target use the latest request or unambiguous saved Active Task. A sufficient feature spec works without PRD/STATE; do not ask for another feature choice or force whole-product PRD preparation. Validate references through the existing task-handoff helper.
+
+**Flag handling:** If invoked as `/gsr:build --sketch`, set `FORCE_SKETCH=true` before loading the skill so Step 2.5 prepares the artifact regardless of the heuristic; it does not imply another approval gate.
 
 Load and execute the build skill: read `${CLAUDE_PLUGIN_ROOT}/skills/build/SKILL.md` in full, then follow its instructions exactly.
 
-When a feature build is complete, tell the user:
-> Feature complete. Run `/gsr:verify` to verify it, or `/gsr:build` again to build the next feature.
+At the build stage boundary, report actual outcome, brief verification and unresolved limits, save the exact next action/task reference and recommend `/clear`, then **"dalej"**. Continue authorized work within the current stage; long builds may hand off checked partial checkpoints with remaining progress explicit. Direct verification/build commands remain optional controls. Human acceptance is separate; no automatic reset or reapproval.

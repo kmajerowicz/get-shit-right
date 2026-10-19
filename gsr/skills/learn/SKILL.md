@@ -5,13 +5,39 @@ description: Index an existing project (or re-index after major changes) so GSR 
 
 # /gsr:learn — Learn Skill
 
-You are executing the `/gsr:learn` command. Your job is to index an existing project so that GSR can work with it, then tell the user exactly what to do next.
+You are executing the `/gsr:learn` command. Your job is to index the requested project or affected area and return a bounded assessment. Direct `/gsr:learn` authorizes indexing and relevant documentation updates only, never feature implementation, provisioning, deployment or a full pipeline.
 
 This skill serves two use cases:
 1. **First run** — onboarding a new codebase into GSR (Start B or Start C)
 2. **Re-run** — refreshing after significant codebase changes
 
 ---
+
+## Fresh-context stage handoff
+
+At a major stage or long-build increment, follow
+`${CLAUDE_PLUGIN_ROOT}/docs/patterns/stage-handoff.md`. Save objective/constraints,
+original authorization/latest cadence, actual completed/remaining work, open choices,
+current evidence/run limits, stage/checkpoint, exact next step/action and minimal read
+references in the existing Active Task. Keep requirements in covered source documents.
+Recommend `/clear` then **dalej** after saving. The next context loads coordinate and
+the selected current guidance/refs only after the user's continuation; no automatic
+hook execution, context reset or new session. Direct commands remain scoped optional
+controls. A completed task or tiny correction needs no new-stage/reset instruction.
+Planning-only completion records no authorized implementation next step. Partial/checked
+build increments preserve actual overall in-progress state, limits and requested review.
+
+## Relevant installed skills
+
+Read `${CLAUDE_PLUGIN_ROOT}/docs/patterns/skill-selection.md` when selecting or
+resuming guidance. Use the host's current catalog and actual task/output, load the
+applicable SKILL.md, and reuse current guidance without redundant marketplace searches.
+A saved skill name or a keyword match is not proof of use. Record only useful source/
+provider/applicability/version-or-identity/loaded-use observations in existing feature/
+plan sections; unknown identity stays unknown. Check availability/current content at
+resume. Optional missing guidance permits authorized work; an essential missing capability
+requires only its actual access/install boundary. Denied installation is not retried
+through another downloader. No silent spending, publication or model switching.
 
 ## Iron Law
 
@@ -21,62 +47,27 @@ This skill serves two use cases:
 
 ## Step 1: Detect What Exists
 
-Before asking the user anything, scan the project:
+Read the current request and supplied constraints first. Direct learn without a feature target may index project architecture; when a coordinator/task identifies an affected area, inspect that area and its direct integration points first. A typo/copy correction uses quick and needs no learn sweep. Do not require a PRD to understand an existing product.
 
-```
-Read these if they exist:
-- CLAUDE.md
-- README.md
-- package.json or equivalent
-- src/ structure (top-level folders)
-- Any config files (.env.example, tsconfig.json, next.config.*, etc.)
-```
+Inspect accessible relevant files: existing CLAUDE/README references, language/project configuration, targeted source/tests and directory structure. Expand only when integration uncertainty requires it; never expose credentials or read unrelated personal files.
 
-**Doc directory detection** — users may store docs in non-standard locations. Before looking for GSR artifacts, find the active doc root by checking these candidates in order:
+**Project and doc directory detection:** use `${CLAUDE_PLUGIN_ROOT}/lib/project.js` (`discover(cwd)`) as the shared contract. Resolve the canonical Git worktree root even from a subdirectory or symlink. Outside Git, walk to the nearest `.gsr.json` or GSR STATE marker; otherwise cwd is only a proposed project location.
 
-```
-1. .ai/          (Cursor AI, common AI-native projects)
-2. .cursor/      (Cursor IDE docs)
-3. ai/           (generic AI docs folder)
-4. docs/         (traditional default)
-5. doc/          (alternative spelling)
-6. documentation/
-```
+Project-root `.gsr.json` schemaVersion 1 takes precedence for `docRoot`. Otherwise score `.ai`, `.cursor`, `ai`, `docs`, `doc`, `documentation` by PRD.md, prd.md, scope.md, STATE.md, techstack.md, BACKLOG.md, features/ and work/. Highest score wins; ties follow that order. With no artifacts, `docs` is proposed, not initialized. Reject invalid configuration and paths/symlinks escaping the project; do not silently switch projects. A CLAUDE.md mention alone is not verified state.
 
-Use the **first directory that exists and contains any of**: PRD.md, prd.md, scope.md, STATE.md, techstack.md, BACKLOG.md, or a `features/` or `work/` subfolder. If multiple candidates qualify, pick the one with the most matching files. If none qualify, default to `docs/`.
+During authorized work, translate known legacy techstack Gate commands into `.gsr.json`, preserving the prose and reconciling conflicts with the actual stack. Do not invent npm or TypeScript checks for Python or other stacks. Describe the config change in the normal summary; no onboarding approval screen. See [verification contract](../../docs/patterns/verification-contract.md).
 
-Once the doc root is identified (call it `DOC_ROOT`), read:
-```
-- DOC_ROOT/PRD.md (or prd.md)
-- DOC_ROOT/scope.md
-- DOC_ROOT/STATE.md
-- DOC_ROOT/techstack.md
-- DOC_ROOT/BACKLOG.md
-- DOC_ROOT/features/ (list files)
-- Any subdirectory that looks like feature specs (work/, specs/, features/)
-```
+Once DOC_ROOT is resolved, list existing GSR artifacts and read only those relevant to the indexing target/task: current feature/task, applicable scope/PRD sections, STATE continuation, techstack and integration references. Preserve useful existing docs and conventions. No whole-product retroactive feature catalog is required.
 
-From this scan, determine:
-- **What GSR artifacts exist** (CLAUDE.md, STATE.md, PRD.md, feature files)
-- **Doc root** — the directory where docs live (record this — all subsequent file creation uses this path)
-- **Tech stack** (language, framework, database, auth, hosting — from package.json/config)
-- **Code conventions** (naming patterns, folder structure — from src/)
-- **Project maturity** (has tests? has docs? has migrations?)
+Record actual artifacts, canonical project/DOC_ROOT, detected stack/check commands, observed conventions, affected areas/integration points, gaps and stale references. File existence never establishes implementation or acceptance.
 
 ---
 
-## Step 2: Map the Codebase (parallel agents for large codebases)
+## Step 2: Map the Relevant Code
 
-For each major area of the codebase, understand:
+Inspect architecture, conventions, stack/check configuration, data/auth and external integrations where relevant to the target. Begin with affected source/tests and direct callers/consumers. Expand inspection only to resolve a concrete dependency or integration uncertainty; explain the reason in the assessment. A source-file count is not a reason for a whole-repository agent sweep.
 
-1. **Architecture** — how is the code structured? What are the main modules/layers?
-2. **Tech stack** — exact versions, build tools, deployment setup
-3. **Conventions** — naming (camelCase/snake_case/kebab-case), file organization, import patterns
-4. **Data layer** — where does data live? What's the schema source of truth?
-5. **Auth** — how is authentication handled?
-6. **External services** — what third-party services are configured?
-
-For large codebases (>50 files in src/), dispatch parallel researcher agents to cover different areas simultaneously. Dispatch via the Agent tool with `subagent_type: "gsr:researcher"` — model and role come from the agent definition. For small projects, do this directly.
+Default to direct bounded inspection. Delegate independent bounded areas only if useful and permitted, with file boundaries and the specific question to answer. Do not install tools or provision services from an indexing request.
 
 ---
 
@@ -84,95 +75,30 @@ For large codebases (>50 files in src/), dispatch parallel researcher agents to 
 
 Based on what you found in Step 1, handle each scenario:
 
-### No GSR setup (CLAUDE.md missing or no GSR references)
-Create from scratch using `DOC_ROOT` detected in Step 1 (default: `docs/` if nothing found):
-- `CLAUDE.md` from `${CLAUDE_PLUGIN_ROOT}/templates/claude-md.md` — fill in project name, stack references, conventions found in Step 2
-- `DOC_ROOT/techstack.md` from `${CLAUDE_PLUGIN_ROOT}/templates/techstack-md.md` — fill in stack detected
-- `DOC_ROOT/STATE.md` from `${CLAUDE_PLUGIN_ROOT}/templates/state-md.md` — minimal placeholder
-- `DOC_ROOT/BACKLOG.md` from `${CLAUDE_PLUGIN_ROOT}/templates/backlog-md.md` — empty
-- `DOC_ROOT/features/` — create directory (empty)
+### Missing or partial setup
 
-### CLAUDE.md exists, no PRD
-- Read CLAUDE.md — validate references are accurate (do the paths still exist?)
-- Add GSR structure note if missing: references to `DOC_ROOT/PRD.md`, `DOC_ROOT/features/`
-- Create missing `DOC_ROOT/` files as above
-- Do NOT overwrite existing content in CLAUDE.md
+Update/create CLAUDE.md for observed conventions and real references, preserving Learned Rules and useful content. Add only documentation needed for the authorized indexing/task: techstack for actual detected stack/checks, STATE for a tracked nontrivial task, and a focused feature spec when that preparation is part of a broader authorized task. Do not create empty BACKLOG/features trees merely to satisfy a checklist. Missing PRD is not a gap that forces whole-product PRD generation; never add links to nonexistent PRD files.
 
-### CLAUDE.md + PRD exist, no feature files
-- Read both, validate they're consistent
-- Note which features in the PRD don't have feature files yet
-- Do not create feature files — that's `/gsr:prd` work. Just note the gap.
+Direct learn returns an assessment and does not implement or generate a feature spec merely because a feature was mentioned as context. When invoked internally for an already authorized feature task, pass the bounded assessment/references to focused feature preparation in the scope skill. Create only needed missing CLAUDE/techstack/STATE/spec files at resolved DOC_ROOT, without overwriting existing useful content. No parallel `docs/` tree when DOC_ROOT is `.ai`.
 
-### Full GSR setup exists (CLAUDE.md + PRD + feature files + STATE.md)
-- Re-index: check that CLAUDE.md references still point to real paths
-- Check STATE.md is current
-- Flag any stale references: "CLAUDE.md references `src/router.tsx` but that file doesn't exist"
-- Update CLAUDE.md with any new conventions spotted in the codebase
+For existing setup, validate relevant references against actual files and flag stale ones; refresh only affected indexing facts. Preserve existing IDs/spec wording and do not mark implementation complete from STATE checkboxes.
 
 ---
 
-## Step 4: Produce the Assessment
+## Step 4: Produce the Assessment and Stage Handoff
 
-After indexing, output a structured assessment:
+Report a concise outcome: indexing target/observed scope, canonical project/DOC_ROOT, detected stack/conventions/check path, missing relevant context and exact next action. Keep detailed file references available; the user need not read internal records to continue. Infer weight from stakes/current context if absent, record it when STATE is legitimately updated, and never ask for weight confirmation or an expertise selector.
 
-```
-## GSR Assessment — [Project Name]
+Choose next action from actual intent and files:
+- Existing product plus a nontrivial feature request: prepare/reuse one focused `DOC_ROOT/features/<slug>.md` through the scope skill, then build from that reference. No full PRD needed.
+- Existing sufficient feature/plan: saved next action points directly to it; do not ask which feature again.
+- New product/materials needing whole-product scope: scope/PRD remains appropriate.
+- Clear small correction: quick; no feature paperwork or whole-project indexing.
+- Direct learn: finish indexing and recommend the concrete next action, without executing it or expanding authorization.
 
-### What Exists
-[List GSR artifacts found and their status, including which doc root was detected]
+For a broader authorized task, save one compact Active Task summary/reference and the exact next bounded stage. At this completed major indexing/preparation stage, recommend `/clear`, then **"dalej"**; the user performs the reset/continuation. Existing explicit commands remain optional direct controls. Within a stage continue authorized work; for long work save a checked partial checkpoint with truthful in-progress status. Do not silently clear or promise the entire task fits one context. If STATE is absent and only standalone indexing is requested, do not create task scaffolding just to simulate a continuation.
 
-### Doc Root
-[Path used for GSR artifacts, e.g. `.ai/` or `docs/`]
-
-### Weight
-[Current `**Weight:**` value from STATE.md. If STATE.md exists without a Weight
-line, classify it now per `${CLAUDE_PLUGIN_ROOT}/docs/patterns/weight.md`
-(infer + confirm via one AskUserQuestion) and add it.]
-
-### Tech Stack Detected
-[Framework, language, key libraries, version of node/etc.]
-
-### Conventions Identified
-[Naming patterns, folder structure, key patterns]
-
-### Gaps
-[What's missing from full GSR setup]
-
-### Stale References (if re-run)
-[CLAUDE.md references that no longer point to valid paths]
-
-### Next Step
-[Exactly what command to run next, and why]
-```
-
-**Next step logic:**
-
-First check which GSR artifacts exist, then read STATE.md to understand actual project progress:
-
-```
-No scope, no PRD
-  → "Run /gsr:scope to shape your idea into a scope document."
-
-Has scope, no PRD
-  → "Run /gsr:prd to generate PRD and feature files."
-
-Has PRD, no STATE.md or STATE.md is empty
-  → "Run /gsr:prd to generate feature files and initialize STATE.md."
-
-Has full setup → read docs/STATE.md and determine:
-  - Any phase is BLOCKED
-      → "Phase [N] is blocked. Blockers: [list from STATE.md]. Resolve these before continuing."
-  - Current phase has features in progress
-      → "You're mid-phase [N]. [Feature] is in progress. Run /gsr:build to resume it."
-  - All features in current phase are done but phase not verified
-      → "All Phase [N] features are done but not verified. Run /gsr:verify to verify the phase."
-  - Phase is PASS, next phase not started
-      → "Phase [N] passed. Run /gsr:build to start Phase [N+1]: [phase name]."
-  - All phases PASS
-      → "All phases complete. Run /gsr:verify to do backlog triage and wrap up."
-```
-
-Never say "run /gsr:build" without telling the user which phase and what feature to pick next.
+A later instruction narrowing scope/cadence wins. Assessment does not prove readiness or behavior: the next agent reads actual code/spec and checks current evidence freshness before reuse.
 
 ---
 
@@ -182,7 +108,7 @@ After the assessment, update (or create) CLAUDE.md:
 
 1. **References section** — add correct paths for: schema, routes, design tokens, API client (whatever is relevant to this project)
 2. **Code Conventions** — fill in what you found: naming, folder structure, patterns
-3. **Tech Stack** → update `docs/techstack.md` if it exists, or note it in CLAUDE.md
+3. **Tech Stack** → update `DOC_ROOT/techstack.md` if relevant, or note it in CLAUDE.md
 
 **Never overwrite existing Learned Rules.** Append only.
 
@@ -198,5 +124,5 @@ After the assessment, update (or create) CLAUDE.md:
 
 Red flags — if you're thinking any of these, stop:
 - "I'll approximate the conventions from what I see" → Read more files, don't approximate
-- "The user can figure out the next step" → Be specific. Tell them exactly what to run.
+- "The user can figure out the next step" → Save the concrete stage/task handoff and offer `/clear` then "dalej" for the existing authorized task; direct commands remain optional.
 - "I don't need to check if references are valid" → Always validate references exist
