@@ -24,6 +24,21 @@ GSR fixes this with a lightweight workflow: scope your idea, generate a PRD, bui
 
 ## Install
 
+### Terminal
+
+```bash
+claude plugin marketplace add https://github.com/kmajerowicz/get-shit-right
+claude plugin install gsr
+```
+
+Or clone and install locally:
+
+```bash
+git clone https://github.com/kmajerowicz/get-shit-right
+claude plugin marketplace add ./get-shit-right
+claude plugin install gsr
+```
+
 ### Claude Desktop app
 
 Open **Code** in Claude Desktop, start a **local session**, and select your project folder. Paste this message into the conversation:
@@ -40,21 +55,6 @@ Check the installation result and tell me whether I need to open a new session.
 ```
 
 Approve the installation commands if prompted. If Claude asks you to start a new session, open it in the same project folder. Then use `/gsr:scope` for a new idea or `/gsr:learn` for an existing project.
-
-### Terminal
-
-```bash
-claude plugin marketplace add https://github.com/kmajerowicz/get-shit-right
-claude plugin install gsr
-```
-
-Or clone and install locally:
-
-```bash
-git clone https://github.com/kmajerowicz/get-shit-right
-claude plugin marketplace add ./get-shit-right
-claude plugin install gsr
-```
 
 ---
 
